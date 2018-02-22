@@ -7,3 +7,5 @@
 2. [Idiomatic Python](https://github.com/zFinnz/zFinnz.github.io/blob/master/Python/idiomatic%20python.md) // Tập hợp một số cách viết code theo quy tắc mà cộng đồng ngầm thống nhất. 
 
 3. [String in Python](https://github.com/zFinnz/zFinnz.github.io/blob/master/Python/string.md)  // Tổng hợp những kiến thức cơ bản về sử dụng chuỗi trong Python.
+
+4.[List, Tuple và Dictionary trong Python](https://github.com/zFinnz/zFinnz.github.io/blob/master/Python/list-tuple-dict.md)  // Tổng hợp những kiến thức cơ bản về sử dụng list, tuple, dictionary trong Python.

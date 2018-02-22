@@ -27,6 +27,11 @@
 | `in` | Trả về `True` nếu tồn tại kí tự đã cho trong chuỗi | 'a' in 'abc' = True |
 | `not it` | Trả về `True` nếu không tồn tại kí tự đã cho trong chuỗi | 'a' not in 'abc' = False |
 | % | Định dạng chuỗi | |
+| Chr(x) | Chuyển kiểu `int` thành kí tự |
+| Unichr(x) | Chuyển kiểu `int` thành kí tự unicode |
+| Ord(x) | Chuyển `String` dang kiểu `int` |
+| Hex(x) | Chuyển Kiểu `int` sang `hex` |
+| oct(x) | Chuyển kiểu `int` sang kiểu số `oct` |
 
 ----
 

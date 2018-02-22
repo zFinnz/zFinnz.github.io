@@ -1,37 +1,9 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/zFinnz/zFinnz.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+## Danh sách các bài viết về Python
+### Các bài viết được tham khảo từ nhiều nguồn khác nhau phục vụ cho việc học tập và nghiên cứu Python của "Me"
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+1. [Wtf python](https://github.com/LinhTito/linhtito.github.io/blob/master/Python/wtfpython.md) // Một bộ sưu tập các đoạn mã dễ gây nhầm lẫn trong Python
 
-### Markdown
+2. [Idiomatic Python](https://github.com/LinhTito/linhtito.github.io/blob/master/Python/idiomatic%20python.md) // Tập hợp một số cách viết code theo quy tắc mà cộng đồng ngầm thống nhất. 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/zFinnz/zFinnz.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+3. [String in Python](https://github.com/LinhTito/linhtito.github.io/blob/master/Python/string.md)  // Tổng hợp những kiến thức cơ bản về sử dụng chuỗi trong Python.

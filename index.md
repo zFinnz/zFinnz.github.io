@@ -9,3 +9,5 @@
 3. [String in Python](https://github.com/zFinnz/zFinnz.github.io/blob/master/Python/string.md)  // Tổng hợp những kiến thức cơ bản về sử dụng chuỗi trong Python.
 
 4. [List, Tuple và Dictionary trong Python](https://github.com/zFinnz/zFinnz.github.io/blob/master/Python/list-tuple-dict.md)  // Tổng hợp những kiến thức về list, tuple, dictionary trong Python.
+
+5. [Operator in Python](https://github.com/zFinnz/zFinnz.github.io/blob/master/Python/operator.md) // Toán tử trong python

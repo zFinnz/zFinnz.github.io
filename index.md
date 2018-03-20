@@ -11,3 +11,17 @@
 4. [List, Tuple và Dictionary trong Python](https://github.com/zFinnz/zFinnz.github.io/blob/master/Python/list-tuple-dict.md)  // Tổng hợp những kiến thức về list, tuple, dictionary trong Python.
 
 5. [Operator in Python](https://github.com/zFinnz/zFinnz.github.io/blob/master/Python/operator.md) // Toán tử trong python
+
+6. [Problem Solving with Algorithms and Data Structures using Python](http://interactivepython.org/runestone/static/pythonds/index.html) // Thuật toán trong python
+
+7. [PYTHON FUNCTIONS - BUILT-IN FUNCTIONS](http://www.bogotobogo.com/python/python_functions_built_in.php)  // Hàm dựng sẵn trong python
+
+8. [LeetCode ](https://github.com/kamyu104/LeetCode) // Các bài tập cơ bản , nâng cao trong Python
+
+9. [Python cheatsheet](https://www.pythonsheets.com/) // Tóm tắt kiến thức Python
+
+10. [Python tiếng việt](https://manhhomienbienthuy.bitbucket.io/tag/python.html)  // Một số bài viết Python tiêng việt hay.
+
+11. [TheAlgorithms in Python](https://github.com/TheAlgorithms/Python)  // Thuật toán trong Python
+
+12. [Python Extension Packages](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook) // các gói module Python

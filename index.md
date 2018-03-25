@@ -25,3 +25,5 @@
 11. [TheAlgorithms in Python](https://github.com/TheAlgorithms/Python)  // Thuật toán trong Python
 
 12. [Python Extension Packages](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook) // các gói module Python
+
+13. [Data Structure and Algorithmic Problems solved in many languages](https://github.com/marcosfede/algorithms)  //Thuật toán trong một số ngôn ngữ

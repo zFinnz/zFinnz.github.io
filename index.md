@@ -27,3 +27,5 @@
 12. [Python Extension Packages](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook) // các gói module Python
 
 13. [Data Structure and Algorithmic Problems solved in many languages](https://github.com/marcosfede/algorithms)  //Thuật toán trong một số ngôn ngữ
+
+14. [Minimal examples of data structures and algorithms in Python](https://github.com/keon/algorithms) // Thuật toán cơ bản trong Python.

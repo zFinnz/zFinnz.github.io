@@ -29,3 +29,5 @@
 13. [Data Structure and Algorithmic Problems solved in many languages](https://github.com/marcosfede/algorithms)  //Thuật toán trong một số ngôn ngữ
 
 14. [Minimal examples of data structures and algorithms in Python](https://github.com/keon/algorithms) // Thuật toán cơ bản trong Python.
+
+15.[Một số dự án code Python tiêu biểu](https://github.com/vinta/awesome-python) //Một số code dự án Python cơ bản.

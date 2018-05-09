@@ -31,3 +31,7 @@
 14. [Minimal examples of data structures and algorithms in Python](https://github.com/keon/algorithms) // Thuật toán cơ bản trong Python.
 
 15.[Một số dự án code Python tiêu biểu](https://github.com/vinta/awesome-python) //Một số code dự án Python cơ bản.
+
+## Bài viết về Odoo
+
+1. [Odoo 10](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/model.md)// Tổng hợp Odoo 10

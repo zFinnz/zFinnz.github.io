@@ -441,6 +441,14 @@ decoration-warning="[name_field][operator][value_field]"
 
 - `delete="false"` : Loại bỏ nút xóa.
 
+- `color` : Thay đổi màu theo điều kiện.
+
+**Vd:**
+
+```xml
+<tree colors="blue:state == 'draft';gray:state in ('cancel','done');black:state == 'open'" >
+```
+
 
 
 ### Calender Views

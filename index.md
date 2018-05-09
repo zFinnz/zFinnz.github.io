@@ -36,4 +36,4 @@
 
 1. [Odoo 10](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/model.md)// Tổng hợp Odoo 10
 
-2. [Odoo 10](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/model.md)// ORM Odoo 10 
+2. [ORM Odoo 10](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/ORM.md)// ORM Odoo 10 

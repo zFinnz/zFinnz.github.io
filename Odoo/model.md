@@ -260,6 +260,7 @@ Bao gồm các đối tượng :
 | html_frame | Hiển thi nhiều bảng soạn thảo trên 1 form | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/html_frame.png) |
 | one2many | Chọn kiểu one2many | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/one2many.png) |
 | one2many_list |  Hiển thị danh sách bảng one2many | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/one2many_list.png) |
+| one2many_selectable |  |  |
 | widgetonbutton |  Để tạo danh sách nút có đèn | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/widgetonbutton.png) |
 | website_button | tạo một link website kiểu button | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/website_button.png) |
 | char | kiểu kí tự cho trường |  |

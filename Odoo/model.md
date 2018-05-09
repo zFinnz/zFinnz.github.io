@@ -252,13 +252,13 @@ Bao gồm các đối tượng :
 |---------|---------|---------|
 | many2many_checkboxes | Hiển thị hiệu ứng checkbox cho trường many2many | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/many2many_checkboxe.png)  |
 | guage | style="width:120px;height:90px;cursor:pointer;" options="{'max_field': 'your_field_to_set_limit'}" | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/gauge.png) |
-| many2many_binary | Dùng để cho việc upload file |  |
-| many2many_kanban | Hiển thị kiểu kanban cho trường many2many |  |
+| many2many_binary | Dùng để cho việc upload file | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/many2many_binary.png) |
+| many2many_kanban | Hiển thị kiểu kanban cho trường many2many | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/many2many_kanban.png) |
 | many2many_attendee | Hiển thị trường many2many kiểu chọn nhiều | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/many2many_attende.png) |
-| mail_folowers| Hiển thị dạng mail ở phía cuối form |  |
+| mail_folowers| Hiển thị dạng mail ở phía cuối form | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/mail_folowers.png) |
 | html | Hiển thị bảng soạn thảo | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/html.png) |
 | html_frame | Hiển thi nhiều bảng soạn thảo trên 1 form | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/html_frame.png) |
-| one2many | Chọn kiểu one2many |  |
+| one2many | Chọn kiểu one2many | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/one2many.png) |
 | one2many_list |  Hiển thị danh sách bảng one2many | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/one2many_list.png) |
 | widgetonbutton |  Để tạo danh sách nút có đèn | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/widgetonbutton.png) |
 | website_button | tạo một link website kiểu button | ![](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/Picture/website_button.png) |

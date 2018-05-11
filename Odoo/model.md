@@ -246,6 +246,13 @@ Bao gồm các đối tượng :
 - required : trường bắt buộc
 
 
+## Thuộc tính Fields trong Odoo
+
+- sum='' : Tính tổng theo trường
+- readonly = ''
+- invisible = ''
+
+
 ## Widget in view Odoo
 
 | Định nghĩa | Hiển thị | Hình ảnh |

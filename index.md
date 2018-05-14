@@ -32,6 +32,8 @@
 
 15.[Một số dự án code Python tiêu biểu](https://github.com/vinta/awesome-python) //Một số code dự án Python cơ bản.
 
+16 [Mọi thuật toán cơ bản ](https://github.com/OpenGenus/cosmos)  // Mọi thuật toán lập trình cơ bản.
+
 ## Bài viết về Odoo
 
 1. [Odoo 10](https://github.com/zFinnz/zFinnz.github.io/blob/master/Odoo/model.md)// Tổng hợp Odoo 10

@@ -251,6 +251,7 @@ Bao gồm các đối tượng :
 - sum='' : Tính tổng theo trường
 - readonly = ''
 - invisible = ''
+- confirm="" : hỏi trước khi chuyển nút.
 
 
 ## Widget in view Odoo

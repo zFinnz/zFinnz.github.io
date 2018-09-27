@@ -481,3 +481,173 @@ Các thuộc tính đi kèm :
 - all_day
 
 - mode
+### Mẹo
+1.Loại bỏ "Manager database" và "power by odoo" ở màn hình đăng nhập
+
+```xml
+<?xml version='1.0' encoding='utf-8'?>
+<openerp>
+ <data>
+        <template id="inherited_login_layout" inherit_id="web.login_layout" name="My Theme Login">
+            <xpath expr="//div[@class='oe_single_form_footer']" position="replace">
+                <div class="oe_single_form_footer" style="bottom: -50px;">
+                 Developed By: Hassan Enterprises
+                 <span class="oe_footer_seperator"> | </span>
+                 Phone: +92 321 1234567
+                 <span class="oe_footer_seperator"></span>
+                 Email: abc@gmail.com
+                </div>           
+            </xpath>
+        </template>  
+ </data>
+</openerp>
+```
+2. Chỉ định số thập phân của trường float
+
+```py
+digits=(12,3)
+```
+
+3. Hiển thị thông báo khi nhấn button
+
+```py
+from openerp.osv import fields,osv
+from openerp.tools.translate import _
+class thesis_approval_message_oric(osv.osv_memory):
+    _name = "thesis.approval.message.oric"
+    _columns={
+        'text': fields.text(),
+    }
+thesis_approval_message_oric()       
+```
+
+```xml
+<record id="wizard_message_form_for_oric" model="ir.ui.view">
+            <field name="name">Thesis Wizard Message Approval Message ORIC</field>
+            <field name="model">thesis.approval.message.oric</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Message" version="7.0">
+                    <separator string="Message" colspan="6"/>
+                    <field name="text" colspan="4" nolabel="1" readonly="1"  widget="html"/>                                                            
+                    <newline/>
+                    <separator colspan="6"/>
+                    <footer>
+                        <button name="btn_approve_oric" type="object" string="Yes" class="oe_highlight"/>                             
+                        <button special="cancel" string="No"/>                    
+                    </footer>                                    
+                </form>
+            </field>
+    </record>   
+
+ <record id="wizard_message_action_for_oric" model="ir.actions.act_window">
+            <field name="name">Thesis Wizard Approval Message ORIC</field>
+            <field name="res_model">thesis.approval.message.oric</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record> 
+
+```
+
+```py
+  @api.multi
+    def btn_approve(self):
+ text = """The case """+str(self.case_no)+""" will be forward to VC for further Approval. Are you want to proceed."""
+ query='delete from thesis_approval_message_oric'
+ self.env.cr.execute(query)
+ value=self.env['thesis.approval.message.oric'].sudo().create({'text':text})
+ return{
+  'type':'ir.actions.act_window',
+  'name':'Message',
+  'res_model':'thesis.approval.message.oric',
+  'view_type':'form',
+  'view_mode':'form',
+  'target':'new',
+  # 'context':{'thesis_obj':self.id,'flag':'course Work completed'},
+  'res_id':value.id                
+       }       
+```
+4. Theo dõi thay đổi của một trường
+
+```py
+_inherit = 'mail.thread'
+track_visibility='onchange'
+```
+
+5. Ngày mặc định trong file py
+
+```py
+default=(datetime.today() + relativedelta(days=30))
+default=lambda *c: time.strftime('%Y-%m-%d %H:%M:%S')
+default=fields.Date.today()
+default=lambda self: fields.Datetime.now()
+```
+
+6. Lấy người dùng hiện tại
+
+```py
+default=lambda self: self.env.user
+````
+7. Tạo giá trị mặc đinh cho hệ thống
+
+```py
+class asset_config(models.TransientModel):
+	_inherit = 'res.config.settings'
+	_name = 'edu.config.setting'
+
+	default_tpdt = fields.Char(u'Trưởng phòng đào tạo', default_model='edu.config.setting')	
+
+default = lambda self: self.env['ir.values'].get_default('edu.config.setting', 'tpdt')
+```
+
+8. Tạo giá trị cho trường one2many khi onchange
+
+```py
+recs = self.env['op.student.course'].search([('batch_id', '=', self.batch_id.id)])
+				for line in recs:
+					new_line = re.new({'student_id': line.student_id.id})
+					self.print_batch_qdnh_line_id += new_line
+
+```
+
+9. Định dạng lại ngày trong odoo
+
+```py
+datetime.strptime(self.batch_id.end_date,"%Y-%m-%d").strftime("%d/%m/%Y")
+```
+
+10. Loại bỏ hạn chế truy cập cho một số nhóm quyền
+
+```xml
+<record id="view_order_form_cust_ref_readonly" model="ir.ui.view">
+            <field name="name">op.admission.form.readonly</field>
+            <field name="model">op.admission</field>
+            <field name="inherit_id" ref="openeducat_admission.view_op_admission_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('openeducat_core.group_op_director') ]),(6, 0, [ref('openeducat_core.group_op_manager') ])]"/>
+            <field name="arch" type="xml">
+                <field name='name' position="attributes">
+                    <attribute name="attrs">{'readonly':[('state','=', False)]}</attribute>
+                </field>
+```
+
+11. Thêm ghi chú chữ nhỏ
+
+```xml
+<span attrs="{'invisible': [('report_type','!=','2')]}" colspan='4' >
+                    				<p></p>
+			                        <h3 class="oe_grey">Lưu ý</h3>
+			                        <ul class="oe_grey"><li>Ghi danh sách các lần duyệt cách nhau 1 dấu phẩy</li>
+			                        <li>ví dụ: 1,2,3.</li>
+			                        <li>Nếu không ghi mặc định phần mềm sẽ in toàn bộ danh sách.</li>
+			                        </ul>
+		                    	</span>
+```
+
+12.Thông báo
+
+```py
+msg = "Chuyển trạng thái: <b>" + new_state + "</b>"
+return self.message_post( body=msg )
+```
+

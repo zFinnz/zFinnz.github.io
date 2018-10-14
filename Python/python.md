@@ -691,6 +691,7 @@ Các hàm dựng sẵn của Chuỗi:
 | ab+ | Mở file trong để đọc và append trong định dạng nhị phân. Con trỏ file tại cuối nếu file đã tồn tại. Nếu không tồn tại thì tạo một file mới để đọc và ghi |
 
 - Các thuộc tính của file:
+
 | Thuộc tính|Mô tả |
 |-----|-----|
 | file.closed | Trả về True nếu file đã đóng, ngược lại là False |

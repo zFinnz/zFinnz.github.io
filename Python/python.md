@@ -346,6 +346,7 @@ A 15
 
 ###### Tuple
 - Tuple cũng chưa giá trị giống list nhưng tuple không thể bị thay đổi.
+
 | STT | Hàm | Miêu tả|
 |-----|-----|--------|
 | 1 | tuple1,tuple2 | So sánh 2 tuple với nhau|

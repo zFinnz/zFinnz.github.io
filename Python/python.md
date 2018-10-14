@@ -346,11 +346,10 @@ A 15
 
 ###### Tuple
 - Tuple cũng chưa giá trị giống list nhưng tuple không thể bị thay đổi.
-
 | STT | Hàm | Miêu tả|
 |-----|-----|--------|
 | 1 | tuple1,tuple2 | So sánh 2 tuple với nhau|
-| 2 | len(tuple)    | Trả về độ dài của tuple |
+| 2 | len(tuple) | Trả về độ dài của tuple |
 | 3 | max(tuple) | Trả về phần tử có giá trị lớn nhất trong tuple |
 | 4 | min(tuple) | Trả về phần tử có giá trị nhỏ nhất trong tuple |
 | 5 | tuple(seq) | Chuyển đổi tuple thành tuple |
@@ -409,12 +408,361 @@ for i in sorted(set(a)):
 ----
 ##### Modules
 
+- Nếu bạn thoát khỏi trình thông dịch và chạy lại nó, nhưng gì bạn đã định nghĩa (hàm và biến) đều bị mất. Do đó, nếu bạn muốn viết một chương trình dài hơn, thì tốt nhất bạn nên dùng một trình soạn thảo để chuẩn bị đầu vào cho trình thông dịch và chạy với tập tin này. Việc này được gọi là tạo `kịch bản`. Khi chương trình của bạn trở nên dài hơn, bạn sẽ muốn tách nó thành nhiều tập tin để dễ duy trì. bạn sẽ muốn dùng một hàm thuận tiện mà bạn đã viết trong một chương trình mà không cần phải định nghĩa lại nó vào chương trình đó.
+- Để hỗ trợ việc này, Python có một cách đặt các định nghĩa vào một tập tin và dùng chúng trong một kịch bản hoặc một phiên làm việc với trình thông dịch, tập tin này được gọi là `module`. các định nghĩa từ một module có thể import vào các module khác
+- Module là một tập tin chứa các định nghĩa của câu lệnh python. Tên tập tin là tên của modules với đuôi .py được gắn vào. Trong một module, tên của các module có thể truy cập được thông qua một biến toàn cục `__name__`. 
+```py
+def fib(n):
+	a,b = 0, 1
+	while b < n:
+		print b
+		a, b = b, a+b
+```
+- Chúng ta luu lại và đặt tên tập tin là fibo.py và chúng ta có thể import nó từ các module khác
+```py
+>>>import fibo
+>>>fibo.fib(1000)
+1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987
+>>>fibo.__name__
+'fibo'
+>>> fib = fibo.fib # nếu bạn muốn dùng hàm thuwofng xuyên, bạn có thể gán nó ào một biến cục bộ.
+>>> fib(500)
+```
+- Một module có thể nhập các module khác, các module bị nhập sẽ được đặ trong bảng kí hiệu toàn cục của module nhập nó.
+```py
+from fibo import fib # Câu lệnh này sẽ không đưa tên fibo vào bảng kí hiệu cục bộ nên fibo không được định nghĩa.
+from fibo import * # Câu lệnh này nhập tất cả mọi tên trừ những tên bắt đầu bằng dấu gạch chân (_).
+fib(100)
+```
+- Khi mập tập tim .py được biên dịch thành công, Python sẽ thử ghi phiên bản đã biên dịch ra .pyc, việc ghi này thất bại thì cũng không có lỗi xảy ra, nếu vì lí do gì mà tập tin không được ghi đầy đủ, tập tin pyc sẽ được đánh dấu là không hợp lệ và sẽ bị bỏ qua. Nội dung tập tin .pyc không phụ thuộc vào hệ thống, do đó một thư mục module python có thể được chia sẻ vời nhiều máy có kiến trúc khác nhau.
+- Python có một thư việc các module chuẩn. Một vào modules được chuyển thẳng vào trình thông dịch, chúng cung cấp các tác vụ không nằm trong phạm vi chính của ngôn ngữ nhưng được tạo sẵn vì hiệu quả cao hoặc để truy cập vào những chức năng của hệ điều hành ví dụ các lệnh gọi hệ thống
+- Hàm dir() được dùng để tìm ra tên các module định nghĩa, nó trả về danh sách các chuỗi đã sắp xếp.
+```py
+>>>import fibo
+>>>dir(fibo)
+['__name__', 'fib']
+>>>dir() # Khi không có thông số, dir() liệt kê các tên bạn đã định nghĩa.
+['__builtins__', '__doc__', '__file__', '__name__', 'fib']
+```
+- dir() không liệt kê tên của các hàm và biến có sẵn. Nếu bạn muốn có danh sách của chúng, thì chúng được định nghĩa trong module chuẩn `__builtin__`
+```py
+import __builtin__
+dir(__builtin__)
+['ArithmeticError', 'AssertionError', 'AttributeError', 'BaseException', 'BufferError', 'BytesWarning', 'DeprecationWarning', 'EOFError', 'Ellipsis', 'EnvironmentError', 'Exception', 'False', 'FloatingPointError', 'FutureWarning', 'GeneratorExit', 'IOError', 'ImportError', 'ImportWarning', 'IndentationError', 'IndexError', 'KeyError', 'KeyboardInterrupt', 'LookupError', 'MemoryError', 'NameError', 'None', 'NotImplemented', 'NotImplementedError', 'OSError', 'OverflowError', 'PendingDeprecationWarning', 'ReferenceError', 'RuntimeError', 'RuntimeWarning', 'StandardError', 'StopIteration', 'SyntaxError', 'SyntaxWarning', 'SystemError', 'SystemExit', 'TabError', 'True', 'TypeError', 'UnboundLocalError', 'UnicodeDecodeError', 'UnicodeEncodeError', 'UnicodeError', 'UnicodeTranslateError', 'UnicodeWarning', 'UserWarning', 'ValueError', 'Warning', 'WindowsError', 'ZeroDivisionError', '__debug__', '__doc__', '__import__', '__name__', '__package__', 'abs', 'all', 'any', 'apply', 'basestring', 'bin', 'bool', 'buffer', 'bytearray', 'bytes', 'callable', 'chr', 'classmethod', 'cmp', 'coerce', 'compile', 'complex', 'copyright', 'credits', 'delattr', 'dict', 'dir', 'divmod', 'enumerate', 'eval', 'execfile', 'exit', 'file', 'filter', 'float', 'format', 'frozenset', 'getattr', 'globals', 'hasattr', 'hash', 'help', 'hex', 'id', 'input', 'int', 'intern', 'isinstance', 'issubclass', 'iter', 'len', 'license', 'list', 'locals', 'long', 'map', 'max', 'memoryview', 'min', 'next', 'object', 'oct', 'open', 'ord', 'pow', 'print', 'property', 'quit', 'range', 'raw_input', 'reduce', 'reload', 'repr', 'reversed', 'round', 'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum', 'super', 'tuple', 'type', 'unichr', 'unicode', 'vars', 'xrange', 'zip']
+```
+- Package là một cách để cấu trúc vùng tên của module bằng cách dùng "Tên module có chấm"
+```
+Sound/                          Package cao nhất
+      __init__.py               khở tạo package con
+      Formats/                  Các package con
+              __init__.py
+              wavread.py
+              wavwrite.py
+              aiffread.py
+              aiffwrite.py
+              auread.py
+              auwrite.py
+              ...
+      Effects/                  Các package con
+              __init__.py
+              echo.py
+              surround.py
+              reverse.py
+              ...
+      Filters/                  Các package con
+              __init__.py
+              equalizer.py
+              vocoder.py
+              karaoke.py
+              ...
+```
+- Khi nhập một package, Python sẽ tìm trong các thư mục từ `sys.path` để tìm thư mục con của package. Các tập tin `__init__.py` là cần thiết để cho Python biết các thư mục chứa các gói. Trong trường hợp đơn giản nhất, __init__.py có thể chỉ là một tập tin rỗng, nhưng nó cũng có thể thực thi các mã thiết lập của gói hoặc thiết lập biến __all__
+```py
+import Sound.Effects.echo
+Sound.Effects.echo.echofilter(input, output, delay=0.7, atten=4)
+#
+from Sound.Effects import echo
+echo.echofilter(input, output, delay=0.7, atten=4)
+#
+from Sound.Effects.echo import echofilter
+echofilter(input, output, delay=0.7, atten=4)
+```
+**Lưu ý:** Khi sử dụng `form package import item`, item có thể hoặc là module con của gói hoặc là một tên nào khác được định nghĩa trong gói như hàm, lớp, biến. Câu lệnh import trước hết kiểm tra xem item có được định nghĩa trong gói, nếu không nó giả định rằng đó là module và thử nạp nó. Nếu không tìm thấy module, một biệt lệ `ImportError` sẽ được tạo ra.
+Ngược lại, khi dùng cú pháp `import iteam.subitem.subsubitem`, mỗi tiểu mục trừ tiểu mục cuối cùng phải là một package, tiểu mục cuối cùng có thể là module hoặc package nhưng không thể là một lớp hay hàm, biến được định nghĩa trong tiểu mục trước.
+
+##### Vào và Ra
+Có một số cách để trình bày đầu ra của một chương trình, dữ liệu có thể được in dưới dạng người đọc có thể đọc được hoặc được ghi vào một tệp để sử dụng trong tương lai
+- Thường thì chúng ta sử dụng hai cách viết các giá trị: các câu lệnh biểu thức và hàm `print()`, hoặc sử dụng phương thức `write()` của các đối tượng tệp, tệp đầu ra tiêu chuẩn có thể tham chiếu dưới dạng `sys.stdout`
+- Để sử dụng các chuỗi kí tự được định dạng, ta có thể bắt đầu chuỗi có `f` hoặc `F` trước dấu ngoặc kép. Bên trong chuỗi này có thể viết biểu thức Python giữa `{và}` có thể là biến hoặc giá trị theo nghĩa đen.
+```py
+>>> a = 5
+>>> b = 6
+>>> f'{a} và {b}'
+'5 và 6'
+```
+- Các phương pháp `str.format()` đòi hỏi nhiều thao tác bằng tay, bạn vẫn sẽ cung cấp `{và}` nơi một biến được thay thế nhưng bạn sẽ phải cung cấp thông tin được định dạng
+```py
+>>> a = 5
+>>> b = 6
+>>> '{} và {}'.format(a, b)
+' a và b'
+```
+- Cuối cùng, bạn có thể tự làm tất cả các chuỗi bằng cách sử dụng các hoạt dộng nối chuỗi và ghép nối để tạo bất kì bố cục nào mà bạn muốn
+- Khi bạn khoong quan tâm đầu ra mà chỉ muốn hiển thị nhanh một số biến cho mục đích gỡ lỗi, bạn có thể chuyển đổi bất kì giá trị nào thành chuỗi bằng hàm `repr()` hoặc `str()`.
+- `str()` nhằm để trả về cách hiển thị giá trị dễ đọc còn `repr()` nhằm để tạo cách thể hiện mà trình thông dịch có thể đọc (hoặc sẽ sinh lỗi `SyntaxError` nếu không có cú pháp tương đương). Đối với các đối tượng không có cách thể hiện cho người đọc, `str()` sẽ trả về cùng giá trị với `repr()`
+```py
+>>> s ='Hello'
+>>> str(s)    
+'Hello'       
+>>> repr(s)   
+"'Hello'"   
+```
+- Các chuỗi ký hiệu chuỗi định dạng cho phép bạn bao gồm các giá trị biểu thức Python bên trong một chuỗi bằng cách thêm tiền tố `f` hoặc `F` và viết các biểu thức dưới dạng `{expression}`  
+```py
+>>> import math
+>>> print(f'The value of pi is {math.pi: .3f}.') # Trường : sẽ chuyển đổi số nguyên với số kí tự tối thiểu .
+```
+- Các công cụ chuyển đổi khác có thể được sử dụng để chuyển đổi giá trị trước khi nó được định dạng `'!a'` áp dụng cho `ascii()`, `'!s'` áp dụng cho `str()` và `'!r'` áp dụng cho `repr()`.
+```py
+>>>a = 'Hello'
+>>>print(f'Say: {a}')
+Say: Hello
+>>>print(f'Say: {a!r}')
+Say: 'Hello'
+```
+
+###### Phương thức định dạng `string()`
+Cách sử dụng cơ bản của phương thức `str.format()`
+```py
+>>> print('{} is a {}'.format('he', 'man'))
+he is a man
+```
+- Các dấu ngoặc và các kí tự bên trong chúng được thay thế bằng các đối tượng được truyền vào phương thức `str.format()`, một số trong ngoặc đơn có thể được sử dụng để chỉ vị trí của đối tượng được truyền vào phương thức `str.format()`.
+```py
+>>> print('{0} and {1}'.format('apple', 'samsung'))
+apple and samsung
+>>> print('{1} and {0}'.format('apple', 'samsung'))
+samsung and apple
+```
+- Nếu các đối số từ khóa được sử dụng trong `str.format()`, giá trị của chúng được tham chiếu bằng cách sử dụng tên của đối số.
+```py
+>>>print('This {object} is a {adjective}'.format(object='He', adjective='men'))
+He is a men
+```
+- Đối số vị trí và từ khóa có thể kết hợp với nhau.
+- Nếu bạn có một chuỗi địch dạng thực sự dài mà bạn không muốn chia nhỏ, bạn có thể tham khảo các biến được định dạng theo tên thay thì theo vị trí.
+```py
+>>> table = {'an': 100, 'be': 200, 'ce': 300}
+>>> print('An: {0[an]:d},Be: {0[be]:d}, Ce: {0[ce]:d}'.format(table))
+An: 100,Be: 200, Ce: 300
+```
+- Điều này đặc biệt hữu ích khi kết hợp với hàm dựng sẵn `vars()`, trả về từ điển chứa tất cả biến cục bộ
+```py
+>>> for x in range(1,11):
+>>> 	print('{0:2d} {1:3d} {2:4d}'.format(x, x*x, x**x))
+ 1   1    1        
+ 2   4    4        
+ 3   9   27        
+ 4  16  256        
+ 5  25 3125        
+ 6  36 46656       
+ 7  49 823543      
+ 8  64 16777216    
+ 9  81 387420489   
+10 100 10000000000 
+```
+- Ta có thể sử dụng định dạng chuỗi cũ đó là `%`
+```py
+>>> import math
+>>> print('The value of pi is %5.3f' %math.pi)
+The value of pi is 3.142
+```
+
+###### Phương thức định dạng chuỗi thủ công
+
+Các kí tự thoát trong python:
+
+| Ki tự | Kí tự trong mã hexa | Miêu rả |
+|-------|---------------------|---------|
+| \a | 0x07 | Chuông hoặc thông báo | 
+| \b | 0x08 | Backspace |
+| \n | 0x0a | Dòng mới |
+| \t | 0x09 | Tab |
+| \v | 0x0b | Tab theo chiều dọc |
+| \r | 0x0d | Quay lại |
+| \n | 0x0a | Dòng mới | 
+
+ Toán tử trong kí tự, chuỗi:
+
+| Ki tự | Miêu tả | Ví dụ |
+|-------|---------------------|---------|
+| + | Phép cộng hai chuỗi | 'a' + 'b' = 'ab' | 
+| * | Phép nhân chuỗi với toán hạng | 'a'* 2 = 'aa' |
+| [] | Phép truy xuất phần tử chuỗi | 'abc'[1] = b |
+| `in` | Trả về `True` nếu tồn tại kí tự đã cho trong chuỗi | 'a' in 'abc' = True |
+| `not it` | Trả về `True` nếu không tồn tại kí tự đã cho trong chuỗi | 'a' not in 'abc' = False |
+| % | Định dạng chuỗi | |
+| chr(x) | Chuyển kiểu `int` thành kí tự |
+| unichr(x) | Chuyển kiểu `int` thành kí tự unicode |
+| ord(x) | Chuyển `String` dang kiểu `int` |
+| hex(x) | Chuyển Kiểu `int` sang `hex` |
+| oct(x) | Chuyển kiểu `int` sang kiểu số `oct` |
+
+Các định dạng chuỗi:
+
+| Kí hiệu định dạng | Kiểu Chuyển đổi |
+|-------------------|-----------------|
+| %c | Kí tự (Nhận đầu vào 1 kí tự hoặc chữ số) |
+| %s | Chuyển đổi chuỗi qua Str() trước khi định dạng |
+| %i| Kiểu số nguyên Signed |
+| %d | nt |
+| %u | Kiểu số nguyên Unsigned |
+| %o | Kiểu số Hệ Bát phân |
+| %x | Kiểu hệ Thập lục phân(chữ thường) |
+| %X | Kiểu hệ Thập lục phân(chữ hoa) |
+| %e | Kiểu kí hiệu mũ(viết thường) |
+| %E | Kiểu kí hiệu mũ(viết hoa) |
+| %f | Số thực dấu phẩy động |
+| %g | kiểu ngắn hơn của `%f` và `%e` |
+| %G | kiểu ngắn hơn của `%f` và `%E` |
+
+Các hàm dựng sẵn của Chuỗi:
+
+| STT | Hàm | Miêu tả |
+|-----|-----|-----|
+| 1 | capitalize() | Viết hoa kí tự đầu tiên của chuỗi |
+| 2 | center(chiều rộng, kí tự lấp đầy) | Đưa chuỗi vào giữa và lấp đầy 2 bên bằng kí tự |
+| 3 | count(str[, beg = 0, end = len(string)]) | đếm số lần kí tự xuất hiện trong chuỗi |
+| 4 | encode(encoding='UTF-8', errors='strict') | Trả về chuỗi đã được mã hóa |
+| 5 | decode(encoding='UTF-8', errors='strict') | Trả về chuỗi đã được giải mã |
+| 6 | endswith(suffix[, beg =0, end =  len(string)]) | Trả về `True` nếu chuỗi được kết thúc bằng hậu tố |
+| 7 | explandtabs(tabsize) | Mở rộng khoảng cách của kí tự `\t` theo `tabsize` |
+| 8 | find(str[, beg = 0, end = len(string)]) | Tìm vị trí đầu tiên của một kí tự trong chuỗi |
+| 9 | rfind(str[, beg = 0, end = len(string)]) | Giống `find` nhưng trả về chỉ mục cuối cùng |
+| 10 | index(str[, beg = 0, end = len(string)]) | Giống `find()` nhưng sẽ đưa ra một ngoại lệ nếu không tìm thấy|
+| 11 | rindex(str[, beg = 0, end = len(string)]) | Giống `rfind()` nhưng sẽ đưa ra một ngoại lệ nếu không tìm thấy|
+| 12 | isalnum() | Kiểm tra xem chuỗi có chưa kí tự số hay không |
+| 13 | isalpha() | Kiểm tra xem chuỗi chỉ chứa các kí tự chữ cái hay không |
+| 14 | isdigit() | Kiểm tra xem chuỗi chỉ chứa các kí tự số hay không |
+| 15 | isdemacial() | Trả về `True` nếu một chuỗi dạng `Unicode` chỉ chứa các ksi tự thập phân |
+| 16 | islower() | Kiểm tra xem chuỗi chỉ chứa các kí tự chữ cái thường hay không |
+| 17 | isnumberic() | Kiểm tra xem chuỗi chỉ chứa các kí tự số hay không(chỉ dùng với kiểu unicode) |
+| 18 | isspace() | Kiểm tra xem chuỗi chỉ chứa kí tự `space` hay không |
+| 19 | istitle() | Kiểm tra xem chuỗi ở dạng `titalcase` ( viết hoa các kí tự đầu tiên) hay không |
+| 20 | join(seq) | Nối các phần tử của seq thành một chuỗi |
+| 21 | len(str) | Trả về độ rộng của chuỗi |
+| 22 | ljust(width, fillchar) | Trả về chuỗi mới được căn chỉnh vào bên trái,bên phải là các `fillchar` sao cho độ rộng của chuỗi bằng `width` |
+| 23 | rjust(width, fillchar) | Trả về chuỗi mới được căn chỉnh vào bên phải,bên trái là các `fillchar` sao cho độ rộng của chuỗi bằng `width` |
+| 24 | lower() | Chuyển đổi tất cả các chữ hoa trong chuỗi sang chữ thường |
+| 25 | upper() | Chuyển đổi tất cả các chữ thường trong chuỗi sang chữ hoa |
+| 26 | swapcase() | Đảo ngược kiểu của tất cả các kí tự trong chuỗi |
+| 27 | lstrip() | Xóa tất cả các khoảng trắng ở đầu trong chuỗi |
+| 28 | rstrip() | Xóa tất cả các khoảng trắng ở cuối trong chuỗi |
+| 29 | strip() | Thực hiện cả 2 phương thức `lstrip()` và `rstrip()` |
+| 30 | max(str) | Trả về chữ cái lớn nhất từ chuỗi đã cho |
+| 31 | min(str) | Trả về chữ cái nhỏ nhất từ chuỗi đã cho |
+| 32 | replace(old, new, [max]) | Thay thế tất cả sự xuất hiện của `old` bằng `new` trong chuỗi với số lần xuất hiện là `max` |
+| 33 | split([str, num=string.count(str)) | Chia chuỗi theo `str` đã cho(`space` nếu `str` không được cung cấp; và `num` chuỗi con nếu được cung cấp) |
+| 34 | startswith(str, beg=0, end =len(string)) | Xác định xem chuỗi có bắt đầu với chuỗi `str` hay không, trả về `True` hoặc `False` |
+| 35 | title() | Trả về 1 bản sao chuỗi sao cho các kí tự đầu tiên của chuỗi đều viết hoa |
+| 36 | zfill(width) | Trả về một chuỗi mới, bao gồm chuỗi ban đầu và được đệm thêm các số `0` vào bên trái sao cho độ dài chuỗi là `width` |
 
 
+###### Đọc và viết tập tin
+- Hàm `open()` trả về một đối tược tập tin, và thường được sử dụng với hai đối số `.open(filename, mode)`
+```py
+>>> f = open('workfile', 'w')
+```
+- Đối số đầu tiên là một chuỗi chứa tên tệp, đối số thứ hai là một chuỗi khác chưa một vài kí tự mô tả cách thức tệp sẽ được sử dụng
 
+| Mode |Mô tả |
+|-----|-----|
+| r	| Mở file chỉ để đọc |
+| r+ | Mở file để đọc và ghi |
+| rb | Mở file trong chế độ đọc cho định dạng nhị phân, đây là chế độ mặc định. Con trỏ tại phần bắt đầu của file |
+| rb+ | Mở file để đọc và ghi trong định dạng nhị phân. Con trỏ tại phần bắt đầu của file |
+| w	| Tạo một file mới để ghi, nếu file đã tồn tại thì sẽ bị ghi mới |
+| w+ | Tạo một file mới để đọc và ghi, nếu file tồn tại thì sẽ bị ghi mới |
+| wb | Mở file trong chế độ ghi trong định dạng nhị phân. Nếu file đã tồn tại, thì ghi đè nội dung của file đó, nếu không thì tạo một file mới |
+| wb+ | Mở file để đọc và ghi trong định dạng nhị phân. Nếu file tồn tại thì ghi đè nội dung của nó, nếu file không tồn tại thì tạo một file mới để đọc và ghi | |
+| a | Mở file để ghi thêm vào cuối file, nếu không tìm thấy file sẽ tạo mới một file để ghi mới |
+| a+ | Mở file để đọc và ghi thêm vào cuối file, nếu không tìm thấy file sẽ tạo mới một file để đọc và ghi mới |
+| ab | Mở file trong chế độ append trong chế độ nhị phân. Con trỏ là ở cuối file nếu file này đã tồn tại. Nếu file không tồn tại, thì tạo một file mới để ghi |
+| ab+ | Mở file trong để đọc và append trong định dạng nhị phân. Con trỏ file tại cuối nếu file đã tồn tại. Nếu không tồn tại thì tạo một file mới để đọc và ghi |
 
+- Các thuộc tính của file:
+| Thuộc tính|Mô tả |
+|-----|-----|
+| file.closed | Trả về True nếu file đã đóng, ngược lại là False |
+| file.mode	| Trả về chế độ truy cập của file đang được mở |
+| file.name	| Trả về tên của file |
 
-
-
-
-
+- Các để sử dụng tốt nhất là sử dụng từ khóa `with` khi xử lí các đối tượng tệp. Ưu điểm là tập tin được đóng đúng sau khi bộ phần mềm kết thúc, ngay cả khi một ngoại lệ xuất hiện ở một số chỗ. Việc sử dụng with cũng ngắn hơn sử dụng khối lệnh tương đương `try-finally'`
+```py
+>>> with open('workfile') as f:
+>>> 	read_data = f.read()
+>>>f.closed
+True
+```
+- Nếu bạn không sử dụng từ khóa `with`, thì bạn nên gọi `f.close()` để đóng tệp và ngay lập tức giải phóng mọi tài nguyên hệ thống sử dụng bởi nó. Nếu bạn không đóng tệp một cách rõ ràng thì trình dọn rác của Python sẽ phá hủy đối tượng và đóng tệp đang mở cho bạn, nhưng tệp có thể vẫn mở trong một thời gian.
+- Sau khi một tập tin được đóng bằng cách sử dụng `with` hoặc gọi hàm `f.close()`, thì việc sử dụng tập tin tại thời điểm đó sẽ thất bại.
+```py
+>>> f.close()
+>>> f.read()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ValueError: I/O operation on closed file.
+```
+- Để đọc được nội dung của một tập tin, ta gọi `f.read(size)`, số liệu được trả về như là một chuỗi ( trong chế độ văn bản hoặc đố tượng byte (ở chế độ nhị phân)). `size` là dối số tùy chọn, khi `size` không được thiết lập hoặc thiếp lập với giá trị `False, None` thì toàn bộ nội dung của tệp sẽ được đọc và trả về, nếu đã kết thúc tệp, `f.read()` sẽ trả về một chuỗi rỗng `('')`
+```py
+>>> f.read()
+'This is the entire file.\n'
+>>> f.read()
+''
+```
+- Hàm `f.readline()` đọc một dòng từ tệp, một kí tự dòng mới `(\n)` được để ở cuối chuỗi và chỉ bị bỏ qua trên dòng cuối cùng của tệp nếu tệp không kết thúc bằng một dòng mới, nếu `f.readline()` trả về một chuỗi rỗng thì có nghĩa phần cuối của tệp đã được đọc, lí do là mỗi dòng trống được biểu diễn bằng `\n`, và tệp chỉ chứa duy nhất một dòng mới.
+```py
+>>> f.readline()
+'This is the first line of the file.\n'
+>>> f.readline()
+'Second line of the file\n'
+>>> f.readline()
+''
+```
+- Để đọc được các dòng từ tệp, bạn có thể lặp lại đối tượng tệp
+```py
+>>> for line in f:
+...     print(line, end='')
+...
+This is the first line of the file.
+Second line of the file
+```
+- nếu bạn muốn đọc tất cả các dòng của một tập tin trong danh sách, bạn cũng có thể dử dụng `list(f)` hoặc `f.readlines()`.
+- `f.write(string)` ghi nội dung của chuỗi vào tệp, và trả về số kí tự được viết.
+```py
+>>> f.write('This is a test\n')
+15
+```
+- Các đối tượng khác cần được chuyển đổi thành chuỗi (trong chế dộ văn bản) hoặc thành đối tượng byte ( ở chế độ nhị phân) trước khi ghi chúng vào tệp.
+```py
+>>> value = ('the answer', 42)
+>>> s = str(value)  # chuyển đổi kiểu tuple thành tring
+>>> f.write(s)
+18
+```
+- `f.tell()` trả về một số nguyên cho vị trí hiện tại của đối tượng trong tệp, được tính bằng số byte từ đầu tệp khi ở chế độ nhị phân và số mờ khi ở chế độ văn bản.
+- Để thay đổi vị trí của đối tượng tệp , hãy sử dụng ` f.seek(offset, from_what)`. Vị trí được tính từ việc thêm `offset` vào điểm tham chiếu, điểm tham số được chọn bởi đối số `from_what`. Giá trị `0` của `from_what` được tính từ điểm bắt đầu của file, giá trị `1` sử dụng vị trí con trỏ tệp hiện tại, giá trị 2 được tính ở cuối tập tin như một điểm tham chiếu. `from_what` có thể được bỏ qua và mặc định là 0, sử dụng phần đầu của tệp làm điểm tham chiếu.
+```py
+>>> f = open('workfile', 'rb+')
+>>> f.write(b'0123456789abcdef')
+16
+>>> f.seek(5)      # Đi tới byte thứ 6 của file
+5
+>>> f.read(1)
+b'5'
+>>> f.seek(-3, 2)  # Đi tới byte thứ 3 của file tính từ điểm kết thúc
+13
+>>> f.read(1)
+b'd'
+```
+- Ta có thể lưu dữ liệu có cấu trúc với `json` bạn có thể tham khảo các tài liệu khác.

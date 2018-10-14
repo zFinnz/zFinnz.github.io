@@ -349,7 +349,7 @@ A 15
 | STT | Hàm | Miêu tả|
 |-----|-----|--------|
 | 1 | tuple1,tuple2 | So sánh 2 tuple với nhau|
-| 2 | len(tuple) | Trả về độ dài của tuple |
+| 2 | len(tuple)    | Trả về độ dài của tuple |
 | 3 | max(tuple) | Trả về phần tử có giá trị lớn nhất trong tuple |
 | 4 | min(tuple) | Trả về phần tử có giá trị nhỏ nhất trong tuple |
 | 5 | tuple(seq) | Chuyển đổi tuple thành tuple |

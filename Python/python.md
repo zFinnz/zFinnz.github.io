@@ -767,3 +767,764 @@ b'5'
 b'd'
 ```
 - Ta có thể lưu dữ liệu có cấu trúc với `json` bạn có thể tham khảo các tài liệu khác.
+
+##### Lỗi và biệt lệ
+- Có ít nhất hai loại lỗi khác biệt : ` lỗi cú pháp` và ` biệt lệ`.
+- Lỗi cú pháp còn được biết đến như lỗi phân tích (parsing error).
+```py
+>>> while True print 'Hello world'
+  File "<stdin>", line 1, in ?
+    while True print 'Hello world'
+                   ^
+SyntaxError: invalid syntax
+```
+- Bộ phân tích lặp lại dòng gây lỗi và hiển thị một mũi tên con trỏ vào điểm đầu tiên lỗi được phát hiện. Lỗi nằm ở phía trước mũi tên.
+- Cho dù mỗi câu lệnh hoặc biểu thức là đúng đắn, nó vẫn có thể tạo ra lỗi khi thực thi, nhưng lỗi phát hiện trong lúc thực thi được gọi là ` biệt lệ `, bạn sẽ học cách xử lí chúng trong các chuwong trình Python, hầu hết các biệt lệ đầu được xử lí bởi chương trình và dẫn đến kết quả là các thông điệp lỗi
+```py
+>>> 10 * (1/0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ZeroDivisionError: division by zero
+>>> 4 + spam*3
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'spam' is not defined
+>>> '2' + 2
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: Can't convert 'int' object to str implicitly'
+```
+- Dòng cuối của thông báo lỗi cho biết điều gì đã xảy ra. Ngoại lệ có nhiều loại khác nhau và loại được in như một phần của thông báo, các loại trong ví dụ trên là `ZeroDivisionError`, `NameError`, `TypeError`. Chuỗi được in dưới dạng loại ngoại lệ và tên của ngoại lệ được tích hợp đã xảy ra. Điều này đúng với tất cả ngoại lệ tích hợp sẵn trừ ngoại lệ do người dùng định nghĩa.
+- Phần còn lại của dòng cung cấp chi tiết dựa trên loại ngoại lệ và những gì gây ra nó.
+- Phần trước của thông báo lỗi cho thấy bối cảnh nơi ngoại lệ xảy ra, dưới dạng một truy xuất stack
+
+##### Xử lí biệt lệ
+- Có thể viết các chương trình xử lí các ngoại lệ được chọn, ví dụ sau yêu cầu người dùng nhập vào cho đến khi số nguyên hợp lệ được nhập vào nhưng cho phép người dùng ngắt chương trình.
+```py
+>>> while True:
+...     try:
+...         x = int(input("Please enter a number: "))
+...         break
+...     except ValueError:
+...         print("Oops!  That was no valid number.  Try again...")
+```
+- Đầu tiên, mệnh đề `try` ( các câu lệnh giữa từ khóa `try` và `except`) được thực hiện, nếu không có ngoại lệ nào xảy ra, mệnh đề `exept` bị bỏ qua và việc thực hiện câu lệnh `try` hoàn tất. Nếu một ngoại lệ xảy ra trong khi thực thi mệnh đề try, thì phần còn lại của mệnh đề sẽ bị bỏ qua. Sau đó, nếu kiểu của biệt lệ khớp với tên của biệt lệ được đặt theo từ khóa `exept` thì mệnh đề except được thực hiện và sau đó thực hiện tiếp tục sau câu lệnh try. Còn nếu không khớp, nó được chuyển cho câu lệnh `try` ngoài, nếu không có trình xử lí nào tìm thấy, nó là `unhandled exception` và việc thực hiện dừng lại với một thông báo hiển thị như trên
+- Một câu lệnh `try` có thể có nhiều hơn một mệnh đề ngoại trừ, để chỉ định trình xử lí cho các ngoại lệ khác nhau, tối đa một xử lí sẽ được thực hiện. Trình xử lí chỉ xử lí các ngoại lệ xảy ra trong các mệnh đề try tương ứng, một mệnh đề `exept` có thể đặt tên cho nhiều biệt lệ như một bộ dữ liệu được tạo bởi dấu ngoặc đơn. 
+```py
+... except (RuntimeError, TypeError, NameError):
+...     pass
+```
+- Một lớp trong một mệnh đề `exept` tương thích với một ngoại lệ nếu nó cùng một lớp hoặc một cơ sở.
+```py
+class B(Exception):
+    pass
+
+class C(B):
+    pass
+
+class D(C):
+    pass
+
+for cls in [B, C, D]:
+    try:
+        raise cls()
+    except D:
+        print("D")
+    except C:
+        print("C")
+    except B:
+        print("B")
+```
+**Lưu ý:** Nếu các mệnh đề ngoại trừ đảo ngược, nó sẽ dduwwojc in `B, B, B` vì mệnh đề biệt lệ đầu tiên khớp với `exept B`.
+- Vế except cuối cùng có thể bỏ qua tên biệt lệ, có tác dụng như là một thay thế (wildcard). Phải hết sức cẩn trọng khi dùng nó, vì nó có thể dễ dàng che đi lỗi lập trình thật! Nó cũng có thể được dùng để in thông báo lỗi và sau đó nâng biệt lệ lại (re-raise exception) (nhằm cho phép nơi gọi xử lý biệt lệ)
+```py
+import sys
+
+try:
+    f = open('myfile.txt')
+    s = f.readline()
+    i = int(s.strip())
+except OSError as err:
+    print("OS error: {0}".format(err))
+except ValueError:
+    print("Could not convert data to an integer.")
+except:
+    print("Unexpected error:", sys.exc_info()[0])
+    raise
+```
+- `try ... except` (câu lệnh) có một vế elsekhông bắt buộc, mà khi có mặt sẽ phải đi sau tất cả các vế except. Nó dùng cho mã sẽ được thực thi nếu vế try không nâng biệt lệ nào
+```py
+for arg in sys.argv[1:]:
+    try:
+        f = open(arg, 'r')
+    except OSError:
+        print('cannot open', arg)
+    else:
+        print(arg, 'has', len(f.readlines()), 'lines')
+        f.close()
+```
+- Việc dùng vế else tốt hơn là thêm mã vào vế try vì nó tránh việc vô tình bắt một biệt lệ không được nâng từ mã được bảo vệ trong câu lệnh try ... except .
+
+- Khi một biệt lệ xảy ra, nó có thể có một giá trị gắn liền, còn được biết đến như là thông sốcủa biệt lệ. Sự có mặt và kiểu của thông số phụ thuộc vào kiểu biệt lệ.
+
+- Vế except có thể chỉ định một biến sau một (hoặc một bộ) tên biệt lệ. Biến đó được gán với một trường hợp biệt lệ (exception instance) với các thông số chứa trong instance.args. Để thuận tiện, trường hợp biệt lệ định nghĩa __getitem__ và __str__ để cho các thông số có thể được truy xuất và in ra trực tiếp mà không phải tham chiếu .args.
+
+- Nhưng việc dùng .args đã không được khuyến khích. Thay vào đó, cách dùng tốt nhất là truyền một thông số đơn lẻ vào một biệt lệ (có thể là một bộ nếu có nhiều thông số) và gán nó vào thuộc tính message . Ta cũng có thể tạo một biệt lệ trước và thêm các thuộc tính vào nó trước khi nâng
+```py
+>>> try:
+...     raise Exception('spam', 'eggs')
+... except Exception as inst:
+...     print(type(inst))    # the exception instance
+...     print(inst.args)     # arguments stored in .args
+...     print(inst)          # __str__ allows args to be printed directly,
+...                          # but may be overridden in exception subclasses
+...     x, y = inst.args     # unpack args
+...     print('x =', x)
+...     print('y =', y)
+...
+class 'Exception'
+('spam', 'eggs')
+('spam', 'eggs')
+x = spam
+y = eggs
+```
+- Nếu biệt lệ có một thông số, nó sẽ được in ra như là phần cuối ('chi tiết') của thông điệp của những biệt lệ không được xử lý.
+- Các phần xử lý biệt lệ không chỉ xử lý các biệt lệ xảy ra ngay trong vế try, mà còn xử lý cả biệt trong những hàm được gọi (trực tiếp hoặc gián tiếp) trong vế try
+```py
+>>> def this_fails():
+...     x = 1/0
+...
+>>> try:
+...     this_fails()
+... except ZeroDivisionError as err:
+...     print('Handling run-time error:', err)
+...
+Handling run-time error: division by zero
+```
+
+##### Nâng biệt lệ
+- raise (câu lệnh) cho phép nhà lập trình ép xảy ra một biệt lệ được chỉ định
+```py
+>>> raise NameError('HiThere')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: HiThere
+```
+- Thông số đầu tiên cho raise chỉ định biệt lệ sẽ được nâng. Thông số (tùy chọn) thứ hai chỉ định thông số của biệt lệ. Hoặc là, các dòng trên có thể được viết raise NameError('HiThere'). Cả hai dạng đều đúng, nhưng người ta có vẻ chuộng dạng thứ hai hơn.
+- Nếu bạn cần xác định xem một biệt lệ có được nâng chưa nhưng không định xử lý nó, dạng đơn giản hơn của câu lệnh raise cho phép bạn nâng lại (re-raise) biệt lệ
+```py
+>>> try:
+...     raise NameError('HiThere')
+... except NameError:
+...     print('An exception flew by!')
+...     raise
+...
+An exception flew by!
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+NameError: HiThere
+```
+
+##### Các biệt lệ do người dùng định nghĩa
+- Các chương trình có thể đặt tên biệt lệ riêng bằng cách tạo một lớp biệt lệ mới. Các biệt lệ thường nên kế thừa từ lớp Exception , trực tiếp hoặc gián tiếp.
+- Các lớp biệt lệ có thể được định nghĩa để làm bất kỳ việc gì như các lớp khác, nhưng chúng thường là đơn giản và chỉ cung cấp một số thuộc tính để chứa thông tin về lỗi cho các phần xử lý biệt lệ. Khi tạo một mô-đun mà có thể nâng vài lỗi khác biệt, cách thông thường là tạo một lớp cơ sở cho các biệt lệ được định nghĩa bởi mô-đun đó, và kế thừa từ đó để tạo những lớp biệt lệ cụ thể cho những trường hợp lỗi khác nhau.
+- Đa số biệt lệ được định nghĩa với tên tận cùng bằng 'Error', tương tự như cách đặt tên của các biệt lệ chuẩn.
+```py
+class Error(Exception):
+    """Lớp cở sở cho các biệt lệ trong module này."""
+    pass
+
+class InputError(Error):
+    """Ngoại lệ được nêu ra cho các lỗi trong đầu vào.
+
+    Thuộc tính:
+        expression -- biểu thức đầu vào trong đó xảy ra lỗi
+        message -- giải thích về lỗi
+    """
+
+    def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
+
+class TransitionError(Error):
+    """Nâng biệt lệ khi một hoạt động cố gắng chuyển đổi trạng thái không được phép.
+
+    Thuộc tính:
+        previous -- trạng thái lúc bắt đầu chuyển đổi
+        next -- cố gắng chuyển trạng thsái mới
+        message -- giải thích lý do tại sao chuyển đổi cụ thể không được phép
+    """
+
+    def __init__(self, previous, next, message):
+        self.previous = previous
+        self.next = next
+        self.message = message
+```
+
+##### Định nghĩa cách xử lí
+- try (câu lệnh) có một vế không bắt buộc khác với mục đích định nghĩa những tác vụ dọn dẹp (clean-up action) mà sẽ được thực hiện trong mọi trường hợp
+```py
+>>> try:
+...     raise KeyboardInterrupt
+... finally:
+...     print('Goodbye, world!')
+...
+Goodbye, world!
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+```
+- 1 vế `finally` luôn được thực thi trước khi rời khỏi câu lệnh try , cho dù có xảy ra biệt lệ hay không. Khi một biệt lệ đã xảy ra trong vế `try` và không được xử lý bởi vế` except` (hoặc nó đã xảy ra trong một vế except hay else ), nó sẽ được nâng lại sau khi vế` finally` đã được thực thi. Vế `finally` cũng được thực thi 'trên đường ra' khi bất kỳ vế nào của câu lệnh try được bỏ lại thông qua câu lệnh `break`, `continue` hay `return`. 
+```py
+>>> def divide(x, y):
+...     try:
+...         result = x / y
+...     except ZeroDivisionError:
+...         print("division by zero!")
+...     else:
+...         print("result is", result)
+...     finally:
+...         print("executing finally clause")
+...
+>>> divide(2, 1)
+result is 2.0
+executing finally clause
+>>> divide(2, 0)
+division by zero!
+executing finally clause
+>>> divide("2", "1")
+executing finally clause
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 3, in divide
+TypeError: unsupported operand type(s) for /: 'str' and 'str'
+```
+- Như bạn có thể thấy, vế finally được thực thi trong mọi trường hợp. TypeError được nâng vì chia hai chuỗi không được xử lý bởi vế except và vì thế nên được nâng lại sau khi vế finally đã được thực thi.
+- Trong các ứng dụng thực thế, vế finally được dùng để trả lại những tài nguyên ngoài (như tập tin, hoặc kết nối mạng), cho dù việc sử dụng tài nguyên có thành công hay không.
+
+#####  Định nghĩa xử lý có sẵn
+- Một số đối tượng định nghĩa các tác vụ dọn dẹp chuẩn để thực thi khi một đối tượng không còn được cần đến, cho dù việc xử dụng đối tượng là thành công hay thất bại. Xem qua ví dụ sau, nó thử mở một tập tin và viết nội dung của nó ra màn hình.
+```py
+for line in open("myfile.txt"):
+    print(line, end="")
+```
+- Vấn đề với đoạn mã trên là nó để tập tin ngỏ trong một thời gian không xác định sau khi đoạn mã đã kết thúc. Đây không phải là vấn đề gì trong các đoạn kịch bản đơn giản, nhưng có thể là một vấn đề phức tạp đối với các ứng dụng lớn hơn. Câu lệnh with cho phép các đối tượng như tập tin được dùng theo một cách đảm bảo chúng sẽ được dọn dẹp đúng lúc và đúng đắn.
+```py
+with open("myfile.txt") as f:
+    for line in f:
+        print(line, end="")
+```
+- Sau khi câu lệnh được thực thi, tập tin f luôn được đóng lại, cho dù gặp phải vấn đề trong khi xử lý các dòng. Các đối tượng khác mà cung cấp những tác vụ dọn dẹp định nghĩa sẵn sẽ cho biết về điểm này trong tài liệu của chúng.
+
+----
+
+#### Lớp
+
+##### Thuật ngữ
+- Các đối tượng có tính cá thể (individuality), và nhiều tên (trong nhiều phạm vi, scope) có thể được gắn vào cùng một đối tượng. Trong các ngôn ngữ khác được gọi là tên lóng (alias). Nó thường không được nhận ra khi dùng Python lần đầu, và có thể được bỏ qua khi làm việc với các kiểu bất biến cơ bản (số, chuỗi, bộ). Tuy nhiên, tên lóng có một ảnh hưởng đối với ý nghĩa của mã Python có sử dụng các đối tượng khả biến như danh sách, từ điển, và đa số các kiểu thể hiện các vật ngoài chương trình (tập tin, cửa sổ, v.v...). Nó thường được dùng vì tên lóng có tác dụng như là con trỏ theo một vài khía cạnh nào đó. Ví dụ, truyền một đối tượng vào một hàm rẻ vì chỉ có con trỏ là được truyền, và nếu một hàm thay đổi một đối tượng được truyền vào, thì nơi gọi sẽ thấy các thay đổi đó -- thay vì cần hai kiểu truyền thông số như trong Pascal.
+
+##### Phạm vi trong Python và vùng tên
+
+- Trước khi giới thiệu lớp, chúng ta sẽ cần hiểu phạm vi (scope) và vùng tên (namespace) hoạt động như thế nào vì các định nghĩa lớp sẽ sử dụng chúng. Kiến thức về vấn đề này cũng rất hữu dụng với những nhà lập trình Python chuyên nghiệp.
+- A namespace (vùng tên) (vùng tên) là ánh xạ từ tên vào đối tượng. Đa số các vùng tên được cài đặt bằng từ điển Python, nhưng điều đó thường là không quan trọng (trừ tốc độ), và có thể sẽ thay đổi trong tương lai. Các ví dụ vùng tên như: tập hợp các tên có sẵn (các hàm như abs(), và các tên biệt lệ có sẵn); các tên toàn cụ trong một mô-đun; các tên nội bộ trong một phép gọi hàm. Theo nghĩa đó tập hợp các thuộc tính của một đối tượng cũng là một vùng tên. Điều quan trọng cần biết về vùng tên là tuyệt đối không có quan hệ gì giữa các vùng tên khác nhau; ví dụ hai mô-đun khác nhau có thể cùng định nghĩa hàm 'maximize' mà không sợ lẫn lộn -- người dùng mô-đun phải thêm tiền tố tên mô-đun trước khi gọi hàm.
+- Cũng xin nói thêm là từ thuộc tính được dùng để chỉ mọi tên theo sau dấu chấm -- ví dụ, trong biểu thức z.real, real là một thuộc tính của đối tượng z. Nói đúng ra, tham chiếu tới tên trong một mô-đun là các tham chiếu tới thuộc tính: trong biểu thức modname.funcname, modname là một đối tượng mô-đun và funcname là một thuộc tính của nó. Trong trường hợp này, việc ánh xạ giữa các thuộc tính của mô-đun và các tên toàn cục được định nghĩa trong mô-đun thật ra rất đơn giản: chúng dùng chung một vùng tên! 9.1
+- Thuộc tính có thể là chỉ đọc, hoặc đọc ghi. Trong trường hợp sau, phép gán vào thuộc tính có thể được thực hiện. Các thuộc tính mô-đun là đọc ghi: bạn có thể viết "modname.the_answer = 42". Các thuộc tính đọc ghi cũng có thể được xóa đi với câu lệnh del . Ví dụ, "del modname.the_answer" sẽ xóa thuộc tính the_answer từ đối tượng tên modname.
+- Các vùng tên được tạo ra vào những lúc khác nhau và có thời gian sống khác nhau. Vùng tên chứa các tên có sẵn được tạo ra khi trình thông dịch Python bắt đầu, và không bao giờ bị xóa đi. Vùng tên toàn cục của một mô-đun được tạo ra khi định nghĩa mô-đun được đọc; bình thường, vùng tên mô-đun cũng tồn tại cho tới khi trình thông dịch thoát ra. Các câu lệnh được thực thi bởi lời gọi ở lớp cao nhất của trình thông dịch, vì đọc từ một kịch bản hoặc qua tương tác, được coi như một phần của mô-đun gọi là __main__, cho nên chúng cũng có vùng tên riêng. (Các tên có sẵn thật ra cũng tồn tại trong một mô-đun; được gọi là __builtin__.)
+- Vùng tên nội bộ của một hàm được tạo ra khi hàm được gọi, và được xóa đi khi hàm trả về, hoặc nâng một biệt lệ không được xử lý trong hàm. Dĩ nhiên, các lời gọi hàm đệ quy có vùng tên riêng của chúng.
+- Một phạm vi là một vùng văn bản của một chương trình Python mà một vùng tên có thể được truy cập trực tiếp. Có thể 'truy cập trực tiếp' có nghĩa là một tham chiếu không đầy đủ (unqualifed reference) tới một tên sẽ thử tìm tên đó trong vùng tên.
+- Mặc dù phạm vi được xác định tĩnh, chúng được dùng một cách động. Vào bất kỳ một lúc nào, có ít nhất ba phạm vi lồng nhau mà vùng tên của chúng có thể được truy cập trực tiếp: phạm vi bên trong cùng, được tìm trước, chứa các tên nội bộ; các vùng tên của các hàm chứa nó, được tìm bắt đầu từ phạm vi chứa nó gần nhất (nearest enclosing scope); phạm vi giữa (middle scope), được tìm kế, chứa các tên toàn cục của mô-đun; và phạm vi ngoài cùng (được tìm sau cùng) là vùng tên chứa các tên có sẵn.
+- Nếu một tên được khai báo là toàn cục, thì mọi tham chiếu hoặc phép gán sẽ đi thẳng vào phạm vi giữa chứa các tên toàn cục của mô-đun. Nếu không, mọi biến được tìm thấy ngoài phạm vi trong cùng chỉ có thể được đọc (nếu thử khi vào các biến đó sẽ tạo một biến cục bộ mới trong phạm vi trong vùng, và không ảnh hưởng tới biến cùng tên ở phạm vi ngoài).
+- Thông thường, phạm vi nội bộ tham chiếu các tên nội bộ của hàm hiện tại (dựa vào văn bản). Bên ngoài hàm, phạm vi nội bộ tham chiếu cùng một vùng tên như phạm vi toàn cục: vùng tên của mô-đun. Các định nghĩa lớp đặt thêm một vùng tên khác trong phạm vi nội bộ.
+- Điểm quan trọng cần ghi nhớ là phạm vi được xác định theo văn bản: phạm vi toàn cục của một hàm được định nghĩa trong một mô-đun là vùng tên của mô-đun đó, cho dù mô-đun đó được gọi từ đâu, hoặc được đặt tên lóng nào. Mặt khác, việc tìm tên được thực hiện lúc chạy -- tuy nhiên, định nghĩa ngôn ngữ đang phát triển theo hướng xác định tên vào 'lúc dịch', cho nên đừng dựa vào việc tìm tên động! (Thực ra thì các biến nội bộ đã được xác định tĩnh.)
+- Một điểm ngộ của Python là các phép gán luôn gán vào phạm vi trong cùng. Phép gán không chép dữ liệu -- chú chỉ buộc các tên và các đối tượng. Xóa cũng vậy: câu lệnh "del x" bỏ ràng buộc x khỏi vùng tên được tham chiếu tới bởi phạm vi nội bộ. Thực tế là mọi tác vụ có thêm các tên mới đều dùng phạm vi nội bộ: điển hình là các câu lệnh nhập và các định nghĩa hàm buộc tên mô-đun hoặc tên hàm vào phạm vi nội bộ. (Lệnh global có thể được dùng để cho biết một biến cụ thể là ở phạm vi toàn cục.)
+
+##### Giới thiệu về lớp
+- Kiểu đơn giản nhất của việc định nghĩa lớp nhìn giống 
+```py
+class ClassName:
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+- Định nghĩa lớp, cũng như định nghĩa hàm (câu lệnh def ) phải được thực thi trước khi chúng có hiệu lực. (Bạn có thể đặt một định nghĩa hàm trong một nhánh của lệnh if , hoặc trong một hàm.)
+- Trong thực tế, các câu lệnh trong một định nghĩa lớp thường là định nghĩa hàm, nhưng các câu lệnh khác cũng được cho phép, và đôi khi rất hữu dụng. Các định nghĩa hàm trong một lớp thường có một dạng danh sách thông số lạ, vì phải tuân theo cách gọi phương thức.
+- Khi gặp phải một định nghĩa lớp, một vùng tên mới được tạo ra, và được dùng như là phạm vi nội bộ -- do đó, mọi phép gán vào các biến nội bộ đi vào vùng tên này. Đặc biệt, các định nghĩa hàm buộc tên của hàm mới ở đây.
+- Khi rời khỏi một định nghĩa lớp một cách bình thường, một đối tượng lớp được tạo ra. Đây cơ bản là một bộ gói (wrapper) của nội dung của vùng tên tạo ra bởi định nghĩa lớp. Phạm vi nội bộ ban đầu (trước khi vào định nghĩa lớp) được thiết lập lại, và đối tượng lớp được buộc vào đây qua tên lớp đã chỉ định ở định nghĩa lớp, (ClassName trong ví dụ này).
+
+##### Đối tượng lớp
+- Các đối tượng lớp hỗ trợ hai loại tác vụ: tham chiếu thuộc tính và tạo trường hợp (instantiation).
+- Tham chiếu thuộc tính dùng cú pháp chuẩn được dùng cho mọi tham chiếu thuộc tính trong Python: obj.name. Các tên thuộc tính hợp lệ gồm mọi tên trong vùng tên của lớp khi đối tượng lớp được tạo ra. Do đó, nếu định nghĩa lớp có dạng như sau
+```py
+class MyClass:
+    """A simple example class"""
+    i = 12345
+
+    def f(self):
+        return 'hello world'
+```
+- MyClass.i và MyClass.f là những tham chiếu thuộc tính hợp lệ, trả về một số nguyên và một đối tượng hàm, theo thứ tự đó. Các thuộc tính lớp cũng có thể gán vào, cho nên bạn có thể thay đổi giá trị của MyClass.i bằng phép gán. __doc__ cũng là một thuộc tính hợp lệ, trả về chuỗi tài liệu của lớp: "A simple example class".
+- Class instantiation (tạo trường hợp lớp) dùng cùng cách viết như gọi hàm. Hãy tưởng tượng một đối tượng lớp là một hàm không thông số trả về một trường hợp của lớp.
+```py
+x = MyClass()
+```
+tạo một trường hợp mới của lớp và gán đối tượng này vào biến nội bộ x.
+- Tác vụ tạo trường hợp ('gọi' một đối tượng lớp) tạo một đối tượng rỗng. Nhiều lớp thích tạo đối tượng với các trường hợp được khởi tạo ở một trạng thái đầu nào đó. Do đó một lớp có thể định nghĩa một phương thức đặc biệt tên __init__(), như sau:
+```py
+def __init__(self):
+    self.data = []
+```
+- Khi một lớp định nghĩa một phương thức __init__() , việc tạo trường hợp lớp sẽ tự động gọi __init__() ở trường hợp lớp mới vừa được tạo. Trong ví dụ nạy, một trường hợp đã khởi tạo mới có thể được tại ra từ
+```py
+x = MyClass()
+```
+- Dĩ nhiên, __init__() (phương thức) có thể nhận thêm thông số. Trong trường hợp đó, các thông số đưa vào phép tạo trường hợp lớp sẽ được truyền vào __init__(). Ví dụ
+```py
+>>> class Complex:
+...     def __init__(self, realpart, imagpart):
+...         self.r = realpart
+...         self.i = imagpart
+...
+>>> x = Complex(3.0, -4.5)
+>>> x.r, x.i
+(3.0, -4.5)
+```
+
+##### Đối tượng Instance
+
+- Chúng ta có thể làm được gì với những đối tượng trường hợp? Tác vụ duy nhất mà các đối tượng trường hợp hiểu được là tham chiếu thuộc tính. Có hai loại tên thuộc tính hợp lệ, thuộc tính dữ liệu và phương thức.
+- data attributes (thuộc tính dữ liệu lớp) tương ứng với 'biến trường hợp' trong Smalltalk, và ''thành viên dữ liệu'' trong C++. Thuộc tính dữ liệu không cần được khai báo; như các biến nội bộ, chúng tự động tồn tại khi được gán vào. Ví dụ, nếu x là một trường hợp của MyClass được tạo ra ở trên, đoạn mã sau in ra giá trị 16, mà không chừa lại dấu vết
+```py
+x.counter = 1
+while x.counter < 10:
+    x.counter = x.counter * 2
+print(x.counter)
+del x.counter
+```
+- Loại tham chiếu thuộc tính trường hợp khác là một method (phương thức). Một phương thức là một hàm 'của' một đối tượng. (Trong Python, từ phương thức không chỉ riêng cho trường hợp lớp: các kiểu đối tượng khác cũng có thể có phương thức. Ví dụ, đối tượng danh sách có phương thức tên append, insert, remove, sort, v.v... Tuy nhiên, trong phần sau chúng ta sẽ chỉ dùng từ phương thức dể chỉ các phương thức của đối tượng trường hợp lớp, trừ khi được chỉ định khác đi.)
+- Các tên phương thức hợp lệ của một đối tượng trường hợp phụ thuộc vào lớp của nó. Theo định nghĩa, mọi thuộc tính của một lớp mà là những đối tượng hàm định nghĩa các phương thức tương ứng của các trường hợp của lớp đó. Trong ví dụ của chúng ta, x.f là một tham chiếu phương thức hợp lệ, vì MyClass.f là một hàm, nhưng x.i không phải, bởi vì MyClass.i không phải. Nhưng x.f không phải là một thứ như MyClass.f -- nó là một method object (đối tượng phương thức), không phải là một đối tượng hàm.
+
+##### Đối tượng phương thức
+- Thông thường, một phương thức được gọi ngay sau khi nó bị buộc:
+```py
+x.f()
+```
+- Trong MyClass , nó sẽ trả về chuỗi 'hello world'. Tuy nhiên, cũng không nhất thiết phải gọi một phương thức ngay lập tức: x.f là một đối tượng phương thức, và có thể được cất đi và gọi vào một thời điểm khác. Ví dụ:
+```py
+xf = x.f
+while True:
+    print xf()
+```
+sẽ tiếp tục in "hello world" mãi mãi.
+- Chuyện gì thật sự xảy ra khi một phương thức được gọi? Bạn có thể đã nhận ra rằng x.f() được gọi với không thông số, mặc dù định nghĩa hàm của f chỉ định một thông số. Chuyện gì xảy ra với thông số đó? Python chắc chắn nâng một biệt lệ khi một hàm cần một thông số được gọi suông -- cho dù thông số đó có được dùng hay không đi nữa...
+- Thật ra, bạn cũng có thể đã đoán ra được câu trả lời: điểm đặc biệt của phương thức là đối tượng đó được truyền vào ở thông số đầu tiên của hàm. Trong ví dụ của chúng ta, lời gọi x.f() hoàn toàn tương đương với MyClass.f(x). Nói chung, gọi một hàm với một danh sách n thông số thì tương đương với việc gọi hàm tương ứng với một danh sách thông số được tạo ra bằng cách chèn đối tượng của phương thức vào trước thông số thứ nhất.
+- (Hiểu đơn giản là obj.name(arg1, arg2) tương đương với Class.name(obj, arg1, arg2) trong đó obj là đối tượng trường hợp của lớp Class, name là một thuộc tính hợp lệ không phải dữ liệu, tức là đối tượng hàm của lớp đó.)
+
+##### Một vài lời bình
+- Thuộc tính dữ liệu sẽ che thuộc tính phương thức cùng tên; để tránh vô tình trùng lặp tên, mà có thể dẫn đến các lỗi rất khó tìm ra trong các chương trình lớn, bạn nên có một quy định đặt tên nào đó để giảm thiểu tỉ lệ trùng lặp. Các quy định khả thi có thể gồm viết hoa tên phương thức, đặt tiền tố vào các tên thuộc tính dữ liệu (ví dụ như dấu gạch dưới _), hoặc dùng động từ cho phương thức và danh từ cho các thuộc tính dữ liệu.
+- Các thuộc tính dữ liệu có thể được tham chiếu tới bởi cả phương thức lẫn người dùng đối tượng đó. Nói một cách khác, lớp không thể được dùng để cài đặt các kiểu dữ liệu trừu tượng tuyệt đối. Trong thực tế, không có gì trong Python có thể ép việc che dấu dữ liệu -- tất cả đều dựa trên nguyên tắc. (Mặt khác, cài đặt Python, được viết bằng C, có thể dấu các chi tiết cài đặt và điểu khiển truy cập vào một đối tượng nếu cần; điều này có thể được dùng trong các bộ mở rộng Python viết bằng C.)
+- Người dùng nên dùng các thuộc tính dữ liệu một cách cẩn thận -- người dùng có thể phá hỏng những bất biến (invariant) được giữ bởi các phương thức nếu cố ý sửa các thuộc tính dữ liệu. Lưu ý rằng người dùng có thể thêm các thuộc tính dữ liệu riêng của hộ vào đối tượng trường hợp mà không làm ảnh hưởng tính hợp lệ của các phương thức, miễn là không có trùng lặp tên -- xin nhắc lại, một quy tắc đặt tên có thể giảm bớt sự đau đầu ở đây.
+- Không có cách ngắn gọn để tham chiếu tới thuộc tính dữ liệu (hoặc các phương thức khác!) từ trong phương thức. Điều này thật ra giúp chúng ta dễ đọc mã vì không có sự lẫn lộn giữa biến nội bộ và biến trường hợp.
+- Thông số đầu tiên của phương thức thường được gọi là self. Đây cũng chỉ là một quy ước: tên self hoàn toàn không có ý nghĩa đặc biệt trong Python. (Tuy nhiên xin nhớ nếu bạn không theo quy ước thì mã của bạn sẽ có thể trở nên khó đọc đối với người khác, và có thể là trình duyệt lớp được viết dựa trên những quy ước như vậy.)
+- Bất kỳ đối tượng hàm nào mà là thuộc tính của một lớp sẽ định nghĩa một phương thức cho các trường hợp của lớp đó. Không nhất thiết định nghĩa hàm phải nằm trong định nghĩa lớp trên văn bản: gán một đối tượng hàm vào một biến nội bộ trong lớp cũng được. Ví dụ:
+```py
+# Function defined outside the class
+def f1(self, x, y):
+    return min(x, x+y)
+
+class C:
+    f = f1
+    def g(self):
+        return 'hello world'
+    h = g
+```
+- Bây giờ f, g và h đều là thuộc tính của lớp C mà tham chiếu tới các đối tượng hàm, và do đó chúng đều là phương thức của các trường hợp của C -- h hoàn toàn tương đương với g. Chú ý rằng kiểu viết này thường chỉ làm người đọc càng thêm khó hiểu mà thôi.
+- Phương thức có thể gọi phương thức khác thông qua thuộc tính phương thức của thông số self :
+```py
+class Bag:
+    def __init__(self):
+        self.data = []
+    def add(self, x):
+        self.data.append(x)
+    def addtwice(self, x):
+        self.add(x)
+        self.add(x)
+```
+- Phương thức có thể tham chiếu tới các tên toàn cục theo cùng một cách như các hàm thông thường. Phạm vi toàn cục của một phương thức là mô-đun chứa định nghĩa lớp. (Phạm vi toàn cục không bao giờ là lớp!) Trong khi bạn ít gặp việc sử dụng dữ liệu toàn cục trong một phương thức, có những cách dùng hoàn toàn chính đáng: ví dụ như hàm và mô-đun được nhập vào phạm vi toàn cục có thể được sử dụng bởi phương thức, cũng như hàm và lớp được định nghĩa trong đó. Thông thường, lớp chứa các phương thức này được định nghĩa ngay trong phạm vi toàn cục, và trong phần kế đây chúng ta sẽ thấy tại sao một phương thức muốn tham chiếu tới chính lớp của nó!
+
+##### Kế thừa
+Dĩ nhiên, một tính năng ngôn ngữ sẽ không đáng được gọi là 'lớp' nếu nó không hỗ trợ kế thừa. Cú pháp của một định nghĩa lớp con như sau:
+```py
+class DerivedClassName(BaseClassName):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+- Tên BaseClassName phải đã được định nghĩa trong một phạm vi chứa định nghĩa lớp con. Thay vì tên lớp cơ sở, các biểu thức khác cũng được cho phép. Điều này rất hữu ích, ví dụ, khi mà lớp cơ sở được định nghĩa trong một mô-đun khác:
+```py
+class DerivedClassName(modname.BaseClassName):
+```
+- Việc thực thi định nghĩa lớp con tiến hành như là lớp cơ sở. Khi một đối tượng lớp được tạo ra, lớp cơ sở sẽ được nhớ. Nó được dùng trong việc giải các tham chiếu thuộc tính: nếu một thuộc tính không được tìm thấy ở trong lớp, việc tìm kiếm sẽ tiếp tục ở lớp cơ sở. Luật này sẽ được lặp lại nếu lớp cơ sở kế thừa từ một lớp khác.
+- Không có gì đặc biệt trong việc tạo trường hợp của các lớp con: DerivedClassName() tạo một trường hợp của lớp. Các tham chiếu hàm được giải như sau: thuộc tính lớp tương ứng sẽ được tìm, đi xuống chuỗi các lớp cơ sở nếu cần, và tham chiếu phương thức là hợp lệ nếu tìm thấy một đối tượng hàm.
+- Lớp con có thể định nghĩa lại các phương thức của lớp cơ sở. Bởi vì phương thức không có quyền gì đặc biệt khi gọi một phương thức của cùng một đối tượng, một phương thức của lớp cơ sở gọi một phương thức khác được định nghĩa trong cùng lớp cơ sở có thể là đang gọi một phương thức do lớp con đã định nghĩa lại. (Người dùng C++ có thể hiểu là mọi phương thức của Python là virtual.)
+- Một phương thức được định nghĩa lại trong lớp con có thể muốn mở rộng thay vì thay thế phương thức cùng tên của lớp cơ sở. Có một cách đơn giản để gọi phương thức của lớp sơ sở: chỉ việc gọi "BaseClassName.methodname(self, arguments)". Đôi khi điều này cũng có ích cho người dùng. (Lưu ý rằng đoạn mã chỉ hoạt động nếu lớp cơ sở được định nghĩa hoặc nhập trực tiếp vào phạm vi toàn cục.)
+Python có hai hàm dựng sẵn hoạt động với thừa kế:
+- Sử dụng isinstance()để kiểm tra kiểu của một thể hiện: sẽ chỉ khi có hoặc một số lớp bắt nguồn từ đó .isinstance(obj, int) sẽ là 'True'chỉ khi nếu obj.__class__ là `int` hoặc một số lớp có nguồn gốc từ `int`
+- Sử dụng issubclass()để kiểm tra lớp thừa kế: là kể từ khi là một lớp con của . Tuy nhiên, là kể từ khi không phải là một lớp con của .issubclass(bool, int) là `True` từ khi `bool` là lớp con của `int`. Tuy nhiên , `issubclass(float, int)` là `False` từ khi `float` không phải là lớp con của `int`.
+
+##### Đa kế thừa
+- Python cũng hỗ trợ một dạng đa kế thừa hạn chế. Một định nghĩa lớp với nhiều lớp cơ sở có dạng sau:
+```py
+class DerivedClassName(Base1, Base2, Base3):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+- Luật duy nhất cần để giải thích ý nghĩa là luật giải các tham chiếu thuộc tính của lớp. Nó tuân theo luật tìm theo chiều sâu, và tìm trái qua phải. Do đó, nếu một thuộc tính không được tìm ra trong DerivedClassName, nó sẽ được tìm trong Base1, rồi (đệ quy) trong các lớp cơ sở của Base1, rồi chỉ khi nó không được tìm thấy, nó sẽ được tìm trong Base2, và cứ như vậy.
+- (Đối với một số người tìm theo chiều rộng -- tìm Base2 và Base3 trước các lớp cơ sở của Base1 -- có vẻ tự nhiên hơn. Nhưng, điều này yêu cầu bạn biết một thuộc tính nào đó của Base1 được thật sự định nghĩa trong Base1 hay trong một trong các lớp cơ sở của nó trước khi bạn có thể biết được hậu quả của sự trùng lặp tên với một thuộc tính của Base2. Luật tìm theo chiều sâu không phân biệt giữa thuộc tính trực tiếp hay kế thừa của Base1.)
+- Ai cũng biết rằng việc dùng đa kế thừa bừa bãi là một cơn ác mộng cho bảo trì, đặc biệt là Python dựa vào quy ước để tránh trùng lặp tên. Một vấn đề cơ bản với đa kế thừa là một lớp con của hai lớp mà có cùng một lớp cơ sở. Mặc dù dễ hiểu chuyện gì xảy ra trong vấn đề này (trường hợp sẽ có một bản chép duy nhất của 'các biến trường hợp' của các thuộc tính dữ liệu dùng bởi lớp cơ sở chung), nó không rõ cho lắm nếu các ý nghĩa này thật sự hữu ích.
+
+##### Biến riêng
+- Có một dạng hỗ trợ nho nhỏ nho các từ định danh riêng của lớp (class-private identifier). Các từ định danh có dạng __spam (ít nhất hai dấu gạch dưới ở đầu, nhiều nhất một dấu dạch dưới ở cuối) được thay thế văn bản (textually replace) bằng _classname__spam, trong đó classname là tên lớp hiện tại với các gạch dưới ở đầu cắt bỏ. Việc xáo trộn tên (mangling) được thực hiện mà không quan tâm tới vị trí cú pháp của định danh, cho nên nó có thể được dùng để định nghĩa các trường hợp, biến, phương thức, riêng của lớp, hoặc các biến toàn cục, và ngay cả các biến của trường hợp, riêng với lớp này trên những trường hợp của lớp khác . Nếu tên bị xáo trộn dài hơn 255 ký tự thì nó sẽ bị cắt đi. Bên ngoài lớp, hoặc khi tên lớp chỉ có ký tự gạch dưới, việc xáo trộn tên sẽ không xảy ra.
+```py
+class Mapping:
+    def __init__(self, iterable):
+        self.items_list = []
+        self.__update(iterable)
+
+    def update(self, iterable):
+        for item in iterable:
+            self.items_list.append(item)
+
+    __update = update   # bản sao riêng của phương thức update () gốc
+
+class MappingSubclass(Mapping):
+
+    def update(self, keys, values):
+        # cung cấp chữ ký mới để  pdate()
+        # nhưng không phá vỡ __init__()
+        for item in zip(keys, values):
+            self.items_list.append(item)
+```
+- Xáo trộn tên nhằm cung cấp cho các lớp một cách định nghĩa dễ dàng các biến và phương thức 'riêng', mà không phải lo về các biến trường hợp được định nghĩa bởi lớp con, hoặc việc sử dụng biến trường hợp bởi mã bên ngoài lớp. Lưu ý rằng việc xáo trộn tên được thiết kế chủ yếu để tránh trùng lặp; người quyết tâm vẫn có thể truy cập hoặc thay đổi biến riêng. Và điều này cũng có thể có ích trong các trường hợp đặc biệt, như trong trình gỡ rối, và đó là một lý do tại sao lỗ hổng này vẫn chưa được vá.
+- Lưu ý rằng mã truyền vào exec, eval() hoặc execfile() không nhận tên lớp của lớp gọi là tên lớp hiện tại; điều này cũng giống như tác dụng của câu lệnh global , tác dụng của nó cũng bị giới hạn ở mã được biên dịch cùng. Cùng giới hạn này cũng được áp dụng vào getattr(), setattr() và delattr(), khi tham chiếu __dict__ trực tiếp.
+
+##### Những điều khác
+- Đôi khi nó thật là hữu ích khi có một kiểu dữ liệu giống như Pascal 'record' hoặc C 'struct', gói gọn vài mẩu dữ liệu vào chung với nhau. Một định nghĩa lớp rỗng thực hiện được việc này:
+```py
+class Employee:
+    pass
+
+john = Employee() # Tạo bản ghi nhân viên trống
+
+# Điền vào các trường của bản ghi
+john.name = 'John Doe'
+john.dept = 'computer lab'
+john.salary = 1000
+```
+- Với mã Python cần một kiểu dữ liệu trừu tượng, ta có thể thay vào đó một lớp giả lập các phương thức của kiểu dữ liệu đó. Ví dụ, nếu bạn có một hàm định dạng một vài dữ liệu trong một đối tượng tập tin, bạn có thể định nghĩa một lớp với các phương thức read() và readline() lấy dữ liệu từ một chuỗi, và truyền vào nó một thông số.
+- Các đối tượng phương trức trường hợp cũng có thuộc tính: m.im_self là một đối tượng trường hợp với phương thức m, và m.im_func là đối tượng hàm tương ứng với phương thức.
+
+##### Bộ lặp (Iterators)
+- Bây giờ có lẽ bạn đã lưu ý rằng hầu hết các đối tượng chứa (container object) có thể được lặp qua bằng câu lệnh for :
+```py
+for element in [1, 2, 3]:
+    print element
+for element in (1, 2, 3):
+    print element
+for key in {'one':1, 'two':2}:
+    print key
+for char in "123":
+    print char
+for line in open("myfile.txt"):
+    print line
+```
+- Kiểu truy xuất này rõ ràng, xúc tích, và tiện lợi. Bộ lặp (iterator) được dùng khắp nơi và hợp nhất Python. Đằng sau màn nhung, câu lệnh for gọi iter() trên đối tượng chứa. Hàm này trả về một đối tượng bộ lặp có định nghĩa phương thức next() để truy xuất và các phần tử trong bộ chứa (container). Khi không còn phần tử nào, next() nâng biệt lệ StopIteration để yêu cầu vòng lặp for kết thúc. Ví dụ sau cho thấy cách hoạt động:
+```py
+>>> s = 'abc'
+>>> it = iter(s)
+>>> it
+<iterator object at 0x00A1DB50>
+>>> it.next()
+'a'
+>>> it.next()
+'b'
+>>> it.next()
+'c'
+>>> it.next()
+
+Traceback (most recent call last):
+  File "<stdin>", line 1, in ?
+    it.next()
+StopIteration
+```
+- Chúng ta đã hiểu giao thức bộ lặp, nên chúng ta có thể thêm cách thức bộ lặp (iterator behavior) vào lớp của chúng ta một cách dễ dàng. Định nghĩa một phương thức __iter__() trả về một đối tượng với một phương thức next() . Nếu lớp có định nghĩa next(), thì __iter__() chỉ cần trả về self:
+```py
+class Reverse:
+    "Iterator for looping over a sequence backwards"
+    def __init__(self, data):
+        self.data = data
+        self.index = len(data)
+    def __iter__(self):
+        return self
+    def next(self):
+        if self.index == 0:
+            raise StopIteration
+        self.index = self.index - 1
+        return self.data[self.index]
+
+>>> for char in Reverse('spam'):
+...     print char
+...
+m
+a
+p
+s
+```
+
+##### Bộ tạo (Generator)
+- Bộ sinh (generator) là một công cụ đơn giản và mạnh mẽ để tạo các bộ lặp. Chúng được viết như những hàm thông thường nhưng dùng câu lệnh yield khi nào chúng muốn trả về dữ liệu. Mỗi lần next() được gọi, bộ sinh trở lại nơi nó đã thoát ra (nó nhớ mọi dữ liệu và câu lệnh đã được thực thi lần cuối). Một ví dụ cho thấy bộ sinh có thể được tạo ra rất dễ dàng:
+```py
+def reverse(data):
+    for index in range(len(data)-1, -1, -1):
+        yield data[index]
+	
+>>> for char in reverse('golf'):
+...     print char
+...
+f
+l
+o
+g
+```
+- Bất kỳ việc gì có thể được thực hiện với bộ sinh cũng có thể được thực hiện với các bộ lặp dựa trên lớp như đã bàn đến ở phần trước. Điều khiến bộ sinh nhỏ gọn là các phương thức __iter__() và next() được tự động tạo ra.
+- Một tính năng chính khác là các biến nội bộ và trạng thái thực thi được tự động lưu giữa các lần gọi. Điều này làm cho hàm dễ viết hơn và rõ ràng hơn là cách sử dụng biến trường hợp như self.index và self.data.
+- Thêm vào việc tự động tạo và lưu trạng thái chương trình, khi các bộ tạo kết thúc, chúng tự động nâng StopIteration. Cộng lại, các tính năng này làm cho việc tạo các bộ lặp không có gì khó hơn là viết một hàm bình thường
+
+##### Biểu thức bộ tạo (Generator Expressions)
+Một vài bộ sinh đơn giản có thể được viết một cách xúc tích như các biểu thức bằng cách dùng một cú pháp giống như gộp danh sách (list comprehension) nhưng với ngoặc tròn thay vì ngoặc vuông. Các biểu thức này được thiết kế cho những khi bộ sinh được sử dụng ngay lập tức bởi hàm chứa nó. Biểu thức bộ sinh gọn hơn nhưng ít khả chuyển hơn là các định nghĩa bộ sinh đầy đủ và thường chiếm ít bộ nhớ hơn là gộp danh sách tương đương.
+```py
+>>> sum(i*i for i in range(10))                 # tổng bình phuwong
+285
+
+>>> xvec = [10, 20, 30]
+>>> yvec = [7, 5, 3]
+>>> sum(x*y for x,y in zip(xvec, yvec))         # chấm sản phẩm
+260
+
+>>> from math import pi, sin
+>>> sine_table = {x: sin(x*pi/180) for x in range(0, 91)}
+
+>>> unique_words = set(word  for line in page  for word in line.split())
+
+>>> valedictorian = max((student.gpa, student.name) for student in graduates)
+
+>>> data = 'golf'
+>>> list(data[i] for i in range(len(data)-1, -1, -1))
+['f', 'l', 'o', 'g']
+```
+
+#### Giới thiệu sơ về bộ thư viện chuẩn
+
+##### Giao tiếp với hệ thống
+Các module os cung cấp hàng chục chức năng để tương tác với các hệ điều hành:
+```py
+>>>
+>>> import os
+>>> os.getcwd()      # Trả về thư mục làm việc hiện tại
+'C:\\Python37'
+>>> os.chdir('/server/accesslogs')   # Thay đổi thư mục làm việc hiện tại
+>>> os.system('mkdir today')   # Chạy lệnh mkdir trong system shell
+0
+```
+- Nhớ dùng kiểu lệnh "import os" thay vì `from os import *`. Điều này khiến cho os.open() không che hàm open() sẵn có của python. Hai hàm này hoạt động khác nhau rất nhiều.
+- Các hàm sẵn có dir() và help() là các công cụ trợ giúp tương tác hữu ích khi làm việc với các mô-đun lớn như os:
+```py
+>>>
+>>> import os
+>>> dir(os)
+<returns a list of all module functions>
+>>> help(os)
+<returns an extensive manual page created from the module's docstrings'>
+```
+- Đối với các tác vụ quản lý thư mục và tệp hàng ngày, shutilmô-đun cung cấp giao diện cấp cao hơn dễ sử dụng hơn:
+```py
+>>>
+>>> import shutil
+>>> shutil.copyfile('data.db', 'archive.db')
+'archive.db'
+>>> shutil.move('/build/executables', 'installdir')
+'installdir'
+```
+
+##### Ký tự thay thế tập tin
+- glob (mô-đun) cũng hỗ trợ việc tạo danh sách các tập tin từ việc tìm kiếm thư mục dùng ký tự thay thế (wildcard):
+```py
+>>> import glob
+>>> glob.glob('*.py')
+['primes.py', 'random.py', 'quote.py']
+```
+
+##### Thông số dòng lệnh
+- Các kịch bản phổ dụng thường phải xử lý các tham số dòng lệnh. Các tham số này được lưu thành một danh sách ở mô-đun sys trong thuộc tính argv . Ví dụ, kết quả sau đây thu được từ việc chạy lệnh "python demo.py one two three" từ dòng lệnh:
+
+>>> import sys
+>>> print sys.argv
+['demo.py', 'one', 'two', 'three']
+getopt (mô-đun) xử lý sys.argv theo các nguyên tắc của hàm Unix getopt() . Nếu cần các thao tác linh hoạt và hữu hiệu hơn, chúng ta có thể dùng mô-đun optparse .
+
+##### Chuyển hướng luồng ra và kết thúc chương trình
+- sys (mô-đun) cũng có các thuộc tính cho stdin, stdout, và stderr. Cái cuối rất hữu dụng trong việc sinh ra các cảnh báo và thông báo lỗi và việc hiển thị chúng ngay cả khi stdout đã được định hướng lại:
+```py
+>>> sys.stderr.write('Warning, log file not found starting a new one\n')
+Warning, log file not found starting a new one
+```
+- Cách thoát khỏi một kịch bản một cách trực tiếp nhất là dùng "sys.exit()".
+
+##### Khớp mẫu chuỗi
+- re (mô-đun) cung cấp các công cụ biểu thức chính quy dùng cho việc xử lý chuỗi ở mức cao. Biểu thức chính quy cung cấp các phương án súc tích và tối ưu cho các thao tác tìm kiếm và xử lý chuỗi phức tạp:
+```py
+>>> import re
+>>> re.findall(r'\bf[a-z]*', 'which foot or hand fell fastest')
+['foot', 'fell', 'fastest']
+>>> re.sub(r'(\b[a-z]+) \1', r'\1', 'cat in the the hat')
+'cat in the hat'
+```
+- Đối với các chức năng xử lý chuỗi cơ bản thì các phương thức của đối tượng chuỗi được ưa chuộng hơn bởi chúng dễ đọc và dễ gỡ rối hơn:
+```py
+>>> 'tea for too'.replace('too', 'two')
+'tea for two'
+```
+
+##### Toán học
+- math (mô-đun) cung cấp các hàm xử lý về toán dấu chấm động của thư viện C mức dưới:
+```py
+>>> import math
+>>> math.cos(math.pi / 4.0)
+0.70710678118654757
+>>> math.log(1024, 2)
+10.0
+```
+
+#####  random (mô-đun) hỗ trợ việc tạo ra các lựa chọn ngẫu nhiên:
+```py
+>>> import random
+>>> random.choice(['apple', 'pear', 'banana'])
+'apple'
+>>> random.sample(xrange(100), 10)   # lấy mẫu mà không cần thay thế
+[30, 83, 16, 4, 8, 81, 41, 50, 18, 33]
+>>> random.random()    # random float
+0.17970987693706186
+>>> random.randrange(6)    # số nguyên ngẫu nhiên được chọn từ range(6)
+4
+```
+
+##### Truy cập internet
+- Python cung cấp một vài mô-đun khác nhau cho việc truy cập internet và xử lý các giao thức internet. Hai mô-đun đơn giản nhất là urllib2 dành cho việc thu thập dữ liệu từ các URL và smtplib dành cho việc gửi thư điện tử:
+```py
+>>> import urllib2
+>>> for line in urllib2.urlopen('http://tycho.usno.navy.mil/cgi-bin/timer.pl'):
+...     if 'EST' in line or 'EDT' in line:  # look for Eastern Time
+...         print line
+    
+<BR>Nov. 25, 09:43:32 PM EST
+
+>>> import smtplib
+>>> server = smtplib.SMTP('localhost')
+>>> server.sendmail('soothsayer@example.org', 'jcaesar@example.org',
+"""To: jcaesar@example.org
+From: soothsayer@example.org
+
+Beware the Ides of March.
+""")
+>>> server.quit()
+```
+
+##### Ngày và giờ
+- datetime (mô-đun) cung cấp các lớp dành cho viêc xử lý ngày tháng và thời gian từ đơn giản tới phức tạp. Mô-đun này có hỗ trợ các phép toán về ngày tháng, tuy nhiên nó chú trọng tới việc truy cập các thành phần ngày tháng một cách hiệu quả giúp cho việc định dạng chúng. Mô-đun này cũng hỗ trợ các đối tượng có thể phân biệt được các vùng thời gian.
+```py
+# dates được xây dựng và định dạng dễ dàng
+>>> from datetime import date
+>>> now = date.today()
+>>> now
+datetime.date(2003, 12, 2)
+>>> now.strftime("%m-%d-%y. %d %b %Y is a %A on the %d day of %B.")
+'12-02-03. 02 Dec 2003 is a Tuesday on the 02 day of December.'
+# dates hỗ trợ lịch số
+>>> birthday = date(1964, 7, 31)
+>>> age = now - birthday
+>>> age.days
+14368
+```
+
+##### Nén dữ liệu
+- Python cung cấp một số mô-đun hỗ trợ trực tiếp các định dạng nén và lưu trữ dữ liệu phổ biến như: zlib, gzip, bz2, zipfile, và tarfile.
+```py
+>>> import zlib
+>>> s = 'witch which has which witches wrist watch'
+>>> len(s)
+41
+>>> t = zlib.compress(s)
+>>> len(t)
+37
+>>> zlib.decompress(t)
+'witch which has which witches wrist watch'
+>>> zlib.crc32(s)
+226805979
+```
+
+##### Đo lường hiệu suất
+- Một vài người dùng Python rất quan tâm đến việc tìm hiểu sự khác bệt về hiệu năng giữa các phương án khác nhau của cùng một vấn đề. Python cung cấp một công cụ đo đạc để thỏa mãn nhu cầu này.
+- Ví dụ, chúng ta thường muốn sử dụng tính năng gói bộ và mở gói bộ thay cho phương pháp thông thường trong việc hoán đổi tham số. Mô-đun timeit cho thấy phương pháp này có hiệu năng nhỉnh hơn phương pháp thông thường:
+```py
+>>> from timeit import Timer
+>>> Timer('t=a; a=b; b=t', 'a=1; b=2').timeit()
+0.57535828626024577
+>>> Timer('a,b = b,a', 'a=1; b=2').timeit()
+0.54962537085770791
+```
+So sánh với độ phân biệt về thời gian và sự chính xác cao của timeit, các mô-đun profile và pstats cung cấp các công cụ cho việc xác định các đoạn mã tiêu tốn nhiều thời gian trong các khối mã lớn hơn.
+
+##### Quản lý chất lượng
+- Một phương pháp để phát triển phần mềm chất lượng cao là viết các hàm kiểm tra cho từng hàm khi viết các hàm và chạy các hàm kiểm tra một cách thường xuyên trong quá trình phát triển phần mềm. 
+- doctest (mô-đun) cung cấp công cụ cho việc rà soát một mô-đun và thẩm định các hàm kiểm tra nhúng trong tài liệu của chương trình. Việc xây dựng các đoạn kiểm tra được thực hiện đơn giản bằng cách cắt và dán một đoạn gọi hàm thông thường kèm theo kết quả của hàm đó vào tài liệu chương trình. Việc này cải thiện đáng kể tài liệu chương trình bởi nó cung cấp cho người dùng một ví dụ về việc sử dụng hàm và cho phép mô-đun doctest kiểm tra tính đúng đắn của hàm này so với tài liệu:
+```py
+def average(values):
+    """Tính trung bình số học của một danh sách các số.
+
+    >>> print(average([20, 30, 70]))
+    40.0
+    """
+    return sum(values) / len(values)
+
+import doctest
+doctest.testmod()   # tự động xác nhận các test nhúng
+```
+unittest (mô-đun) không dễ dùng như mô-đun doctest , nhưng nó hỗ trợ các hàm kiểm tra toàn diện hơn và lưu giữ chúng trong một tập tin riêng biệt:
+```py
+import unittest
+
+class TestStatisticalFunctions(unittest.TestCase):
+
+    def test_average(self):
+        self.assertEqual(average([20, 30, 70]), 40.0)
+        self.assertEqual(round(average([1, 5, 7]), 1), 4.3)
+        with self.assertRaises(ZeroDivisionError):
+            average([])
+        with self.assertRaises(TypeError):
+            average(20, 30, 70)
+
+unittest.main()  # Gọi từ dòng lệnh gọi tất cả các kiểm tra
+```
+
+##### Kèm cả pin
+Python được gắn với ý tưởng 'kèm pin'. Điều này được thể hiện bởi các tính năng mạnh mẽ và đa dạng của các gói lớn hơn của nó. Ví dụ như:
+- xmlrpclib và SimpleXMLRPCServer (mô-đun) giúp cho việc cài đặt các lệnh gọi thủ tục từ xa (remote procedure call) trở nên dễ dàng hơn bao giờ hết. Khác với cái tên, chúng ta có thể sử dụng mô-đun này mà không cần các kiến thức cụ thể về xử lý XML.
+email (gói) là một thư viện hỗ trợ việc quản lý các thư điện tử, bao gồm các văn bản MIME và các văn bản dựa trên RFC 2822 khác. Không trực tiếp gửi và nhận thông điệp như smtplib và poplib , gói email có một tập các công cụ dành cho việc xây dựng và mã hóa các cấu trúc thông điệp phức tạp (bao gồm cả tập tin đính kèm) và cài đặt mã hóa internet và giao thức tiêu đề.
+xml.dom và xml.sax (gói) hỗ trợ rất tốt cho việc phân tích định dạng phổ biến này. Tương tự, mô-đun csv hỗ trợ việc đọc ghi trực tiếp trên một định dạng văn bản chung. Kết hợp lại, các mô-đun và gói kể trên đơn giản hóa rất nhiều việc trao đổi dữ liệu giữa các trình ứng dụng của python và các chương trình khác.
+- Việc hỗ trợ quốc tế hóa được thực hiện bởi một vài mô-đun, bao gồm gettext, locale, và gói codecs .

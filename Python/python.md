@@ -1528,3 +1528,265 @@ Python được gắn với ý tưởng 'kèm pin'. Điều này được thể 
 email (gói) là một thư viện hỗ trợ việc quản lý các thư điện tử, bao gồm các văn bản MIME và các văn bản dựa trên RFC 2822 khác. Không trực tiếp gửi và nhận thông điệp như smtplib và poplib , gói email có một tập các công cụ dành cho việc xây dựng và mã hóa các cấu trúc thông điệp phức tạp (bao gồm cả tập tin đính kèm) và cài đặt mã hóa internet và giao thức tiêu đề.
 xml.dom và xml.sax (gói) hỗ trợ rất tốt cho việc phân tích định dạng phổ biến này. Tương tự, mô-đun csv hỗ trợ việc đọc ghi trực tiếp trên một định dạng văn bản chung. Kết hợp lại, các mô-đun và gói kể trên đơn giản hóa rất nhiều việc trao đổi dữ liệu giữa các trình ứng dụng của python và các chương trình khác.
 - Việc hỗ trợ quốc tế hóa được thực hiện bởi một vài mô-đun, bao gồm gettext, locale, và gói codecs .
+
+##### Định dạng ra
+repr (mô-đun)cung cấp một phiên bản repr() đã được tùy biến để hiển thị vắn tắt các đối tượng chứa (container) lớn hoặc lồng nhau nhiều mức:
+```py
+>>> import reprlib
+>>> reprlib.repr(set('supercalifragilisticexpialidocious'))
+"{'a', 'c', 'd', 'e', 'f', 'g', ...}"
+```
+pprint (mô-đun) hỗ trợ việc kiểm soát việc in các đối tượng sẵn có hoặc các đối tượng do người dùng định nghĩa một cách tinh vi hơn theo một phương thúc mà rình thông dịch có thể hiểu được. Khi kết quả hiển thị ngắn hơn một dòng thì "pretty printer" sẽ thêm các dấu xuống dòng và dấu thụt vào đầu dòng khiến cho cấu trúc dữ liệu được thể hiện rõ rệt hơn:
+```py
+>>> import pprint
+>>> t = [[[['black', 'cyan'], 'white', ['green', 'red']], [['magenta',
+...     'yellow'], 'blue']]]
+...
+>>> pprint.pprint(t, width=30)
+[[[['black', 'cyan'],
+   'white',
+   ['green', 'red']],
+  [['magenta', 'yellow'],
+   'blue']]]
+```
+textwrap (mô-đun) định dạng đoạn văn bản sao cho vừa với độ rộng của màn hình:
+```py
+>>> import textwrap
+>>> doc = """The wrap() method is just like fill() except that it returns
+... a list of strings instead of one big string with newlines to separate
+... the wrapped lines."""
+...
+>>> print(textwrap.fill(doc, width=40))
+The wrap() method is just like fill()
+except that it returns a list of strings
+instead of one big string with newlines
+to separate the wrapped lines.
+```
+locale (mô-đun) sử dụng một cơ sở dữ liệu các định dạng dữ liệu dựa trên đặc điểm của từng khu vực. Hàm định dạng của locale có thuộc tính tạo nhóm, cho phép định dạng trực tiếp các con số với các dấu phân chia nhóm:
+```py
+>>> import locale
+>>> locale.setlocale(locale.LC_ALL, 'English_United States.1252')
+'English_United States.1252'
+>>> conv = locale.localeconv()          # get a mapping of conventions
+>>> x = 1234567.8
+>>> locale.format("%d", x, grouping=True)
+'1,234,567'
+>>> locale.format_string("%s%.*f", (conv['currency_symbol'],
+...                      conv['frac_digits'], x), grouping=True)
+'$1,234,567.80'
+```
+
+##### Tạo mẫu
+- string (mô-đun) cung cấp một lớp Template với một cú pháp đơn giản, có thể dễ dàng thay đổi bởi người dùng. Điều này cho phép người dùng có thể tùy biến trình ứng dụng mà không phải thay đổi nó.
+- Định dạng này sử dụng các tên biến giữ chỗ bắt đầu với "$" sau đó là một tên biến hợp lệ của Python (chữ cái, chữ số và dấu gạch dưới). Tên giữ chỗ được đặt trong ngoặc, điều này khiến nó có thể được nối tiếp bởi các ký tự khác mà không cần có khoảng trống ở giữa. Viết "$$" sẽ tạo ra một ký tự thoát đơn "$":
+```py
+>>> from string import Template
+>>> t = Template('${village}folk send $$10 to $cause.')
+>>> t.substitute(village='Nottingham', cause='the ditch fund')
+'Nottinghamfolk send $10 to the ditch fund.'
+```
+substitute (phương thức) nâng KeyError nếu biến giữ chỗ không được cung cấp bởi một từ điển hay một tham số nhập từ bàn phím. Đối với các trình ứng dụng kiểu nhập liệu vào thư điện tử, dữ liệu nhập bởi người dùng có thể có thiếu sót, khi đó phương thức safe_substitute sẽ thích hợp hơn -- nó giữ nguyên các biến giữ chỗ nếu dữ liệu bị thiếu:
+```py
+>>> t = Template('Return the $item to $owner.')
+>>> d = dict(item='unladen swallow')
+>>> t.substitute(d)
+Traceback (most recent call last):
+  ...
+KeyError: 'owner'
+>>> t.safe_substitute(d)
+'Return the unladen swallow to $owner.'
+```
+Các lớp con của Template có thể định nghĩa một phần tử phân chia tùy biến. Ví dụ một ứng dụng đổi tên ảnh hàng loạt của một trình duyệt ảnh có thể sử dụng dấu phần trăm để làm các biến giữ chỗ ngày tháng, số thứ tự ảnh, hay định dạng ảnh:
+```py
+>>> import time, os.path
+>>> photofiles = ['img_1074.jpg', 'img_1076.jpg', 'img_1077.jpg']
+>>> class BatchRename(Template):
+...     delimiter = '%'
+>>> fmt = raw_input('Enter rename style (%d-date %n-seqnum %f-format):  ')
+Enter rename style (%d-date %n-seqnum %f-format):  Ashley_%n%f
+
+>>> t = BatchRename(fmt)
+>>> date = time.strftime('%d%b%y')
+>>> for i, filename in enumerate(photofiles):
+...     base, ext = os.path.splitext(filename)
+...     newname = t.substitute(d=date, n=i, f=ext)
+...     print '%s --> %s' % (filename, newname)
+
+img_1074.jpg --> Ashley_0.jpg
+img_1076.jpg --> Ashley_1.jpg
+img_1077.jpg --> Ashley_2.jpg
+```
+Một ứng dụng khác của tạo mẫu là việc tách biệt lô-gíc chương trình ra khỏi các chi tiết về các định dạng đầu ra khác nhau. Điều này giúp cho việc thay thế các khuôn mẫu tùy biến cho các tập tin XML, các báo cáo bằng văn bản thông thường và các báo cáo bằng HTML.
+
+##### Làm việc với bản ghi dữ liệu nhị phân
+struct (mô-đun) cung cấp các hàm pack() và unpack() để dùng với các định dạng bản ghi nhị phân với chiều dài không cố định. Ví dụ sau đây minh họa phương pháp lặp qua các thông tin trong phần tiêu đề của một tập tin ZIP (ký hiệu "H" và "L" biểu diễn các số không dấu hai byte và bốn byte):
+```py
+import struct
+
+with open('myfile.zip', 'rb') as f:
+    data = f.read()
+
+start = 0
+for i in range(3):                      # show the first 3 file headers
+    start += 14
+    fields = struct.unpack('<IIIHH', data[start:start+16])
+    crc32, comp_size, uncomp_size, filenamesize, extra_size = fields
+
+    start += 16
+    filename = data[start:start+filenamesize]
+    start += filenamesize
+    extra = data[start:start+extra_size]
+    print(filename, hex(crc32), comp_size, uncomp_size)
+
+    start += extra_size + comp_size     # skip to the next header
+```
+
+##### Đa luồng
+Phân luồng là kỹ thuật phân tách các tác vụ khác nhau của một chương trình khi chúng không bị ràng buộc trật tự với nhau. Các luồng được sử dụng để tăng tính đáp ứng của các chương trình ứng dụng đòi hỏi việc nhập liệu từ người dùng diễn ra cùng lúc với các tiến trình nền khác. Một trường hợp tương tự là việc chạy các tác vụ vào ra song song với các tác vụ tính toán ở một luồng khác.
+- Đoạn mã sau đây minh họa cách mô-đun threading chạy các tác vụ nền trong khi chương trình chính vẫn đang chạy:
+```py
+import threading, zipfile
+
+class AsyncZip(threading.Thread):
+    def __init__(self, infile, outfile):
+        threading.Thread.__init__(self)
+        self.infile = infile
+        self.outfile = outfile
+
+    def run(self):
+        f = zipfile.ZipFile(self.outfile, 'w', zipfile.ZIP_DEFLATED)
+        f.write(self.infile)
+        f.close()
+        print('Finished background zip of:', self.infile)
+
+background = AsyncZip('mydata.txt', 'myarchive.zip')
+background.start()
+print('The main program continues to run in foreground.')
+
+background.join()    # Wait for the background task to finish
+print('Main program waited until background was done.')
+```
+- Khó khăn lớn nhất của các chương trình ứng dụng đa luồng là việc điều phối các luồng phải chia sẻ dữ liệu hay các tài nguyên khác. Về mặt này, mô-đun threading hỗ trợ một số hàm đồng bộ sơ cấp như các khóa (lock), các sự kiện (event), các biến điều kiện (condition) và các cờ hiệu (semaphore).
+- Mặc dù các công cụ kể trên rất mạnh, nhung những lỗi thiết kế nhỏ có thể dẫn tới các vấn đề rất khó có thể tái tạo được. Do đó, phương pháp được ưa chuộng trong việc điều phối các tác vụ là tập hợp các truy cập tới một tài nguyên vào một luồng, sau đó sử dụng mô-đun Queue để nạp các yêu cầu từ các luồng khác tới luồng đó. Các trình ứng dụng sử dụng đối tượng Queue cho việc giao tiếp và điều phối giữa các luồng có ưu điểm là dễ thiết kể hơn, dễ đọc hơn và đáng tin cậy hơn.
+
+##### Nhật ký
+logging (mô-đun) cung cấp một hệ thống ghi nhật ký (logging) linh hoạt và có đầy đủ các tính năng. Trong trường hợp đơn giản nhất, một thông điệp nhật ký được gửi tới một tập tin hay tới sys.stderr:
+```py
+import logging
+logging.debug('Debugging information')
+logging.info('Informational message')
+logging.warning('Warning:config file %s not found', 'server.conf')
+logging.error('Error occurred')
+logging.critical('Critical error -- shutting down')
+```
+Đoạn mã trên sẽ cho kết quả sau:
+```py
+WARNING:root:Warning:config file server.conf not found
+ERROR:root:Error occurred
+CRITICAL:root:Critical error -- shutting down
+```
+- Theo mặc định, các thông điệp chứa thông tin dành cho việc gỡ rối bị chặn lại và đầu ra được gửi tới kênh báo lỗi chuẩn. Các thông điệp này còn có thể được chuyển tiếp tới thư điện tử, gói tin, socket hay máy chủ HTTP. Các bộ lọc có thể chọn các cơ chế chuyển tiếp tùy theo mức độ ưu tiên của thông điệp: DEBUG, INFO, WARNING, ERROR, và CRITICAL.
+- Hệ thống nhật ký có thể được cấu hình trực tiếp bên trong Python hoặc nạp từ một tập tin cấu hình mà người dùng có thể sửa đổi được, nhằm tùy biến việc ghi nhật ký mà không phải sửa đổi trình ứng dụng.
+
+##### Tham chiếu yếu
+- Python hỗ trợ việc quản lý bộ nhớ một cách tự động (bao gồm việc đếm tham chiếu với hầu hết các đối tượng và việc thu dọn rác). Vùng nhớ được giải phóng nhanh chóng sau khi tham chiếu cuối cùng đến nó kết thúc.
+- Phương pháp này tỏ ra hiệu quả với hầu hết các trình ứng dụng sử dụng Python, tuy vậy đôi khi ta có nhu cầu theo dõi một đối tượng chừng nào chúng được sử dụng ở một chỗ khác. Tuy vậy việc theo dõi này lại tạo ra một tham chiếu đến đối tượng đó, khiến bản thân nó trở thành một tham chiếu vĩnh viễn. Mô-đun weakref cho phép theo dỗi một đối tượng mà không cần phải tạo một tham chiếu tới đối tượng đó. Khi đối tượng không còn cần dùng nữa, nó sẽ tự động bị loại ra khỏi bảng tham chiếu yếu và một hàm gọi ngược (callback) sẽ được gọi tới đối tượng weakref. Các ứng dụng phổ biến có chứa các đối tượng được lưu tạm và đòi hỏi chi phí khởi tạo cao:
+```py
+>>> import weakref, gc
+>>> class A:
+...     def __init__(self, value):
+...         self.value = value
+...     def __repr__(self):
+...         return str(self.value)
+...
+>>> a = A(10)                   # create a reference
+>>> d = weakref.WeakValueDictionary()
+>>> d['primary'] = a            # does not create a reference
+>>> d['primary']                # fetch the object if it is still alive
+10
+>>> del a                       # remove the one reference
+>>> gc.collect()                # run garbage collection right away
+0
+>>> d['primary']                # entry was automatically removed
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+    d['primary']                # entry was automatically removed
+  File "C:/python37/lib/weakref.py", line 46, in __getitem__
+    o = self.data[key]()
+KeyError: 'primary'
+```
+
+##### Công cụ làm việc với danh sách
+- Kiểu danh sách sẵn có của Python có thể đáp ứng được nhu cầu về nhiều kiểu cấu trúc dữ liệu khác nhau. Tuy vậy chúng ta đôi khi cần tới các kiểu cấu trúc khác, tùy thuộc vào các mục tiêu cụ thể về hiệu năng.
+- array (mô-đun) cung cấp đối tượng array() giống như một danh sách chứa các dữ liệu cùng kiểu và lưu giữ chúng gọn hơn. Ví dụ sau cho thấy một mảng các con số được lưu giữ dưới dạng các số không dấu hai byte (mã "H") thay vì mỗi phần tử chiếm 16 byte như trong một danh sách thông thường chứa các đối tượng số nguyên của Python:
+```py
+>>> from array import array
+>>> a = array('H', [4000, 10, 700, 22222])
+>>> sum(a)
+26932
+>>> a[1:3]
+array('H', [10, 700])
+```
+collections (mô-đun) cung cấp đối tượng deque() giống như một danh sách nhưng có các thao tác thêm vào và lấy ra đầu bên trái nhanh hơn, nhưng việc tìm kiếm ở giữa thì lại chậm hơn. Các đối tượng này thích hợp cho việc cài đặt các hàng đợi và tìm kiếm cây theo chiều rộng:
+```py
+    >>> from collections import deque
+    >>> d = deque(["task1", "task2", "task3"])
+    >>> d.append("task4")
+    >>> print "Handling", d.popleft()
+    Handling task1
+
+    unsearched = deque([starting_node])
+    def breadth_first_search(unsearched):
+        node = unsearched.popleft()
+        for m in gen_moves(node):
+            if is_goal(m):
+                return m
+            unsearched.append(m)
+```
+Ngoài các cấu trúc thay thế cho danh sách, thư viện chuẩn còn cung cấp các công cụ như mô-đun bisect chứa các hàm thao tác trên danh sách đã được sắp xếp:
+```py
+    >>> import bisect
+    >>> scores = [(100, 'perl'), (200, 'tcl'), (400, 'lua'), (500, 'python')]
+    >>> bisect.insort(scores, (300, 'ruby'))
+    >>> scores
+    [(100, 'perl'), (200, 'tcl'), (300, 'ruby'), (400, 'lua'), (500, 'python')]
+```
+heapq (mô-đun) cung cấp các hàm để cài đặt đống (heap) dựa trên các danh sách thông thường. Phần tử có giá trị thấp nhất luôn được giữ ở vị trí đầu tiên. Hàm này rất có ích trong các trình ứng dụng đòi hỏi việc truy cập tới phần tử nhỏ nhất mà không cần phải sắp xếp lại toàn bộ danh sách:
+```py
+    >>> from heapq import heapify, heappop, heappush
+    >>> data = [1, 3, 5, 7, 9, 2, 4, 6, 8, 0]
+    >>> heapify(data)                      # rearrange the list into heap order
+    >>> heappush(data, -5)                 # add a new entry
+    >>> [heappop(data) for i in range(3)]  # fetch the three smallest entries
+    [-5, 0, 1]
+```
+
+##### Số học dấu chấm động thập phân
+- decimal (mô-đun) cung cấp kiểu dữ liệu Decimal cho các phép toán dấu chấm động hệ thập phân. So với cấu trúc dấu chấm động nhị phân float sẵn có của Python, lớp này rất có ích trong các trình ứng dụng về tài chính và các công việc đòi hỏi việc biểu diễn chính xác các số thập phân, kiểm soát mức độ chính xác cũng như việc làm tròn các con số theo các quy định đề ra, theo dõi vị trí của dấu chấm động hay trong các trình ứng dụng mà người sử dụng mong muốn thu được kết quả khớp với kết quả tính toán bằng tay.
+- Ví dụ như, việc tính 5% thuế trên một cuộc gọi điện giá 70 cent sẽ cho kết quả khác nhau nếu sử dụng các phép toán dấy chấm động hệ thập phân và nhị phân. Sự khác biệt trở nên rõ rệt nếu kết quả được làm tròn tới cent:
+```py
+>>> from decimal import *       
+>>> Decimal('0.70') * Decimal('1.05')
+Decimal("0.7350")
+>>> .70 * 1.05
+0.73499999999999999
+```
+- Decimal giữ một số không ở vị trí cuối cùng, nó tự động quy kết quả kiểu có bốn chữ số sau dấu chấm nếu các thừa số của phép nhân có hai chữ số sau dấu chấm. Decimal thực hiện các phép toán tương tự như cách chúng được tính bằng tay, nhờ đó tránh được các vấn đề gặp phải khi dấu chấm động hệ nhị phân không thể biểu diễn chính xác các giá trị thập phân.
+- Việc biểu diễn chính xác các con số giúp cho lớp Decimal có thể thực hiện được các phép tính modulo và các so sánh bằng, điều mà dấu chấm động hệ nhị phân không làm được:
+```py
+>>> Decimal('1.00') % Decimal('.10')
+Decimal("0.00")
+>>> 1.00 % 0.10
+0.09999999999999995
+       
+>>> sum([Decimal('0.1')]*10) == Decimal('1.0')
+True
+>>> sum([0.1]*10) == 1.0
+False
+```
+decimal (mô-đun) cung cấp các phép toán với độ chính xác cao, tùy thuộc vào đòi hỏi của người dùng:
+```py
+>>> getcontext().prec = 36
+>>> Decimal(1) / Decimal(7)
+Decimal("0.142857142857142857142857142857142857")
+```

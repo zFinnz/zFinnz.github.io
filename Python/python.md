@@ -1372,10 +1372,11 @@ Các module os cung cấp hàng chục chức năng để tương tác với cá
 
 ##### Thông số dòng lệnh
 - Các kịch bản phổ dụng thường phải xử lý các tham số dòng lệnh. Các tham số này được lưu thành một danh sách ở mô-đun sys trong thuộc tính argv . Ví dụ, kết quả sau đây thu được từ việc chạy lệnh "python demo.py one two three" từ dòng lệnh:
-
+```py
 >>> import sys
 >>> print sys.argv
 ['demo.py', 'one', 'two', 'three']
+```
 getopt (mô-đun) xử lý sys.argv theo các nguyên tắc của hàm Unix getopt() . Nếu cần các thao tác linh hoạt và hữu hiệu hơn, chúng ta có thể dùng mô-đun optparse .
 
 ##### Chuyển hướng luồng ra và kết thúc chương trình

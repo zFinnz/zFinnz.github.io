@@ -1,5 +1,10 @@
 ```py
+>>> a = -5
+>>> a.__abs__()
+5
 >>> import operator
->>> operator.is_(5,6)
-False
+>>> operator.abs(-5)
+>>> 5
+>>> operator.__abs__(-5)
+5
 ```

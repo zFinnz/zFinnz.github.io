@@ -1,4 +1,5 @@
 ```py
 >>> import operator
->>> operator.is_(a,b)
+>>> operator.is_(5,6)
+False
 ```

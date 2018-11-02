@@ -1,7 +1,12 @@
 ```py
->>> a.__add__(b)
->>> import operator
->>> operator.add(a, b)
->>> operator.lt(a, b)
->>> operator.__lt__(a, b)
+>>> 5 > 6
+False
+>>> 5 < 6
+True
+>>> 5 == 6
+False
+>>> 5 <= 6
+True
+>>> 5 != 6 
+True
 ```

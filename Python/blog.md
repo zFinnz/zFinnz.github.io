@@ -1,4 +1,4 @@
 ```py
 >>> import operator
->>> operator.truth(a)
+>>> operator.is_(a,b)
 ```

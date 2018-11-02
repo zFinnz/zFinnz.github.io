@@ -1,6 +1,10 @@
 ```py
->>> 2 in range(10)
+>>> a = 5
+>>> b = 4 + 1
+>>> a is b
 True
->>> 2 not in range(10)
+>>> a is 5
+True
+>>> a is 4
 False
 ```

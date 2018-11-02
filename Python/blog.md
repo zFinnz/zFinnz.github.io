@@ -1,17 +1,16 @@
 ```py
->>> import operator
->>> operator.is_(5,6)
-False
-```
-```py
->>> import operator
->>> operator.is_not(5,6)
-True
-```
-```py
->>> a = -5>>> a.__abs__()
-5>>> import operator
->>> operator.abs(-5)
->>> 5>>> operator.__abs__(-5)
+>>> 5 + 6
+11
+>>> 5 - 6
+-1
+>>> 5 // 6
+0
+>>> 5 % 6
 5
+>>> 5 * 6
+30
+>>> 5 / 6
+0.8333333333333334
+>>> 5 ** 6
+15625
 ```

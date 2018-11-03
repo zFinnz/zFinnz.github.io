@@ -161,3 +161,25 @@ for item in gc.garbage:
 + Bạn có thể điều chỉnh GC bằng [module gc](https://docs.python.org/3/library/gc.html) .
 Hầu hết các bộ sưu tập rác được thực hiện bằng thuật toán đếm tham chiếu, mà chúng ta không thể điều chỉnh được. Vì vậy, hãy lưu ý các chi tiết cụ thể về triển khai, nhưng đừng lo lắng về các vấn đề GC tiềm ẩn sớm.
 Hy vọng rằng, bạn đã học được điều gì đó mới mẻ. Nếu bạn có bất kỳ câu hỏi còn lại, tôi sẽ rất vui khi trả lời chúng.
+
+#### Xử lý các tham chiếu xoay vòng
+Một điều mà bộ đếm tham chiếu không xử lý được đó là các chu trình tham chiếu. Hãy tưởng tượng một danh sách liên kết xoay vòng, hoặc một đối tượng tham chiếu chính nó. Ngay cả khi các đối tượng này không thể truy cập được, số lượng tham chiếu của chúng vẫn sẽ là 1.
+
+Đây là lý do tại sao CPython có một thuật toán để phát hiện các chu trình tham chiếu đó, được thực hiện trong hàm thu thập. Trước hết, nó chỉ tập trung vào các đối tượng container (tức là các đối tượng có thể chứa tham chiếu đến một hoặc nhiều đối tượng): mảng, từ điển, cá thể lớp người dùng, v.v. Như một tối ưu hóa bổ sung, GC bỏ qua các bộ chứa chỉ các loại bất biến (int , chuỗi,… hoặc tuples chỉ chứa các loại không thay đổi)
+
+CPython cho việc này duy trì hai danh sách được liên kết kép: một danh sách các đối tượng cần quét và một danh sách dự kiến ​​không thể truy cập được.
+
+Hãy lấy trường hợp của một danh sách liên kết vòng tròn có một liên kết được tham chiếu bởi một biến A và một đối tượng tự tham chiếu hoàn toàn không thể truy cập được.
+
++ Khi GC bắt đầu, nó có tất cả các đối tượng vùng chứa mà nó muốn quét trên danh sách đầu tiên (nhiều hơn về sau). Bởi vì hầu hết các đối tượng hóa ra đều có thể truy cập được, nên để hiệu quả hơn ta giả định tất cả các đối tượng đều có thể truy cập và di chuyển chúng đến một danh sách không thể truy cập nếu cần, thay vì theo cách khác. Ngày đầu có số lượng tham chiếu (số đối tượng tham chiếu đến chúng), mỗi vùng chứa đối tượng cũng có trường `gc_ref` ban đầu được đặt thành số tham chiếu :
+
+
++ GC sau đó đi qua mỗi đối tượng container và decrements bởi 1 `gc_ref` của bất kỳ đối tượng khác nó đang tham khảo. Nói cách khác, chúng tôi chỉ quan tâm đến các tham chiếu từ bên ngoài danh sách "đối tượng cần quét" (như biến) và không tham chiếu từ các đối tượng vùng chứa khác bên trong danh sách đó.
+
++ GC quét lại các đối tượng vùng chứa . Các đối tượng có gc_ref bằng 0 được đánh dấu là `GC_TENTATIVELY_REACHABLE` và được chuyển đến danh sách dự kiến ​​không thể truy cập được. Trong biểu đồ sau, GC xử lý các đối tượng “link 3” và “link 4” nhưng chưa xử lý “link 1” và “link 2”.
+
++ Giả sử rằng GC quét bên cạnh đối tượng “link 1”. Bởi vì gc_ref của nó bằng 1, nó được đánh dấu là `GC_REACHABLE` .
+
++ Khi GC gặp một đối tượng có thể truy cập, nó duyệt qua các tham chiếu của nó để tìm tất cả các đối tượng có thể truy cập từ nó, đánh dấu chúng cũng như `GC_REACHABLE`. Đây là những gì xảy ra với "link 2" và "link 3" bên dưới khi chúng có thể truy cập từ "link 1". Bởi vì "link 3" có thể truy cập sau khi tất cả, nó được chuyển trở lại danh sách ban đầu.
+
++ Khi tất cả các đối tượng được quét, các đối tượng chứa trong danh sách dự kiến ​​không thể truy cập thực sự không thể truy cập được và do đó có thể được thu gom rác .

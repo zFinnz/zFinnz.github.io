@@ -1,185 +1,157 @@
 
-<h1>Garbage collection in Python</h1>
+<h1>Unicode and Binary Data</h1>
 
-Thông thường trong Python, bạn không cần phải quan tâm về quản lí bộ nhớ. Bởi vì khi các đối tượng không còn cần thiết nữa, Python sẽ tự động thu hồi bộ nhớ từ chúng. 
-Tuy nhiên, hiểu cách trình dọn dẹp của Pyhon hoạt động có thể giúp chúng ta viết các chương trình Python tốt hơn.
-
-####  Quản lý bộ nhớ
-
-
-Không giống như nhiều ngôn ngữ khác, Python không nhất thiết phải giải phóng bộ nhớ trở lại hệ điều hành. 
-Thay vào đó, nó có một cơ chế phân bổ đối tượng chuyên biệt cho các đối tượng nhỏ (<= 521 byte), mà giữa một phần của bộ nhớ đã được cấp phát để sử dụng trong tương lai.
-Dung lượng bộ nhớ mà Python nắm giữ tùy thuộc vào các mẫu sử dụng, trong một số trường hợp, tất cả bộ nhớ được cấp phát sẽ không bao giờ được giải phóng.
-Do đó, nếu một quá trình Python chạy dài mất nhiều bộ nhớ theo thời gian, nó không nhất thiết có nghĩa là bạn bị rò rỉ bọ nhớ.
-
-#### Thuật toán thu gom rác
-Bộ thu gom rác của Cpython tiêu chuẩn có hai thành phần, [Tính toán tham chiếu  (reference counting )](https://en.wikipedia.org/wiki/Reference_counting) và bộ gom rác phát sinh (generational garbage collector), được gọi là [module gc ](https://docs.python.org/3.6/library/gc.html)
-Các `tính toán tham chiếu ` là thuật toán vô cùng hiệu quả và đơn giản, nhưng nó không thể phát hiện `reference cycle` (reference cycle có nghĩa là một hoặc nhiều đối tượng tham chiếu lẫn nhau). Dó là lí do tại sao Python có một thuật toán bổ sung được gọi là ` bộ gom rác phát sinh `, nó sẽ làm việc với `reference cycle`.
-Vệctính toán tham chiếu  tham chiếu là cơ sở của Python và không thể bị vô hiệu hóa, trong khi bộ thu gom rác phát sinh là tùy chọn và có thể sử dụng thủ công.
-
-#### Tính toán tham chiếu
-Tính toán tham chiếu là một kĩ thuật đơn giản mà trong đó các đối tượng được giải phóng khi không có tham chiếu đến chúng trong chương trình.
-Mỗi đối tượng trong Python chứa một số tham chiếu - tức là số lần nó được tham chiếu bởi một đối tượng khác hoặc bởi một biến. Khi số tham chiếu này đạt đến 0, nó sẽ bị xóa ngay tại chỗ. Vì đối tượng đó có thể tham chiếu đến các đối tượng khác (do đó làm giảm số lượng tham chiếu của chúng), điều này có thể kích hoạt phản ứng dây chuyền khi nhiều đối tượng bị xóa liên tiếp.
-
-Mỗi biến trong python là một tham chiếu ( một con trỏ) đến đối tượng và không phải là giá trị thật. Ví dụ, câu lệnh gán chỉ thêm một tham chiếu mới về phía bên tay phải.
-Để theo dõi tham chiếu của mỗi đối tượng (kể cả số nguyên) có một trường thừa gọi là số tham chiếu, được tăng hay giảm khi con trỏ trỏ tới đối tượng được sao chép hoặc xóa. Xem thêm phần [Đối tượng, Loại và Tham chiếu](https://docs.python.org/3.7/c-api/intro.html#objects-types-and-reference-counts), để có thể hiểu thêm chi tiết.
-
-Ví dụ, nơi số lượng tham chiếu tăng:
-+ Toán tử gán
-+ Chuyển đổi số
-+ Thêm một đối tượng vào một danh sách (số tham chiếu của đối tượng sẽ được tăng lên)
-Nếu trường đếm tham chiếu đạt đến số không. Cpython sẽ tự động gọi hàm deallocation của đối tượng đặc biệt. Nếu đối tượng chứa tham chiếu đến các đối tượng khác, thì số lượng tham chiếu của chúng cũng bị giảm đi. Ví dụ, khi một danh sách bị xóa, số tham chiếu của tất cả các mục của nó sẽ bị giảm đi.
-Các biến được khai báo bên ngoài hàm, lớp và các khối lệnh được gọi là biến toàn cục. Thông thường các biến này tồn tại cho đến khi kết thúc quá trình Python. Do đó, số lượng tham chiếu của đối tượng nơi được định nghĩa bởi biến toàn cục, không bao giờ giảm xuống 0.
-Các biến được định nghĩa bên trong các khối lệnh, hàm, lớp gọi là biến cục bộ. Nếu trình thông dịch Python thoát ra khỏi khối, nó sẽ phá hủy tất cả các tham chiếu được tạo bên trong khối.
-Bạn luôn có thể kiểm tra số tham chiếu hiện tại bằng cách sử dụng hàm `sys.getrefcount`.
-Ví dụ:
+#### Các khái niệm
+Hầu hết chúng ta đều nghĩ chuỗi kí tự là một chuỗi các kí tự (thực sự là các mã số nguyên của chúng) được dùng để biểu diễn văn bản.
+Ở hóa kì, tiêu chuẩn ASCII là định nghĩa khái niệm chuỗi văn bản của họ, định nghĩa mã kí tự 0...127, và điều này cho phép mỗi kí tự được lưu trữ trong một byte 8 bit. Ví dụ, tiêu chuẩn ASCII sẽ ánh xạ kí tự `a` đến giá trị số nguyên 97 (61 trong hex), có thể lưu trữ được trong một byte đơn của bộ nhớ hoặc các tệp.
+Chúng ta làm một phép thử nhỏ để xác nhận điều trên:
 ```py
-foo = []
-# 2 thám chiếu, 1 từ biến var, 1 từ getrefcount
-print(sys.getrefcount(foo))
-def bar(a):
-    # 4 tham chếu
-    # từ biến var, tham số hàm, getrefcount và hàm stack của Python
-    print(sys.getrefcount(a))
-bar(foo)
-# 2 tham chiếu, phạm vi của hàm bị phá hủy
-print(sys.getrefcount(foo))
+>>> ord('a')
+97
+>>> hex(97)
+'0x61'
+>>> chr(97)
+'a'
 ```
-Lí do chính tại sao Cpython sử dụng tính toán tham chiếu là đã cũ. Có rất nhiều cuộc tranh luận về điểm yếu của kĩ thuật này. Một số người cho rằng các thuật toán thu gom rác hiện đại có thể hiệu quả hơn mà không cần tính toán tham chiếu. Thuật toán này có rất nhiều vấn đề, chẳng hạn như tham chiếu xoay vòng, khóa luồng và bộ nhớ, hiệu suất hoạt động. Ví dụ đối với đoạn mã đơn giản sau:
+Nhưng đôi khi điều này là không đủ. Các kí tự khác nhau của các ngôn ngữ trên thế giới và các dấu trọng âm không thể biểu diễn trong ASCII. Để cho phép một số kí tự đặc biệt, một số tiêu chuẩn cho phép tất cả các giá trị có thể có trong 1 byte 8 bit, 0...255, để biểu diễn các ký tự và gán giá trị 128...255 cho các kí tự đặc biệt. 
+Tiêu chuẩn như vậy gọi là "Latin-1" và được sử dụng rộng rãi ở Tây Âu. Do đó trongg tiếng latin-1, mã kí tự >127 được gán cho dấu trọng âm và các ksi tự đặc biệt khác. Ví dụ, kí tự được gán cho byte 196 là một kí tự được đánh dấu là kí tự đặc biệt và không phải là ASCII.
 ```py
-number = 42
-number += 1
+>>> 0xC4
+196
+>>> chr (196)
+'Ä'
 ```
-Trước tiên, Python cần tăng số tham chiếu của 42 (dòng 1), sau đó trong dòng 2 giảm nó và tăng số tham chiếu của 43. Nhưng quá trình xử lý bổ sung này thực sự nhỏ so với quá trình xử lý mà Python thực hiện chỉ để tìm biến "number", xác định loại của nó, v.v.
+Tuy nhiên, một số bảng chữ cái xác định rất nhiều ký tự mà không thể biểu diễn chúng dưới dạng một mã cỡ byte cho mỗi kí tự. Vawnbarn `unicode` cho phép linh hoạt hơn nhiều, trên thực tế nó xác định đủ mã ksi tự để đại diện cho hầu hết mọi ngôn ngữ tự nhiên được sử dụng, cộng với một bộ kí hiệu lớn. Đôi khi còn được gọi là các chuỗi kí tự "rộng", vì phạm vi kí tự của nó quá rộng, đến mức cần nhiều byte để biểu diễn cho ngững kí tự riêng lẻ.
+Bảng mã Unicode chứa gần như toàn bộ các kí tự của hầu hết các ngôn ngữ trên thế giới, có nghĩa là gần như bất kì kí tự nào cũng có thể mã hóa được qua bảng unicode. Và mỗi ký tự sẽ tương ứng với một byte mã hóa. 
+Trong python, ký tự mã hóa Unicode được bắt đầu bằng chữ `\u`. Ví dụ chữ ` Tiếng việt` sẽ được mã hóa là `Ti\u1ebfng vi\u1ec7t`.
+Một điểm lưu ý đó là `str` và `unicode` ở Python2 sẽ chuyển thành `bytes` và `str` ở Python3.
 
-Tuy nhiên, ưu điểm chính của cách tiếp cận này đó là các đối tượng có thể bị phá hủy ngay lập tức sau khi chúng không còn cần thiết nữa.
+#### Mã hóa kí tự
+Chìa khóa để hiểu cách unicode hoạt động nằm trong mã ký tự của nó (hay còn gọi là "mã điểm") trong bộ nhớ được ánh xạ tới các biểu mẫu được mã hóa của chúng khi cần truyền dữ liệu hoặc lưu trữ hiệu quả.Có 2 thuật ngữ ta cần lưu ý đó là:
++ Mã hóa: là quá trình dịch chuỗi kí tự thành dạng byte thô của nó theo bất kỳ mã hóa mong muốn nào.
++ Giải mã: là quá trình dịch chuỗi byte thô thành định dạng chuỗi ký tự của nó, theo mã hóa ban đầu được sử dụng để tạo chuỗi byte.
+Unicode xác định cả mã kí tự và một bộ mã hóa tiêu chuẩn. 
+Unicode chứa cả mã kí ự và bộ mã hóa tiêu chuẩn. Đối với một số mã bình thường ASCII và Latin-1 ta có thể ánh xạ từng kí tự thành 1 byte mà không cần phải thực hiện mã hóa và giả mã.Bởi vì đối với các mã hóa khác, ánh xạ có thể phức tạp và cho ra nhiều byte cho mỗi kí tự.
 
-#### Bộ gom rác phát sinh
-Tại sao chũng ta cần thêm bộ thu gom rác phát sinh:
-Do thuật toán tính toán tham chiếu ở trên có một vấn đề cơ bản đó là nó không thể phát hiện ra chu trình tham chiếu xoay vòng (xảy ra khi có một hoặc nhiều đối tượng tham chiếu lẫn nhau).
-Ví dụ:
-[Hình ảnh]
-Như chúng ta thấy, đối tược `lst` đang trỏ đến chính nó, `object1` và `object2` đang trỏ đến nhau. Số lượng tham chiếu cho các đối tượng như trên luôn ít nhất là 1.
-Ví dụ:
+Chúng ta đã hiểu unicode là cách duy nhất cho tất cả các kí tự dùng trong ngôn ngữ viết. Nhưng những con số đó được ghi thế nào trong các hệ thống xử lí văn bản lại là vấn đề khác. Do phần lớn các phần mềm chỉ biết tới các hệ thống mã hóa 8-bit và không thể dùng nhiều hơn 256 điểm mã nếu không có những cách giải quyết đặc biệt. Do đó, người ta phải tạo ra nhiều cơ chế để dùng unicode và tùy thuộc vào khả năng lưu trữ, sự thích ứng với chương trình và sự tương tác hệ thống mà ta chọn cho phù hợp.
+
+##### UTF-32
+Cách đơn giản nhất để lưu trữ 2^20+2^16 các điểm mã là sử dụng 32 bit cho mỗi kí tự nghĩa là 4 byte, cách mã hóa này gọi là `UTF-32`. Vấn đề của cách mã hóa này là nó dùng gấp 4 lần số byte trước kia, nên nó ít được dùng trong các vật nhớ ngoài như băng, đĩa.Tuy nhiên, nó rất đơn giản nên một số chương trình sẽ sử dụng để mã hóa 32 bit bên trong khi xử lí Unicode
+
+##### UTF-16
+Một cách mã hóa dùng Unicode 20 bit.
+Ít được dùng
+
+##### UTF-8
+`UTF-8` được thiết kế để tương thích với chuẩn ASCII. UTF-8 có thể sử dụng từ 1 (cho những kí tự thuộc ASCII) cho đến 6 byte để biểu diễn 1 kí tự.
+Các quy định của UTF-8:
++ Các kí tự có giá trị nhỏ hơn 0x80, sử dụng 1 byte có cùng giá trị.
++ Các kí tự nhỏ hơn 0x800, sử dụng 2 buye: byte thứ 1 có giá trị 0xC0 cộng với 5 bit từ 7 tới 11, byte thứ 2 có giá trị 0x80 cộng với các bit từ 1 tới 6
++ các kí tự nhỏ hơn 0x10000, sử dụng 3 byte; byte thứ nhất có giá trị 0xE0 cộng với 4 bit từ thứ 13 tới 16, byte thứ 2 có giá trị 0x80 cộng với 6 bit thừ thứ 7 đến 12, byte thứ 3 có giá trị 0x80 cộng với 6 bit thừ 1 tới 6
++ Các ký tự có giá trị nhỏ hơn 0x200000, sử dụng 4 byte: byte thứ nhất có giá trị 0xF0 cộng với 3 bit từ thứ 19 tới 21; byte thứ hai có giá trị 0x80 cộng với 6 bit từ thứ 13 tới 18; byte thứ ba có giá trị 0x80 cộng với 6 bit từ thứ 7 tới thứ 12; byte thứ tư có giá trị 0x80 cộng với 6 bit từ thứ 1 tới thứ 6.
+
+Hiện nay các giá trị ngoài giá trị trên đều chưa được nhưng có thẽ sử dụng trong tương lai, chuỗi kí tự dài 5 byte hoặc 6 byte.
+
+##### UTF-7
+Ít được sử dụng nhất.
+
+##### Văn bản và tệp nhị phân
+File I/O cũng được xác định rõ rành trong python3 để phản ánh `str`/`bytes` khác nhau. Thực sự, văn bản thực chất chỉ là các mã kí tự số nguyên được giải mã khi nó nằm trong bộ nhớ.
++ Khi một tệp được mở ở chế độ văn bản , việc đọc dữ liệu của nó sẽ tự động giải mã nội dung của nó (theo mặc định nền tảng hoặc mã hóa được cung cấp) và trả về nó dưới dạng `str`, và tự động mã hóa nó trước khi chuyển vào tập tin. Các tệp chế độ văn bản cũng hỗ trợ dịch thuật cuối dòng phổ biến và các đối số đặc tả mã hóa.
++ Khi một tệp được mở ở chế độ nhị phân bằng cách thêm "b" vào đối số chuỗi chế độ trong lời gọi `open()`, việc đọc dữ liệu của nó không giải mã nó theo bất kỳ cách nào và chỉ trả về nội dung thô và không thay đổi. Các tệp chế độ nhị phân cũng chấp nhận một đối tượng bytearray cho nội dung được ghi vào tệp.
+
+Ngôn ngữ Python phân biệt rõ ràng giữa `str` và `bytes` nên bạn phải quyết định nên dùng định dạng văn bản nào cho đối tượng mà bạn sẽ thực hiện nội dung trên nó.
++ Nếu bạn đang xử lý các tệp hình ảnh, dữ liệu được tạo bởi các chương trình khác có nội dung bạn phải trích xuất và một số luồng dữ liệu của thiết bị, rất có thể bạn sẽ muốn xử lý nó bằng `bytes` các tệp chế độ nhị phân. Bạn cũng có thể chọn `bytearray` để cập nhật dữ liệu mà không cần sao chép dữ liệu trong bộ nhớ.
++ Thay vào đó, nếu bạn đang xử lý thứ gì đó có tính chất văn bản như đầu ra chương trình, HTML, JSON, văn bản quốc tế và CVS hoặc tệp XML, bạn có thể muốn sử dụng `str` và các tệp chế độ văn bản.
+
+#### Các kiểu chuỗi của Python
+Trong Python3 có 3 loại đối tượng chuỗi:
++ str: Đại diện cho văn bản Unicode (Các điểm mã được giải mã)
 ```py
-import gc
-# Chúng ta dung ctypes để truy cập các đối tượng không thể truy cập của chúng ta theo địa chỉ bộ nhớ.
-class PyObject(ctypes.Structure):
-    _fields_ = [("refcnt", ctypes.c_long)]
-gc.disable()  # Vô hiệu hóa gc
-lst = []
-lst.append(lst)
-# Lưu địa chỉ của list
-lst_address = id(lst)
-# Phá hủy tham chiếu lst
-del lst
-object_1 = {}
-object_2 = {}
-object_1['obj2'] = object_2
-object_2['obj1'] = object_1
-obj_address = id(object_1)
-# Phá hủy các tham chiếu
-del object_1, object_2
-# Bỏ ghi chú nếu bạn muốn chạy trình gom rác thủ công 
-# gc.collect()
-# Kiểm tra bộ đếm tham chiếu
-print(PyObject.from_address(obj_address).refcnt)
-print(PyObject.from_address(lst_address).refcnt)
+>>> a = "hello" # tạo một đối tượng str (kí tự unicode, 8bit hoặc rộng hơn)
+>>> print a
+'hello'
+>>> type(a)
+'<class 'str'>'
+>>> a[0] # index trả về một str cho str
+'h'
 ```
-Ở ví dụ trên, câu lệnh `del` đã loại bỏ các tham chiếu đến các đối tượng của chúng ta và chúng ta không còn truy cập được từ mã Python nữa. Tuy nhiên, các đối tượng vẫn còn trong bộ nhớ, đó à vì chúng vẫn đang được tham chiếu lẫn nhau với số lượng tham chiếu của mỗi đối tượng là 1.
-Để giải quyết vấn đề này, Python đã tích hợp module gc có chức năng phát hiện các tham chiếu và giải quyết nó.
-Tham chiếu xoay vòng chỉ xảy ra với các đối tượng container (ví dụ, trong các đối tượng có thể chứa các đối tượng khác), chẳng hạn như list, dict, class, tuple. Bộ gom rác phát sinh không theo dõi tất cả các loại immutable ngoại trừ tuple. Các tuple và dict cho dù chỉ chứa các đối tượng immutable nhưng cũng có thể không được theo dõi tùy thuộc vào các điều kiện nhất định.Do đó thuật toán đếm tham chiếu không thực sự hoàn hảo.
-
-#### Khi nào sử dụng Bộ gom rác phát sinh(GC)
-Không giống như bộ đếm tham chiếu, GC không hoạt động trong thời gian thực và chạy theo chu kì. Vì vậy, để giảm tần suất các cuộc gọi GC và tạm dừng nó, Cpython sử dụng các trình chẩn đoán khác nhau.
-GC phân loại các đối tượng container thành 3 thế hệ. Mỗi đối tượng mới sẽ được bắt đầu trong thế hệ đầu tiên. Nếu như một đối tượng qua vòng thu gom rác đầu tiên, nó sẽ được chuyển sang thế hệ cao hơn. Thế hệ thấp hơn được thu thập thường xuyên hơn. Bởi vì, hầu hết các đối tượng mới được tạo đều bị xóa bỏ rất sớm, nó cải thiện hiệu suất và giảm thời gian tạm dừng GC.
-Để quyết định thời điểm chạy, mỗi thế hệ có bộ truy cập cá nhân và ngưỡng riêng của nó(có thể được định cấu hình thông qua `gc.set_threshold ()`). Bộ đếm lưu trữ số lượng phân bổ đối tượng trừ deallocations từ bộ tập hợp cuối cùng. Mỗi khi bạn phân bổ một đối tượng container mới, Cpython sẽ kiểm tra bất cứ khi nào bộ đếm của thế hệ đầu tiên vượt qua ngưỡng.
-Nếu chúng ta có hai hoặc nhiều thế hệ vượt quá ngưỡng, GC chọn cái cũ nhất. Đó là bởi vì các thế hệ lâu đời nhất cũng tập hợp tất cả các thế hệ mới hơn.Để giảm sự suy giảm hiệu suất đối với các đối tượng sống lâu, thế hệ thứ ba có [các yêu cầu bổ sung](https://github.com/python/cpython/blob/051295a8c57cc649fa5eaa43526143984a147411/Modules/gcmodule.c#L94) để được lựa chọn
-Giá trị ngưỡng tiêu chuẩn được đặt thành (700, 10, 10) tương ứng, nhưng bạn luôn có thể kiểm tra chúng bằng cách sử dụng hàm` gc.get_threshold`.
-
-
-#### Sự nguy hiểm của finalizers
-Tuy nhiên, có một vấn đề khác. Trong bất kỳ ngôn ngữ nào, kẻ thù tồi tệ nhất của trình thu gom rác là finalizers - các phương thức do người dùng định nghĩa được gọi khi GC muốn thu thập một đối tượng (trong Python một finalizer được tạo ra bằng cách định nghĩa phương thức __del__). Điều gì xảy ra nếu trình kết thúc làm cho một hoặc nhiều đối tượng có thể truy cập lại? Đây là lý do tại sao, lên đến Python 3.3, các đối tượng chứa bên trong một tham chiếu vòng tròn với trình hoàn thiện không bao giờ được `thu gom rác`.
-Trong đoạn mã dưới đây, chúng ta định nghĩa một lớp với trình hoàn thiện. Chúng tôi sau đó khởi tạo lớp và thêm một tham chiếu tự đến đối tượng `để gây rối` với kiểm tra GC.
++ bytes: Đại diện cho dữ liệu nhị phân (bao gồm cả văn bản được mã hóa)
 ```py
-class MyClass(object):
-    def __del__(self):
-        pass
-my_obj = MyClass()
-my_obj.ref = my_obj
-my_obj
-<__main__.MyClass object at 0x00000000025FCEF0>
-```
-Sau đó chúng ta xóa tham chiếu đến đối tượng và có thể chạy bộ thu gom rác.
-```py
-del my_obj
-gc.collect()
-2
-gc.garbage
-[<__main__.MyClass object at 0x00000000025FCEF0>]
-```
-`gc.garbage` trả về một danh sách các đối tượng không thể thu thập được (các đối tượng được đánh dấu là không thể truy cập nhưng không thể được thu thập), bây giờ chứa đối tượng mà chúng ta đã cố xóa.
-
-Các [PEP 442](https://www.python.org/dev/peps/pep-0442/) (Python Enhancement Proposal), thực hiện với Python 3.4, tuy nhiên thay đổi hành vi đó. Bắt đầu với Python 3.4, trong một bộ sưu tập, finalizers cho tất cả các đối tượng thuộc nhóm không thể tiếp cận của một tham chiếu xoay vòng được gọi. Những đối tượng đó trở nên có thể tiếp cận lại được "phục hồi" . Sau đó, miễn là các finalizers không làm cho nhóm có thể truy cập được nữa, tất cả các tham chiếu sẽ bị xóa và tất cả các đối tượng được thu thập. Lưu ý rằng điều này không hoạt động nếu bạn thiết lập chế độ gỡ lỗi GC 
-
-Nhưng Python 3.4 không phải là một cơ sở để làm bất cứ điều gì với finalizers. Nếu finalizer làm cho một đối tượng có thể truy cập một lần nữa, các hiệu ứng phụ của nó (như ghi vào một tập tin) sẽ không được khôi phục.
-
-Vì vậy, tinh thần của câu chuyện là bạn nên rất cẩn thận với finalizers và chỉ sử dụng chúng khi bạn không thể làm khác. Hãy nhớ rằng bạn không thể biết khi nào đối tượng thực sự sẽ bị xóa, ngay cả khi bạn chạy một cách rõ ràng GC (đối tượng vẫn có thể truy cập được từ một nơi khác). Tương tự như vậy, thực tế là finalizer được gọi là thậm chí không đảm bảo rằng đối tượng thực sự sẽ được thu thập.
-
-#### Cách tìm tham chiếu xoay vòng
-Thật khó để giải thích thuật toán phát hiện tham chiếu xoay vòng trong một vài đoạn văn. Nhưng về cơ bản, GC lặp lại trên mỗi đối tượng container và tạm thời loại bỏ tất cả các tham chiếu đến các đối tượng container mà nó tham chiếu. Sau khi lặp lại đầy đủ, tất cả các đối tượng mà số tham chiếu đếm nhỏ hơn hai là không thể truy cập từ mã của Python và do đó có thể được thu thập.
-
-#### Mẹo về hiệu suất
-Chu kỳ có thể dễ dàng xảy ra trong cuộc sống thực. Thông thường, bạn gặp phải chúng trong đồ thị, danh sách liên kết hoặc trong cấu trúc, trong đó bạn cần phải theo dõi các mối quan hệ giữa các đối tượng. Nếu chương trình của bạn có khối lượng công việc lớn và yêu cầu độ trễ thấp, bạn nên tránh các chu trình tham chiếu nhất có thể.
-
-Để tránh tham chiếu vòng tròn trong mã của bạn, bạn cần sử dụng các tham chiếu yếu, được thực hiện trong module `weakref`. Không giống như các tham chiếu thông thường, `weakref.ref` không tăng số tham chiếu và trả về `None` nếu một đối tượng đã bị hủy.
-
-Trong một số trường hợp, rất hữu ích khi vô hiệu hóa GC và sử dụng nó theo cách thủ công. Bộ sưu tập tự động có thể bị tắt bằng cách gọi `gc.disable()`. Để chạy thủ công quá trình thu thập, bạn cần sử dụng `gc.collect()`.
-
-#### Cách tìm và gỡ lỗi các tham chiếu xoay vòng
-
-Gỡ lỗi các chu trình tham chiếu có thể rất khó khăn, đặc biệt là khi bạn sử dụng nhiều thư viện của bên thứ ba.
-[Module gc](https://docs.python.org/3.7/library/gc.html) chuẩn cung cấp rất nhiều trình trợ giúp hữu ích có thể giúp gỡ lỗi. Nếu bạn đặt cờ gỡ lỗi `DEBUG_SAVEALL`, tất cả các đối tượng không thể truy cập được tìm thấy sẽ được nối vào danh sách `gc.garbage`.
-```py
-import gc
-gc.set_debug(gc.DEBUG_SAVEALL)
-print(gc.get_count())
-lst = []
-lst.append(lst)
-list_id = id(lst)
-del lst
-gc.collect()
-for item in gc.garbage:
-    print(item)
-    assert list_id == id(item)
+>>> a = b"hello" # Tạo một đối tượng byte (byte 8 bit)
+>>> print a # In dưới dạng chuỗi kí tự, thực ra là chuỗi int
+b'hello'
+>>> type(a)
+'<class 'bytes'>'
+>>> a[0] # index trả về một int cho byte
+104
 ```
 
-#### Phần kết luận
-+ Không sử dụng finalizers trừ khi bạn thực sự, thực sự, thực sự phải.
-+ Nếu bạn không sử dụng tham chiếu xoay vòng, bạn có thể vô hiệu hóa GC hoàn toàn bằng cách gọi `gc.disable ()`.
-+ Hãy nhớ rằng một GC không hoàn toàn thoát khỏi tất cả các rò rỉ bộ nhớ. Nếu bạn lưu trữ rất nhiều dữ liệu trong các biến toàn cầu và quên xóa chúng, bạn sẽ mãi mãi giữ một tham chiếu đến một số đối tượng - và không có gì GC có thể làm. Bạn cũng có thể sử dụng các tham [weak references](https://docs.python.org/3/library/weakref.html).
-+ Bạn có thể điều chỉnh GC bằng [module gc](https://docs.python.org/3/library/gc.html) .
-Hầu hết các bộ sưu tập rác được thực hiện bằng thuật toán đếm tham chiếu, mà chúng ta không thể điều chỉnh được. Vì vậy, hãy lưu ý các chi tiết cụ thể về triển khai, nhưng đừng lo lắng về các vấn đề GC tiềm ẩn sớm.
-Hy vọng rằng, bạn đã học được điều gì đó mới mẻ. Nếu bạn có bất kỳ câu hỏi còn lại, tôi sẽ rất vui khi trả lời chúng.
++ bytearray: Một đối tượng của mảng byte cho trước.
+Cú pháp: bytearray([source[,encoding[, errors]]])
+Trả về một đối tượng bytearray là một chuỗi khả biến của các số nguyên trong khoảng 0<=x<256.
+source: Khởi tạo mảng byte.
+encoding: Nếu source là chuỗi, bạn bắt buộc phải thêm tham số để chuyển đổi giải mã chuỗi thành byte.
+errors: Nếu source là chuỗi, errors sẽ cung cấp hành động để lấy khi quá trình giải mã không thành công.
+Tham số source có thể có các kiểu sau:
++ string: Chuyển ssoori string sang byte sử dụng str.encoding(), đồng thời phải cung cấp tham số encoding và errors.
++ Integer: tạo một mảng với kích thước được cung cấp, tất cả được khởi tạo thành Null
++ object: Bộ đẹm chỉ đọc của đối tượng sẽ được sử dụng để khởi tạo mảng byte.
++ Iterable: Tạo một mảng có kích thước tương đương với số đếm của iterable và khởi tạo các phần tử của iterable. Các số nguyên phải nằm trong khoảng từ 0 <= x < 256.
++ Không có tham số: Tạo một mảng có kích thước là 0.
+```py
+# Ví dụ 1: source là chuỗi
+string1 = "i am finn"
+# encoding là 'utf-8'
+mang1 = bytearray(string1, 'utf-8')
+print(mang1)
+# Ví dụ 2: source là số
+string2 = 10
+mang2 = bytearray(string2)
+print(mang2)
+#Ví dụ 3: source là list
+ListSo = [2,4,6,8,10]
+mang3 = bytearray(ListSo)
+print(mang3)
+# Kết quả
+bytearray(b'i am finn')
+bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+bytearray(b'\x02\x04\x06\x08\n') 
+```
 
-#### Xử lý các tham chiếu xoay vòng
-Một điều mà bộ đếm tham chiếu không xử lý được đó là các chu trình tham chiếu. Hãy tưởng tượng một danh sách liên kết xoay vòng, hoặc một đối tượng tham chiếu chính nó. Ngay cả khi các đối tượng này không thể truy cập được, số lượng tham chiếu của chúng vẫn sẽ là 1.
+##### Chuyển đổi
+Ở python3 yêu cầu bạn thực hiện chuyển đổi giữa các định dạng một cách thủ công và rõ ràng:
++ `str.encode()` tương đương với `bytes(str, encoding)`: Tạo một `bytes` từ `str`.
++ `byte.encode()` tương đương với `str(bytes, encoding)`: Tạo một `str` từ `bytes`.
+```py
+>>> s = 'hello'
+>>> s.encode() # str thành byte: mã hóa văn bản thành byte thô
+b'hello'
+>>> byte(s, encoding='ascii') # str thành byte, thay thế b'hello'
+>>> b = b'helo' 
+>>> b.decong() # byte thành str: giải mã byte thô thành văn bản
+'hello'
+>>> str(b, encoding='ascii') # bytes thành str, thay thế 'hello'
+```
+Lưu ý rằng, các mã hóa mặc định khá nhau cho mỗi nền tảng của bạn có sẵn trong các module `sys` và `locale`, nhưng đối số của mã hóa `bytes()` không phải là tùy chọn mặc dù nó nằm trong `str.encode()` và `bytes.decode()` Và mặc dù `str()` không yêu cầu đối số mã hóa nhưng không có nghĩa là mặc định, thay vào đó, `str()` mã hóa trả về chuỗi in `bytes` không phải là `str`.
+```py
+>>> import sys, locale # Xác định miền địa phương
+>>> sys.platform  # xem nền tảng 
+'win32'
+>>> locale.getpreferredencoding(False) # Mặc định là cp1252
+'cp1252'
+>>> sys.getdefaultencoding() # Nhưng str() không sử dụng mặc định
+'utf-8'
+>>> bytes(S)
+TypeError: string argument without an encoding
+>>> str(B)     # str không có encoding
+b'spam'     # in chuỗi, không có dự chuyển đổi!
+>>> len(str(B))
+7
+>>> len(str(B, encoding='ascii')) # sử sụng encoding để mã hóa
+4
+```
 
-Đây là lý do tại sao CPython có một thuật toán để phát hiện các chu trình tham chiếu đó, được thực hiện trong hàm thu thập. Trước hết, nó chỉ tập trung vào các đối tượng container (tức là các đối tượng có thể chứa tham chiếu đến một hoặc nhiều đối tượng): mảng, từ điển, cá thể lớp người dùng, v.v. Như một tối ưu hóa bổ sung, GC bỏ qua các bộ chứa chỉ các loại bất biến (int , chuỗi,… hoặc tuples chỉ chứa các loại không thay đổi)
-
-CPython cho việc này duy trì hai danh sách được liên kết kép: một danh sách các đối tượng cần quét và một danh sách dự kiến ​​không thể truy cập được.
-
-Hãy lấy trường hợp của một danh sách liên kết vòng tròn có một liên kết được tham chiếu bởi một biến A và một đối tượng tự tham chiếu hoàn toàn không thể truy cập được.
-
-+ Khi GC bắt đầu, nó có tất cả các đối tượng vùng chứa mà nó muốn quét trên danh sách đầu tiên (nhiều hơn về sau). Bởi vì hầu hết các đối tượng hóa ra đều có thể truy cập được, nên để hiệu quả hơn ta giả định tất cả các đối tượng đều có thể truy cập và di chuyển chúng đến một danh sách không thể truy cập nếu cần, thay vì theo cách khác. Ngày đầu có số lượng tham chiếu (số đối tượng tham chiếu đến chúng), mỗi vùng chứa đối tượng cũng có trường `gc_ref` ban đầu được đặt thành số tham chiếu :
+##### Mã hóa chuỗi Unicode trong Python3
 
 
-+ GC sau đó đi qua mỗi đối tượng container và decrements bởi 1 `gc_ref` của bất kỳ đối tượng khác nó đang tham khảo. Nói cách khác, chúng tôi chỉ quan tâm đến các tham chiếu từ bên ngoài danh sách "đối tượng cần quét" (như biến) và không tham chiếu từ các đối tượng vùng chứa khác bên trong danh sách đó.
-
-+ GC quét lại các đối tượng vùng chứa . Các đối tượng có gc_ref bằng 0 được đánh dấu là `GC_TENTATIVELY_REACHABLE` và được chuyển đến danh sách dự kiến ​​không thể truy cập được. Trong biểu đồ sau, GC xử lý các đối tượng “link 3” và “link 4” nhưng chưa xử lý “link 1” và “link 2”.
-
-+ Giả sử rằng GC quét bên cạnh đối tượng “link 1”. Bởi vì gc_ref của nó bằng 1, nó được đánh dấu là `GC_REACHABLE` .
-
-+ Khi GC gặp một đối tượng có thể truy cập, nó duyệt qua các tham chiếu của nó để tìm tất cả các đối tượng có thể truy cập từ nó, đánh dấu chúng cũng như `GC_REACHABLE`. Đây là những gì xảy ra với "link 2" và "link 3" bên dưới khi chúng có thể truy cập từ "link 1". Bởi vì "link 3" có thể truy cập sau khi tất cả, nó được chuyển trở lại danh sách ban đầu.
-
-+ Khi tất cả các đối tượng được quét, các đối tượng chứa trong danh sách dự kiến ​​không thể truy cập thực sự không thể truy cập được và do đó có thể được thu gom rác .

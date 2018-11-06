@@ -1,6 +1,6 @@
 |  |  |
 |-------------------|-----------------|
-| %c | Kí tự (Nhận đầu vào 1 kí tự hoặc chữ số) |
+| %c | (hihi)[https://iamfinn.blogspot.com/2018/11/string-in-python.html#load-h4-1] |
 | %s | Chuyển đổi chuỗi qua `Str()` trước khi định dạng |
 | %i| Kiểu số nguyên Signed |
 | %d | nt |

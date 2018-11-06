@@ -1,5 +1,7 @@
 <h1 align="center"> String trong Python </h1>
 
+[hihi](https://iamfinn.blogspot.com/2018/11/string-in-python.html#load-h4-01)
+
 Từ góc độ chức năng, các chuỗi có thể được sử dụng để biểu diễn bất kỳ thứ gì có thể được mã hóa dưới dạng văn bản hoặc byte. Chuỗi trong Python có những đặc điểm chính sau:
 + Chuỗi trong python được biểu diễn theo nhiều cách, ví dụ trong cặp dấu ngoặc đơn (`' '`) hoặc cặp dấu ngoặc kép (`" "`) cũng có thể là trong cặp 3 dấu ngoặc đơn hoặc kép (`""" """`, `''' '''`).
 + Cả hai loại dấu đều sử dụng giống nhau, tuy nhiên chúng ta nên sử dụng `' '` nếu trong chuỗi kí tự có dấu `"` và ngược lại chúng ta nên sử dụng `" "` nếu trong chuỗi kí tự có dấu `'`.

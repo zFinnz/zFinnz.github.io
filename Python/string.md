@@ -388,7 +388,7 @@ Hàm này có tác dụng trả về một chuỗi với độ dài `width` đư
 ```py
 string = "Xin Chào"
 print(string.ljust(15, "-"))
-Xin Chào-------
+'Xin Chào-------'
 ```
 25. S.lower()
 Hàm này có tác dụng chuyển đổi chuỗi về dạng in thường.
@@ -582,7 +582,7 @@ Hàm này có tác dụng như hàm `ljust()` , nhưng nó sẽ chỉ thêm đư
 ```py
 >>> string = "hello"
 >>> print(string.zfill(10))
-00000hello
+'00000hello'
 ```
 
 # Hàm dựng sẵn string

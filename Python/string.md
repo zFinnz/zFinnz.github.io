@@ -2,7 +2,7 @@
 
 
 
-# ▶ Các kí tự thoát trong python
+# Các kí tự thoát trong python
 
 | Ki tự | Kí tự trong mã hexa | Miêu rả |
 |-------|---------------------|---------|
@@ -14,10 +14,7 @@
 | \r | 0x0d | Quay lại |
 | \n | 0x0a | Dòng mới | 
 
-----
-
-
-# ▶ Toán tử trong chuỗi
+# Toán tử trong chuỗi
 
 | Ki tự | Miêu tả | Ví dụ |
 |-------|---------------------|---------|
@@ -33,10 +30,7 @@
 | Hex(x) | Chuyển Kiểu `int` sang `hex` |
 | oct(x) | Chuyển kiểu `int` sang kiểu số `oct` |
 
-----
-
-
-# ▶ Các kiểu xuất chuỗi
+#  Các kiểu xuất chuỗi
 
 | Kiểu | ví dụ|
 |-------|-----|
@@ -44,10 +38,7 @@
 | print x | a = 5; print a|
 | print "{x},{y}".format(x,y) | print "{x},{y}".format(x=5,y=6)|
 
-----
-
-
-# ▶ Các định dạng chuỗi
+#  Các định dạng chuỗi
 
 | Kí hiệu định dạng | Kiểu Chuyển đổi |
 |-------------------|-----------------|
@@ -65,10 +56,7 @@
 | %g | kiểu ngắn hơn của `%f` và `%e` |
 | %G | kiểu ngắn hơn của `%f` và `%E` |
 
-----
-
-
-# ▶ Các hàm dựng sẵn của Chuỗi
+#  Các hàm dựng sẵn của Chuỗi
 | STT | Hàm | Miêu tả |
 |-----|-----|-----|
 | 1 | capitalize() | Viết hoa kí tự đầu tiên của chuỗi |

@@ -13,3 +13,6 @@
 | %f | Số thực dấu phẩy động |
 | %g | kiểu ngắn hơn của `%f` và `%e` |
 | %G | kiểu ngắn hơn của `%f` và `%E` |
+
+
+(hihi)[(hihi)[https://iamfinn.blogspot.com/2018/11/string-in-python.html#load-h4-1]]

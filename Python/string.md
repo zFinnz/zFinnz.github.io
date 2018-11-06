@@ -1,3 +1,4 @@
+|  |  |
 |-------------------|-----------------|
 | %c | Kí tự (Nhận đầu vào 1 kí tự hoặc chữ số) |
 | %s | Chuyển đổi chuỗi qua `Str()` trước khi định dạng |

@@ -14,7 +14,7 @@ print("I love Python!") # Bạn cũng có thể chú thích như thế này.
 + Bạn không nên nhầm lẫn giữa chú thích và `docstring`. Chú thích được đặt sau dấu `#` còn `docstring` được đặt trong dấu `""" """`.
 
 Bạn có thể sử dụng chú thích như thế nào:
-+ Chú thích trên 1 dòng:
++ Chú thích trên 1 dòng
 ```py
 # Gán giá trị cho biến a và b
 a, b = 5, 6
@@ -36,7 +36,7 @@ sumf(5, 6)
 if True:
 	print("Hello World!") # In ra câu "Hello World!"
 ```
-+ Chú thích để loại bỏ đoạn code không cần thiết tạm thời mà không cần xóa nó:
++ Chú thích để loại bỏ đoạn code không cần thiết tạm thời mà không cần xóa nó
 ```py
 if True:
 	#print("Hello!")

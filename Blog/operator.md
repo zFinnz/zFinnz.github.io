@@ -128,8 +128,9 @@ Ví dụ:
 
 ##### Nhóm toán tử logic
 Là những toán tử thể hiện có mệnh đề AND, OR, NOT. Thường được sử dụng trong các biểu thức logic, có thể đi kèm với các toán tử quan hệ.
+
 | Toán tử | Cú pháp | Miêu tả |
-|---------|---------|----------|
+|---------|---------|---------|
 | `and` | a and b | Phép và, True nếu cả 2 điều kiện đều đúng, ngược lại False |
 | `or` | a or b | Phép hoặc, True nếu 1 trong 2 điều kiện đúng, ngược lại False |
 | `not` | a not b | Phép phủ định, đảo ngược trạng thái logic của toán hạng |

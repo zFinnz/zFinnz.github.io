@@ -190,6 +190,7 @@ False
 | `>>` | a >> b | Toán tử dịch trái nhị phân, giá trị của toán hạng trái được dịch sang trái một số lượng bit bằng toán hạng phải. |
 | `<<` | a << b |  Toán tử dịch phải nhị phân, giá trị của toán hạng trái được dịch sang phải một số lượng bit bằng toán hạng phải. |
 
+`|`
 Ví dụ:
 ```py
 >>> a = 60 # 60 = 0011 1100

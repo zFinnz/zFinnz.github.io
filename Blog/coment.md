@@ -12,6 +12,7 @@ print("I love Python!") # Bạn cũng có thể chú thích như thế này.
 + Đoạn mã `# -*- coding: utf-8 -*-` vẫn sẽ bị Python bỏ qua như một chú thích trong code, tuy nhiên nó vẫn được sử dụng cho việc thiết lập và định dạng file.
 + Chú thích như sau sẽ không được chấp nhận `print("hello #word !")`. Do dấu `#` được đặt trong chuỗi kí tự.
 + Bạn không nên nhầm lẫn giữa chú thích và `docstring`. Chú thích được đặt sau dấu `#` còn `docstring` được đặt trong dấu `""" """`.
+
 Bạn có thể sử dụng chú thích như thế nào:
 + Chú thích trên 1 dòng:
 ```py

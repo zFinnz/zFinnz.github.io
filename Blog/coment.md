@@ -8,6 +8,7 @@ print("I love Python!") # Bạn cũng có thể chú thích như thế này.
 ```
 + Chú thích trong Python sẽ bị bỏ qua khi chương trình được thực thi.
 + Một chú thích bắt đầu bằng dấu `#` cho đến hết `cuối dòng vật lí`, có thể đặt ở đầu dòng, sau khoảng trắng hoặc mã, nhưng không được đặt trong chuỗi kí tự.
+
 💡 Lưu ý:
 + Đoạn mã `# -*- coding: utf-8 -*-` vẫn sẽ bị Python bỏ qua như một chú thích trong code, tuy nhiên nó vẫn được sử dụng cho việc thiết lập và định dạng file.
 + Chú thích như sau sẽ không được chấp nhận `print("hello #word !")`. Do dấu `#` được đặt trong chuỗi kí tự.

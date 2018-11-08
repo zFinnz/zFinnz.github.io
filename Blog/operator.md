@@ -184,11 +184,11 @@ False
 | Toán tử | Cú pháp | Miêu tả |
 |---------|---------|----------|
 | `&` | a & b | Sao chép một bit tới kết quả nếu bit này tồn tại trong cả 2 toán hạng |
-| `|` | a | b |  Sao chép một bit tới kết quả nếu bit này tồn tại trong bất kì toán hạng nào. |
-| `^` | a & b |  Sao chéo bit nếu nó được set (chỉ bit 1) chỉ trong một toán hạng. |
-| `~` | a | b |  Toán tử một ngôi, dung để đảo ngược bit. |
-| `>>` | a & b | Toán tử dịch trái nhị phân, giá trị của toán hạng trái được dịch sang trái một số lượng bit bằng toán hạng phải. |
-| `<<` | a | b |  Toán tử dịch phải nhị phân, giá trị của toán hạng trái được dịch sang phải một số lượng bit bằng toán hạng phải. |
+| `|` | a `|` b |  Sao chép một bit tới kết quả nếu bit này tồn tại trong bất kì toán hạng nào. |
+| `^` | a ^ b |  Sao chéo bit nếu nó được set (chỉ bit 1) chỉ trong một toán hạng. |
+| `~` | a ~ b |  Toán tử một ngôi, dung để đảo ngược bit. |
+| `>>` | a >> b | Toán tử dịch trái nhị phân, giá trị của toán hạng trái được dịch sang trái một số lượng bit bằng toán hạng phải. |
+| `<<` | a << b |  Toán tử dịch phải nhị phân, giá trị của toán hạng trái được dịch sang phải một số lượng bit bằng toán hạng phải. |
 
 Ví dụ:
 ```py

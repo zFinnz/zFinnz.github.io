@@ -3,7 +3,7 @@ Toán tử trong Python là một kí tự hay dấu, có chức năng thực hi
 Trong Python, các toán tử được cung cấp trong module `Operator (Lib/operator.py)` bởi thư viện chuẩn của Python: Là một bộ các hàm chức năng, tương ứng với các toán tử của Python. Ví dụ, `operator.add (x, y)` hoặc `x.__add__(y)` tương đương với biểu thức `x + y`.
 Tên của các hàm chức năng này khá đặc biệt với các dấu gạch dưới (ví dụ có thể viết `operator.__add__(x, y)`). Tuy nhiên, có các biến thể không bắt đầu hoặc kết thúc bằng `__` để cho việc sử dụng được tiện lợi.
 Toán tử là một trong số các thành phần cơ bản nhất trong một ngôn ngữ lập trình. Mỗi toán tử là một ký hiệu đặc biệt như: `+`, `-`, `*`, `/`, `%`... được `map` với các hàm (functions) tương ứng trong `module operator` vừa đề cập ở trên. Giúp cho việc sử dụng dễ dàng, đơn giản và ngắn gọn hơn.
-Ví dụ: `1 + 2`, thì chữ số `1` và chữ số `2` được coi là toán hạng, ký hiệu `+` được gọi là toán tử. Toán tử này sẽ thực hiện phép toán cộng hai toán hạng `1` và `2`, trả về kết quả là `3`. Và nó được map với hàm `add(1, 2)` của m`odule operator`.
+Ví dụ: `1 + 2`, thì chữ số `1` và chữ số `2` được coi là toán hạng, ký hiệu `+` được gọi là toán tử. Toán tử này sẽ thực hiện phép toán cộng hai toán hạng `1` và `2`, trả về kết quả là `3`. Và nó được map với hàm `add(1, 2)` của `module operator`.
 Ví dụ:
 ```py
 # Ba phép toán sau đây là giống nhau và tương đương với a + b

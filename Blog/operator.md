@@ -18,13 +18,13 @@ a, b = 5, 6
 ```
 #### Phân loại
 Python hỗ trợ các loại toán tử sau:
-+ Toán tử số học
-+ Toán tử quan hệ (còn gọi là toán tử so sánh)
-+ Toán tử gán
-+ Toán tử logic
-+ Toán tử membership
-+ Toán tử identify
-+ Toán tử thao tác bit
++ [Toán tử số học](https://0xpan.blogspot.com/2018/11/toan-tu-trong-python.html#load-h4-0)
++ [Toán tử quan hệ (còn gọi là toán tử so sánh)](https://0xpan.blogspot.com/2018/11/toan-tu-trong-python.html#load-h4-1)
++ [Toán tử gán](https://0xpan.blogspot.com/2018/11/toan-tu-trong-python.html#load-h4-2)
++ [Toán tử logic](https://0xpan.blogspot.com/2018/11/toan-tu-trong-python.html#load-h4-3)
++ [Toán tử membership](https://0xpan.blogspot.com/2018/11/toan-tu-trong-python.html#load-h4-4)
++ [Toán tử identify](https://0xpan.blogspot.com/2018/11/toan-tu-trong-python.html#load-h4-5)
++ [Toán tử thao tác bit](https://0xpan.blogspot.com/2018/11/toan-tu-trong-python.html#load-h4-6)
 
 Định nghĩa và ví dụ cụ thể các loại toán tử như sau:
 

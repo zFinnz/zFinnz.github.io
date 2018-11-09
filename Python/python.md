@@ -13,7 +13,7 @@ Còn với Python3 các bạn chạy lệnh:
 ```sh
 python -m http.server
 ```
-Bạn có thể thay đổi cổng của server bằng cách thêm một số nguyên trong khoảng 1024 - 65535 ở cuối lệnh.
+Bạn có thể thay đổi cổng của server bằng cách thêm một số nguyên trong khoảng `1024 - 65535` ở cuối lệnh.
 Bùm! Bạn đã có một `HTTP server` chia sẻ tất cả những file bạn có trong thư mục `C:\Users\Finn\Music` đang listen trên cổng 8000. Ngay bây giờ bạn có thể kiểm tra bằng cách bật Firefox hoặc Chrome, truy cập địa chỉ `0.0.0.0:8000` (hoặc `localhost:8000`) sẽ thấy kết quả hiện ra như sau:
 
 Click vào bất cứ file nào để tải về.
@@ -33,6 +33,6 @@ Wireless LAN adapter Wi-Fi:
    Subnet Mask . . . . . . . . . . . : 255.255.255.0              
    Default Gateway . . . . . . . . . : 192.168.0.1                
 ```
-Tôi đang dùng mạng Wifi nên tôi quan tâm đến mục Wireless LAN adapter Wi-Fi, để ý dòng inet addr:192.168.0.101 là địa chỉ IP hiện tại của máy tôi trong mạng LAN (nếu bạn dùng Ethernet cắm dây thì xem mục eth0).
+Tôi đang dùng mạng Wifi nên tôi quan tâm đến mục Wireless LAN adapter Wi-Fi, để ý dòng `inet addr:192.168.0.101` là địa chỉ IP hiện tại của máy tôi trong mạng LAN (nếu bạn dùng Ethernet cắm dây thì xem mục eth0).
 Như vậy, ở những máy còn lại, tôi chỉ cần truy cập địa chỉ http://192.168.29.171:8000 là có thể tải được những file đang được chia sẻ ở máy tôi.
 Có một điều cần chú ý với phương pháp này. Trước hết là nó rất không an toàn, không có quản lý phân quyền gì hết nên chỉ dùng trong mạng nội bộ mà bạn tin tưởng.

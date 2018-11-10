@@ -223,9 +223,9 @@ Hàm này sẽ đưa bạn vào trình gỡ rối tại trang được gọi (n�
 ```py
 >>> name = "value"
 >>> breakpoint()
---Return--
-> <stdin>(1)<module>()->None
-(Pdb) >
+# --Return--
+# > <stdin>(1)<module>()->None
+# (Pdb) >
 ```
 
 
@@ -1060,6 +1060,7 @@ Hàm nhận hai tham số:
 + `object`: đối tượng có trình vòng lặp phải được tạo (tuple, set , v.v.)
 + `sentinel` : giá trị đặc biệt được sử dụng để biểu diễn kết thúc chuỗi.
 Tùy thuộc vào các đối số được thông qua, `iter()` phải có các thuộc tính sau đây tùy thuộc vào Các trường hợp khác nhau của tham số:
+
 | object | sentinel | Miêu tả |
 |---------|---------|----------|
 | set, tuple | None | Tạo trình lặp cho đối tượng |
@@ -1162,6 +1163,7 @@ Phương thức max () trả về phần tử lớn nhất trong một hoặc nh
 + `key`: Chức năng quan trọng mà mỗi đối số được thông qua, và so sánh được thực hiện dựa trên giá trị trả về của nó
 
 Giá trị trả về đối với `max(iterable, *iterables[, key, default])`:
+
 | Trường hợp | Key | default | Giá trị trả về |
 |-------------|----------------|---------------|---------------|
 | `iterable` trống | No hoặc Yes | No  | Tạo ra ngoại lệ `ValueError` |
@@ -1173,6 +1175,7 @@ Giá trị trả về đối với `max(iterable, *iterables[, key, default])`:
 | Nhiều `iterable` (không trống) | No | Yes hoặc No | Chuyển mỗi lần lặp lại đến hàm chính Trả về giá trị lặp lớn nhất dựa trên giá trị trả về của hàm chính |
 
 Giá trị trả về đối với `max(arg1, arg2, *args[, key])`:
+
 | Trường hợp | Key | Giá trị trả về |
 |-------------|----------------|-----------|
 | Đã thực hiện 2 đối số đầu tiên | No | Trả về lớn nhất trong số các đối số đã cho |
@@ -1264,7 +1267,7 @@ min(iterable, *iterables[,key, default])
 min(arg1, arg2, *args[, key])
 ```
 Hàm trả về phần tử nhỏ nhất trong một tham số có thể lặp lại hoặc nhỏ nhất của hai hoặc nhiều tham số
-Cách xây dựng giống với max()](https://iamfinn.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-41).
+Cách xây dựng giống với [max()](https://iamfinn.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-41).
 
 #### next(iterator, default)
 Hàm trả về mục tiếp theo từ trình lặp với `iterator` là trình lặp, `default` là giá trị được trả về nếu vòng lặp đã hết (không có mục nào còn lại). Nếu tham số `default` không được thiết lập, khi `iterator` kết  thúc, nó sẽ tạo ra ngoại lệ `StopIteration`.
@@ -1336,6 +1339,7 @@ Hàm mở tệp (nếu có thể) có thể được sử dụng để đọc, g
 Các tham số:
 + `file`: đường dẫn giống như đối tượng (đại diện cho một đường dẫn hệ thống tập tin).
 + `mode:` chế độ khi mở tệp. Nếu không được cung cấp, nó sẽ mặc định `r` (mở để đọc ở chế độ văn bản). Các chế độ tệp khả dụng là:
+
 | Chế độ | Miêu tả |
 |-----------|----------|
 | `'r'` | Mở tệp để đọc (mặc định) |
@@ -1399,12 +1403,11 @@ Các tham số:
 + `file`: phải là một đối tượng với phương thức `write(string)`. Nếu bỏ qua nó, `sys.stdout` sẽ được sử dụng để in các đối tượng trên màn hình.
 + `flush`: Nếu `True`, luồng sẽ bị dội ngược. Giá trị mặc định : `False`
 ```py
-a = 5
-print("a = ", a, sep='00000', end='\n')
-a = 000005
-
-print("a = ", a, sep='0', end='')
-a = 05
+>>> a = 5
+>>> print("a = ", a, sep='00000', end='\n')
+'a = 000005'
+>>> print("a = ", a, sep='0', end='')
+'a = 05'
 ```
 
 #### property(fget=None, fset=None, fdel=None, doc=None)

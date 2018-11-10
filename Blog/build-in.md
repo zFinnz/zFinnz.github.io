@@ -1,77 +1,74 @@
-Trong Python được tích hợp sẵn rất nhiều hàm, chúng ta chỉ việc sử dụng nó mà không phải xây dựng như `C`. Dưới đây là danh sách các hàm đó, cùng với mô tả ngắn gọn về chúng
-Đây là bài viết rất dài dùng để làm bookmark khi cần dùng, phải mất đến 1 tuần mình mới viết xong, cái mà mình nhận được là chậm mấy cái `Dateline`.
-
-| Hàm | Mô tả |
-|-----|-----| 
-| [abs()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-0)	| Trả về giá trị tuyệt đối của một số	|
-| [all()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-1)	| Trả về True khi tất cả các phần tử trong iterable là đúng |
-| [any()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-2)	| Kiểm tra bất kỳ phần tử nào của iterable là True |
-| [ascii()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-3) | Tả về string chứa đại diện (representation) có thể in |
-| [bin()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-4)	| Chuyển đổi số nguyên sang chuỗi nhị phân |
-| [bool()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-5) | Chuyển một giá trị sang Boolean |
-| [breakpoint()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-6) | Đưa bạn vào trình gỡ lỗi nơi được gọi |
-| [bytearray()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-7) | Trả về mảng kích thước byte được cấp |
-| [bytes()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-8) | Trả về đối tượng byte không đổi |
-| [callable()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-9) | Kiểm tra xem đối tượng có thể gọi hay không |
-| [chr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-10)	| Trả về một ký tự (một chuỗi) từ Integer |
-| [classmethod()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-11)	| Trả về một class method cho hàm |
-| [compile()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-12)	| Trả về đối tượng code Python |
-| [complex()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-13)	| Tạo một số phức |
-| [delattr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-14)	| Xóa thuộc tính khỏi đối tượng |
-| [dict()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-15) | Tạo Dictionary |
-| [dir()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-16)	| Trả lại thuộc tính của đối tượng |
-| [divmod()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-17)	| Trả về một Tuple của Quotient và Remainder |
-| [enumerate()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-18) | Trả về đối tượng kê khai |
-| [eval()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-19) | Chạy code Python trong chương trình |
-| [exec()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-20) | Thực thi chương trình được tạo động |
-| [filter()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-21) | Xây dựng iterator từ các phần tử True |
-| [float()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-22) | Trả về số thập phân từ số, chuỗi |
-| [format()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-23) | Trả về representation được định dạng của giá trị |
-| [frozenset()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-24) | Trả về đối tượng frozenset không thay đổi |
-| [getattr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-25) | Trả về giá trị thuộc tính được đặt tên của đối tượng |
-| [globals()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-26)	| Trả về dictionary của bảng sumbol toàn cục hiện tại |
-| [hasattr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-27)	| Trả về đối tượng dù có thuộc tính được đặt tên hay không |
-| [hash()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-28) | Trả về giá trị hash của đối tượng |
-| [help()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-29) | Gọi Help System được tích hợp sẵn |
-| [hex()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-30)	| Chuyển Integer thành Hexadecimal |
-| [id()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-31) | Trả về định danh của đối tượng |
-| [input()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-32) | Đọc và trả về chuỗi trong một dòng |
-| [int()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-33)	| Trả về số nguyên từ số hoặc chuỗi |
-| [isinstance()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-34) | Kiểm tra xem đối tượng có là Instance của Class không |
-| [issubclass()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-35) | Kiểm tra xem đối tượng có là Subclass của Class không |
-| [iter()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-36) | Trả về iterator cho đối tượng |
-| [len()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-37)	| Trả về độ dài của đối tượng |
-| [list()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-38) | Tạo list trong Python |
-| [locals()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-39)| Trả về dictionary của bảng sumbol cục bộ hiện tại |
-| [map()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-40)	| Áp dụng hàm và trả về một list |
-| [max()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-41)	| Trả về phần tử lớn nhất |
-| [memoryview()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-42) | Trả về chế độ xem bộ nhớ của đối số |
-| [min()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-43)	| Trả về phần tử nhỏ nhất |
-| [next()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-44) | Trích xuất phần tử tiếp theo từ Iterator |
-| [object()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-45) | Tạo một đối tượng không có tính năng (Featureless Object) | |
-| [oct()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-46)	| Chuyển số nguyên sang bát phân |
-| [open()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-47) | Trả về đối tượng File |
-| [ord()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-48)	| Trả về mã Unicode code cho ký tự Unicode |
-| [pow()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-49)	| Trả về x mũ y |
-| [print()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-50) | In đối tượng được cung cấp |
-| [property()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-51) | Trả về thuộc tính property |
-| [range()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-52) | Trả về chuỗi số nguyên từ số bắt đầu đến số kết thúc |
-| [repr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-53) | Trả về representation có thể in của đối tượng |
-| [reversed()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-54) | Trả về iterator đảo ngược của một dãy |
-| [round()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-55) | Làm tròn số thập phân |
-| [set()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-56)	| Tạo một set các phần tử mới |
-| [setattr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-57)	| Đặt giá trị cho một thuộc tính của đối tượng |
-| [slice()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-58) | Cắt đối tượng được chỉ định bằng range() |
-| [sorted()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-59) | Trả về list được sắp xếp |
-| [staticmethod()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-60) | Tạo static method từ một hàm |
-| [str()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-61)	| Trả về một representation không chính thức của một đối tượng |
-| [sum()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-62)	| Thêm một mục vào Iterable |
-| [super()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-63) | Cho phép tham chiếu đến Parent Class bằng super |
-| [tuple()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-64) | Tạo một Tuple |
-| [type()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-65) | Trả về kiểu đối tượng |
-| [vars()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-66) | Trả về thuộc tính __dict__ của class |
-| [zip()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-67)	| Trả về Iterator của Tuple |
-| [__import__()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-68) | Hàm nâng cao, được gọi bằng import |
+| Stt | Hàm | Mô tả |
+|-----|-----|-----| 
+| 1 | [abs()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-0)	| Trả về giá trị tuyệt đối của một số	|
+| 2 | [all()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-1)	| Trả về True khi tất cả các phần tử trong iterable là đúng |
+| 3 | [any()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-2)	| Kiểm tra bất kỳ phần tử nào của iterable là True |
+| 4 | [ascii()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-3) | Tả về string chứa đại diện (representation) có thể in |
+| 5 | [bin()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-4)	| Chuyển đổi số nguyên sang chuỗi nhị phân |
+| 6 | [bool()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-5) | Chuyển một giá trị sang Boolean |
+| 7 | [breakpoint()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-6) | Đưa bạn vào trình gỡ lỗi nơi được gọi |
+| 8 | [bytearray()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-7) | Trả về mảng kích thước byte được cấp |
+| 9 | [bytes()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-8) | Trả về đối tượng byte không đổi |
+| 10 | [callable()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-9) | Kiểm tra xem đối tượng có thể gọi hay không |
+| 11 | [chr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-10)	| Trả về một ký tự (một chuỗi) từ Integer |
+| 12 | [classmethod()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-11)	| Trả về một class method cho hàm |
+| 13 | [compile()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-12)	| Trả về đối tượng code Python |
+| 14 | [complex()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-13)	| Tạo một số phức |
+| 15 | [delattr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-14)	| Xóa thuộc tính khỏi đối tượng |
+| 16 | [dict()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-15) | Tạo Dictionary |
+| 17 | [dir()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-16)	| Trả lại thuộc tính của đối tượng |
+| 18 | [divmod()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-17)	| Trả về một Tuple của Quotient và Remainder |
+| 19 | [enumerate()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-18) | Trả về đối tượng kê khai |
+| 20 | [eval()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-19) | Chạy code Python trong chương trình |
+| 21 | [exec()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-20) | Thực thi chương trình được tạo động |
+| 22 | [filter()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-21) | Xây dựng iterator từ các phần tử True |
+| 23 | [float()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-22) | Trả về số thập phân từ số, chuỗi |
+| 24 | [format()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-23) | Trả về representation được định dạng của giá trị |
+| 25 | [frozenset()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-24) | Trả về đối tượng frozenset không thay đổi |
+| 26 | [getattr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-25) | Trả về giá trị thuộc tính được đặt tên của đối tượng |
+| 27 | [globals()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-26)	| Trả về dictionary của bảng sumbol toàn cục hiện tại |
+| 27 | [hasattr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-27)	| Trả về đối tượng dù có thuộc tính được đặt tên hay không |
+| 29 | [hash()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-28) | Trả về giá trị hash của đối tượng |
+| 30 | [help()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-29) | Gọi Help System được tích hợp sẵn |
+| 31 | [hex()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-30)	| Chuyển Integer thành Hexadecimal |
+| 32 | [id()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-31) | Trả về định danh của đối tượng |
+| 33 | [input()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-32) | Đọc và trả về chuỗi trong một dòng |
+| 34 | [int()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-33)	| Trả về số nguyên từ số hoặc chuỗi |
+| 35 | [isinstance()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-34) | Kiểm tra xem đối tượng có là Instance của Class không |
+| 36 | [issubclass()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-35) | Kiểm tra xem đối tượng có là Subclass của Class không |
+| 37 | [iter()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-36) | Trả về iterator cho đối tượng |
+| 38| [len()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-37)	| Trả về độ dài của đối tượng |
+| 39 | [list()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-38) | Tạo list trong Python |
+| 40 | [locals()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-39)| Trả về dictionary của bảng sumbol cục bộ hiện tại |
+| 41 | [map()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-40)	| Áp dụng hàm và trả về một list |
+| 42 | [max()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-41)	| Trả về phần tử lớn nhất |
+| 43 | [memoryview()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-42) | Trả về chế độ xem bộ nhớ của đối số |
+| 44 | [min()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-43)	| Trả về phần tử nhỏ nhất |
+| 45 | [next()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-44) | Trích xuất phần tử tiếp theo từ Iterator |
+| 46 | [object()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-45) | Tạo một đối tượng không có tính năng (Featureless Object) | |
+| 47 | [oct()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-46)	| Chuyển số nguyên sang bát phân |
+| 48 | [open()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-47) | Trả về đối tượng File |
+| 49 | [ord()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-48)	| Trả về mã Unicode code cho ký tự Unicode |
+| 50 | [pow()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-49)	| Trả về x mũ y |
+| 51 | [print()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-50) | In đối tượng được cung cấp |
+| 52 | [property()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-51) | Trả về thuộc tính property |
+| 53 | [range()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-52) | Trả về chuỗi số nguyên từ số bắt đầu đến số kết thúc |
+| 54 | [repr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-53) | Trả về representation có thể in của đối tượng |
+| 55 | [reversed()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-54) | Trả về iterator đảo ngược của một dãy |
+| 56 | [round()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-55) | Làm tròn số thập phân |
+| 57 | [set()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-56)	| Tạo một set các phần tử mới |
+| 58 | [setattr()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-57)	| Đặt giá trị cho một thuộc tính của đối tượng |
+| 59 | [slice()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-58) | Cắt đối tượng được chỉ định bằng range() |
+| 60 | [sorted()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-59) | Trả về list được sắp xếp |
+| 61 | [staticmethod()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-60) | Tạo static method từ một hàm |
+| 62 | [str()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-61)	| Trả về một representation không chính thức của một đối tượng |
+| 63 | [sum()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-62)	| Thêm một mục vào Iterable |
+| 64 | [super()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-63) | Cho phép tham chiếu đến Parent Class bằng super |
+| 65 | [tuple()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-64) | Tạo một Tuple |
+| 66 | [type()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-65) | Trả về kiểu đối tượng |
+| 67 | [vars()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-66) | Trả về thuộc tính __dict__ của class |
+| 68 | [zip()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-67)	| Trả về Iterator của Tuple |
+| 69 | [__import__()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-68) | Hàm nâng cao, được gọi bằng import |
 
 
 #### abs(num)

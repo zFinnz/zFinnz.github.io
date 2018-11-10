@@ -1149,7 +1149,7 @@ result = map(lambda n1, n2: n1+n2, num1, num2)
 print(list(result))
 [9, 11, 13]
 ```
-#### fd`max(iterable, *iterables[,key, default])` hoặc `max(arg1, arg2, *args[, key])`
+#### 42. `max(iterable, *iterables[,key, default])` hoặc `max(arg1, arg2, *args[, key])`
 Phương thức max () trả về phần tử lớn nhất trong một hoặc nhiều tham số có thể lặp lại hoặc lớn nhất.
 `max(iterable, *iterables[, key, default])`:
 + `iterable`:  ( tuple , string ), collection ( set , dictionary ) hoặc một đối tượng iterator có phần tử lớn nhất được tìm thấy

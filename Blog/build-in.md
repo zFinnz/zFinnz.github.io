@@ -1,3 +1,6 @@
+Trong Python được tích hợp sẵn rất nhiều hàm, chúng ta chỉ việc sử dụng nó mà không phải xây dựng như `C`. Dưới đây là danh sách các hàm đó, cùng với mô tả ngắn gọn về chúng
+Đây là bài viết rất dài dùng để làm bookmark khi cần dùng, phải mất đến 1 tuần mình mới viết xong, cái mà mình nhận được là chậm mấy cái `Dateline`.
+
 | Hàm | Mô tả |
 |-----|-----| 
 | [abs()](https://0xpan.blogspot.com/2018/11/danh-sach-cac-ham-dung-san-python.html#load-h4-0)	| Trả về giá trị tuyệt đối của một số	|

@@ -1,3 +1,5 @@
+Unicode là một loại mã hóa chuỗi kí tự đặc biệt trong các ngôn ngữ lập trình mà không chỉ riêng Python.
+Hiểu được các khái niệm và cách vận dụng sẽ giúp cho chúng ta rất nhiều trong việc lập trình.
 #### Các khái niệm
 Hầu hết chúng ta đều nghĩ chuỗi kí tự là một chuỗi các kí tự (thực sự là các mã số nguyên của chúng) được dùng để biểu diễn văn bản. 
 Ở hóa kì, tiêu chuẩn `ASCII` là định nghĩa khái niệm chuỗi văn bản của họ, định nghĩa mã kí tự `0...127`, và điều này cho phép mỗi kí tự được lưu trữ trong một `byte` (8 bit). 

@@ -54,10 +54,11 @@ Các kí tự thoát trong python
 
 ```py
 print("Blog \t 0xpan.blogspot.com")
-Blog 	0xpan.blogspot.com
+#Blog 	0xpan.blogspot.com
 ```
 
 | Stt | Hàm | Miêu tả |
+|-----|-----|---------|
 | 1 | [S.capitalize()](https://0xpan.blogspot.com/2018/11/string-in-python.html#load-h4-1) | Hàm in hoa chữ cái đầu tiên của chuỗi. |
 | 2 | [S.casefold()](https://0xpan.blogspot.com/2018/11/string-in-python.html#load-h4-2)| Hàm loại bỏ tất cả các phân biệt chữ hoa trong chuỗi |
 | 3 | [S.center()](https://0xpan.blogspot.com/2018/11/string-in-python.html#load-h4-3)| Hàm trả về chuỗi được hiển thị ở giữa một chuỗi. |

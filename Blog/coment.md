@@ -5,6 +5,7 @@ Ví dụ:
 print("I love Python!") # Bạn cũng có thể chú thích như thế này.
 # Sử dụng chú thích để loại bỏ đoạn code tạm thời:
 # print("Hello World!")
+# Chưa có ngoại lệ nào được gọi trước khi gọi raise
 ```
 + Chú thích trong Python sẽ bị bỏ qua khi chương trình được thực thi.
 + Một chú thích bắt đầu bằng dấu `#` cho đến hết `cuối dòng vật lí`, có thể đặt ở đầu dòng, sau khoảng trắng hoặc mã, nhưng không được đặt trong chuỗi kí tự.

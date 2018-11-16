@@ -7,7 +7,7 @@ Exception là gì?
 
 `Exception` có thể hiểu là các lỗi, biến cố khi thực thi chương trình khiến cho luồng thực thi bị phá vỡ. Ví dụ:
 ```py
-print(a)
+>>> print(a)
 NameError: name 'a' is not defined
 ```
 Ở ví dụ trên, chúng ta đã dùng hàm `print()` để in ra giá trị biến `a`, tuy nhiên biến `a` chưa được khai báo nên Python trả về cho chúng ta lỗi `NameError`.
@@ -19,26 +19,26 @@ Xử lý Exceptions
 Câu lệnh `raise`
 + Nó được sử dụng để tạo ra ngoại lệ với một điều kiện xảy ra như một phần của kiểm tra lỗi.
 ```py
-x = 10
-if x > 5:
-    raise Exception('x không nên bé hơn 5. Giá trị của x là: {}'.format(x))
+>>> x = 10
+>>> if x > 5:
+>>>    raise Exception('x không nên bé hơn 5. Giá trị của x là: {}'.format(x))
 Exception: x không nên bé hơn 5. Giá trị của x là: 10
 ```
 + Chúng ta có thể sử dụng lệnh `raise` để gọi một ngoại lệ do người dùng tự định nghĩa.
 
 + `raise` mà không có bất kỳ đối số nào là một cú pháp python đặc biệt được gọi là `reraise`. Nó có nghĩa là có được ngoại lệ và tái nâng cao nó. Hiểu một cách đơn giản hơn, nó sẽ quay ngược lại đoạn mã để xử lí nó.
 ```py
-try:
-    f = open('file.txt', 'r')
-except IOError:
-    # code
-    raise
+>>> try:
+>>>    f = open('file.txt', 'r')
+>>> except IOError:
+>>>    # code
+>>>    raise
 ```
 + Nếu được thực hiện trong trường hợp không phải là một trường hợp ngoại lệ của một ngoại lệ khác, lỗi sau được hiển thị: `RuntimeError: No active exception to reraise`
 ```py
-x = 10
-if x > 5:
-	raise 
+>>> x = 10
+>>> if x > 5:
+>>>	raise 
 RuntimeError: No active exception to reraise
 ```
 

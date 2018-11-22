@@ -3,7 +3,25 @@
 Trong python cũng như tất các các ngôn ngữ lập trình khác, những trường hợp lỗi luôn có thể xảy ra gây ra lỗi không đáng có trong chương trình.
 Các lỗi này ảnh hưởng đến hiệu suất của chương trình, đôi khi còn có thể gây nên `crash` hoặc `server downtime`.
 Có ít nhất hai loại lỗi khác nhau: lỗi cú pháp (`Syntax Errors`) và ngoại lệ (`Exception`).
+```py
+try:
+    raise ValueError
+except:
+    raise
+```
+```py
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 2, in <module>
+    raise ValueError
+ValueError
 
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 4, in <module>
+    raise NameError from e
+NameError                                                                                                                       
+```
 Syntax Errors là gì
 Lỗi cú pháp, hay còn được biết tới là lỗi phân tích cú pháp (`parsing error`), có lẽ là lỗi phổ biến nhất đối với lập trình viên Python.
 ```py

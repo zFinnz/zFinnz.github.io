@@ -20,7 +20,7 @@ The above exception was the direct cause of the following exception:
 Traceback (most recent call last):
   File "C:\Users\Finn\Desktop\python.py", line 4, in <module>
     raise NameError from e
-NameError                                                                                                                       
+NameError                                                                                                           
 ```
 Syntax Errors là gì
 Lỗi cú pháp, hay còn được biết tới là lỗi phân tích cú pháp (`parsing error`), có lẽ là lỗi phổ biến nhất đối với lập trình viên Python.

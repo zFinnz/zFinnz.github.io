@@ -2,45 +2,68 @@
 
 Trong python cũng như tất các các ngôn ngữ lập trình khác, những trường hợp ngoại lệ luôn có thể xảy ra gây ra lỗi không đáng có trong chương trình.
 Các lỗi này ảnh hưởng đến hiệu suất của chương trình, đôi khi còn có thể gây nên `crash` hoặc `server downtime`.
+Có ít nhất hai loại lỗi khác nhau: lỗi cú pháp (`Syntax Errors`) và ngoại lệ (`Exception`).
+
+Syntax Errors là gì
+Lỗi cú pháp, hay còn được biết tới là lỗi phân tích cú pháp (`parsing error`), có lẽ là lỗi phổ biến nhất đối với lập trình viên Python.
+```py
+>>> while True print 'Hello world'
+  File "<stdin>", line 1, in ?
+    while True print 'Hello world'
+                   ^
+SyntaxError: invalid syntax
+```
+Bộ phân tích cú pháp lặp lại dòng gây lỗi, và hiển thị một mũi tên hình con trỏ vào điểm đầu tiên lỗi được phát hiện. Lỗi được phát hiện nằm ở phía trước dấu mũi tên.
+Ở ví dụ trên, lỗi được phát hiện tại hàm `print` vì bị thiếu dấu `:` trước đó. Tên file và số dòng cũng được thông báo để bạn có thể xác định được nơi cần sửa.
 
 Exception là gì?
 
-`Exception` có thể hiểu là các lỗi, biến cố khi thực thi chương trình khiến cho luồng thực thi bị phá vỡ. Ví dụ:
+`Exception` có thể hiểu là các lỗi, biến cố khi thực thi chương trình khiến cho luồng thực thi bị phá vỡ ngay cả khi câu lệnh hoặc biểu thức có cú pháp chính xác. Lỗi được phát hiện trong quá trình thực thi. Ví dụ:
 ```py
 >>> print(a)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
 NameError: name 'a' is not defined
 ```
+```py
+>>> '2' + 2
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: cannot concatenate 'str' and 'int' objects
+```
+Ngoại lệ có nhiều loại khác nhau và được in như một phần của thông báo, ngoại lệ trong ví dụ trên là `NameError` và `TypeError`. Cấu trúc chung của chuỗi được in ra có dạng tên của ngoại lệ được tính hợp sẵn của Python và lời giải thích nguyên nhân gây ra lỗi, ngoại lệ trừ ngoại lệ do người dùng tự định nghĩa.
+Phần trước của thông báo lỗi cho thấy nơi ngoại lệ xảy ra, dưới dạng một truy xuất `stack`.
 Ở ví dụ trên, chúng ta đã dùng hàm `print()` để in ra giá trị biến `a`, tuy nhiên biến `a` chưa được khai báo nên Python trả về cho chúng ta lỗi `NameError`.
 
 Xử lý Exceptions
 
-`Exceptions` là một phương thức hết sức đơn giản để các bạn có thể quản lí những lỗi có thể xảy ra trong code của bạn. Khi bạn nghĩ đoạn `code` của bạn có thể gây ra lỗi bạn có thể sử dụng `exceptions` để phát hiện và xử lí chúng.
+`Exceptions` là một phương thức hết sức đơn giản để các bạn quản lí những lỗi có thể xảy ra trong chương trình của mình. Khi bạn nghĩ đoạn `code` của bạn có thể gây ra lỗi, bạn có thể sử dụng `exceptions` để phát hiện và xử lí chúng.
 
 Câu lệnh `raise`
-+ Nó được sử dụng để tạo ra ngoại lệ với một điều kiện xảy ra như một phần của kiểm tra lỗi.
+Cấu trúc của câu lệnh `raise` được hiểu như sau:
+```py
+raise_stmt ::=  "raise" [expression ["from" expression]]
+```
++ Nó được sử dụng để tạo ra ngoại lệ với một điều kiện xảy ra như một phần của bộ kiểm tra lỗi.
 ```py
 >>> x = 10
 >>> if x > 5:
 >>>    raise Exception('x không nên bé hơn 5. Giá trị của x là: {}'.format(x))
 Exception: x không nên bé hơn 5. Giá trị của x là: 10
 ```
-+ Chúng ta có thể sử dụng lệnh `raise` để gọi một ngoại lệ do người dùng tự định nghĩa.
 
-+ `raise` mà không có bất kỳ đối số nào là một cú pháp python đặc biệt được gọi là `reraise`. Nó có nghĩa là có được ngoại lệ và tái nâng cao nó. Hiểu một cách đơn giản hơn, nó sẽ quay ngược lại đoạn mã để xử lí nó.
-```py
->>> try:
->>>    f = open('file.txt', 'r')
->>> except IOError:
->>>    # code
->>>    raise
-```
-+ Nếu được thực hiện trong trường hợp không phải là một trường hợp ngoại lệ của một ngoại lệ khác, lỗi sau được hiển thị: `RuntimeError: No active exception to reraise`
++ `raise` mà không có bất kỳ đối số nào là một cú pháp python đặc biệt được gọi là `reraise`. Nó có nghĩa là được ngoại lệ lại và tái nâng cao nó. Hiểu một cách đơn giản hơn, nó sẽ quay ngược lại đoạn mã để xử lí nó. Điều này thực sự hữu ích khi trình xử lí lỗi phát hiện ra nó không thể xử lí một ngoại lệ mà nó nhận được, bằng câu lệnh `raise` nó sẽ quay ngược lại và tái nâng cao ngoại lệ.
+
++ Nếu `reraise` được thực hiện trong trường hợp không phải là một trường hợp ngoại lệ của một ngoại lệ khác, lỗi sau được hiển thị: `RuntimeError: No active exception to reraise`
 ```py
 >>> x = 10
 >>> if x > 5:
 >>>	raise 
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
 RuntimeError: No active exception to reraise
 ```
++ Ngoàira, Chúng ta có thể sử dụng lệnh `raise` để gọi một ngoại lệ do người dùng tự định nghĩa. Chúng ta sẽ nói thêm về điều này ở phần sau.
 
 Câu lệnh assert
 ```py
@@ -74,10 +97,10 @@ AssertionError
 Để tạo một thông báo tùy chọn ta có thể viết:
 ```py
 a = 5
-assert(a==6), "sai"
+>>> assert(a==6), "sai"
 AssertionError: Sai
 # Tương đương với
-assert False, "sai"
+>>> assert False, "sai"
 ```
 
 Khối lệnh `try...except`
@@ -127,7 +150,7 @@ except Exception as e:
     print(str(e))
 
 Nhập vào một số: a # ta nhập chữ cái a từ bàn phím thay vì 1 chữ số
-# invalid literal for int() with base 10: 'a'
+#invalid literal for int() with base 10: 'a'
 ```
 Ở ví dụ trên, ta định nghĩa một `except NameError` để bắt khi không tìm thấy tên biến và một `except Exception` để xử lí lỗi không xác định ngoài lỗi đó mà ta chưa biết rõ.
 

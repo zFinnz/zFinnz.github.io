@@ -1,6 +1,6 @@
 <h1>Python Exceptions Handling</h1>
 
-Trong python cũng như tất các các ngôn ngữ lập trình khác, những trường hợp ngoại lệ luôn có thể xảy ra gây ra lỗi không đáng có trong chương trình.
+Trong python cũng như tất các các ngôn ngữ lập trình khác, những trường hợp lỗi luôn có thể xảy ra gây ra lỗi không đáng có trong chương trình.
 Các lỗi này ảnh hưởng đến hiệu suất của chương trình, đôi khi còn có thể gây nên `crash` hoặc `server downtime`.
 Có ít nhất hai loại lỗi khác nhau: lỗi cú pháp (`Syntax Errors`) và ngoại lệ (`Exception`).
 
@@ -31,30 +31,29 @@ Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 TypeError: cannot concatenate 'str' and 'int' objects
 ```
-Ngoại lệ có nhiều loại khác nhau và được in như một phần của thông báo, ngoại lệ trong ví dụ trên là `NameError` và `TypeError`. Cấu trúc chung của chuỗi được in ra có dạng tên của ngoại lệ được tính hợp sẵn của Python và lời giải thích nguyên nhân gây ra lỗi, ngoại lệ trừ ngoại lệ do người dùng tự định nghĩa.
-Phần trước của thông báo lỗi cho thấy nơi ngoại lệ xảy ra, dưới dạng một truy xuất `stack`.
-Ở ví dụ trên, chúng ta đã dùng hàm `print()` để in ra giá trị biến `a`, tuy nhiên biến `a` chưa được khai báo nên Python trả về cho chúng ta lỗi `NameError`.
+Ngoại lệ có nhiều loại khác nhau và được in như một phần của thông báo lỗi, ngoại lệ trong ví dụ trên là `NameError` và `TypeError`. Cấu trúc chung của chuỗi thông báo lỗi được in ra có dạng tên của ngoại lệ được tính hợp sẵn của Python và lời giải thích nguyên nhân gây ra lỗi, trừ ngoại lệ do người dùng tự định nghĩa. Phần trước của thông báo lỗi cho thấy nơi ngoại lệ xảy ra, dưới dạng một truy xuất `stack`.
+Ở ví dụ thứ nhất, chúng ta đã dùng hàm `print()` để in ra giá trị biến `a`, tuy nhiên biến `a` chưa được khai báo nên Python trả về cho chúng ta lỗi `NameError`.
 
 Xử lý Exceptions
 
-`Exceptions` là một phương thức hết sức đơn giản để các bạn quản lí những lỗi có thể xảy ra trong chương trình của mình. Khi bạn nghĩ đoạn `code` của bạn có thể gây ra lỗi, bạn có thể sử dụng `exceptions` để phát hiện và xử lí chúng.
+`Exceptions handling` là một phương thức hết sức đơn giản để các bạn quản lí những lỗi có thể xảy ra trong chương trình của mình. Khi bạn nghĩ đoạn `code` của bạn có thể gây ra lỗi, bạn có thể sử dụng `exceptions handling` để phát hiện và xử lí chúng.
 
 Câu lệnh `raise`
+
 Cấu trúc của câu lệnh `raise` được hiểu như sau:
 ```py
 raise_stmt ::=  "raise" [expression ["from" expression]]
 ```
-+ Nó được sử dụng để tạo ra ngoại lệ với một điều kiện xảy ra như một phần của bộ kiểm tra lỗi.
++ `raise expression`  được sử dụng để gọi một ngoại lệ (có thể là ngoại lệ được xây dựng sẵn của python hoặc ngoại lệ do người dùng tự định nghĩa) tùy thuộc vào một điều kiện nhất định, nó được xem như là một phần của `Exceptions handling`.
 ```py
 >>> x = 10
 >>> if x > 5:
 >>>    raise Exception('x không nên bé hơn 5. Giá trị của x là: {}'.format(x))
 Exception: x không nên bé hơn 5. Giá trị của x là: 10
 ```
++ Câu lệnh `raise` mà không có bất kỳ đối số nào là một cú pháp python đặc biệt được gọi là `reraise`. Nó có nghĩa là được ngoại lệ lại và tái nâng cao nó. Trình thông dịch sẽ tìm ngoại lệ cuối cùng và xử lý (chú ý ở đây sẽ là ngoại lệ cuối cùng được xử lí chứ không phải ngoại lệ cuối cùng được nêu ra trong mã nguồn). Sau đó, nó hoạt động giống như khi bạn sử dụng cú pháp `raise expression`, giá trị và truy xuất lại gần đây nhất được in ra thông báo lỗi. Điều này thực sự hữu ích khi trình xử lí lỗi phát hiện ra nó không thể xử lí một ngoại lệ mà nó nhận được, bằng câu lệnh `raise` nó sẽ quay ngược lại và tái nâng cao ngoại lệ.
 
-+ `raise` mà không có bất kỳ đối số nào là một cú pháp python đặc biệt được gọi là `reraise`. Nó có nghĩa là được ngoại lệ lại và tái nâng cao nó. Hiểu một cách đơn giản hơn, nó sẽ quay ngược lại đoạn mã để xử lí nó. Điều này thực sự hữu ích khi trình xử lí lỗi phát hiện ra nó không thể xử lí một ngoại lệ mà nó nhận được, bằng câu lệnh `raise` nó sẽ quay ngược lại và tái nâng cao ngoại lệ.
-
-+ Nếu `reraise` được thực hiện trong trường hợp không phải là một trường hợp ngoại lệ của một ngoại lệ khác, lỗi sau được hiển thị: `RuntimeError: No active exception to reraise`
++ Vì lí do trên, nếu `reraise` được thực hiện trong trường hợp không phải là một trường hợp ngoại lệ của một ngoại lệ khác, lỗi sau được hiển thị: `RuntimeError: No active exception to reraise`
 ```py
 >>> x = 10
 >>> if x > 5:
@@ -63,7 +62,110 @@ Traceback (most recent call last):
   File "<stdin>", line 2, in <module>
 RuntimeError: No active exception to reraise
 ```
-+ Ngoàira, Chúng ta có thể sử dụng lệnh `raise` để gọi một ngoại lệ do người dùng tự định nghĩa. Chúng ta sẽ nói thêm về điều này ở phần sau.
+
+Sự khác nhau giữa `raise`, `raise expression`, `raise expression from expression`
+
+Ví dụ 1
+```py
+try:
+    raise ValueError
+except:
+    raise Exception 
+```
+Kết quả:
+```py
+Nhập vào một số: `                                                       
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 2, in <module>
+    raise ValueError
+ValueError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 4, in <module>
+    raise Exception
+Exception                                                 
+```
+Ví dụ 2
+```py
+try:
+    raise ValueError
+except:
+    raise
+
+```
+Kết quả:
+```py
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 2, in <module>
+    raise ValueError
+ValueError
+```
+Ví dụ 3
+```py
+try:
+    raise ValueError
+except Exception as e:
+    raise NameError from e
+```
+Kết quả
+```py
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 2, in <module>
+    raise ValueError
+ValueError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 4, in <module>
+    raise NameError from e
+NameError                                                                                                                       
+```
+Ví dụ 4
+```py
+try:
+    raise ValueError
+except Exception as e:
+    raise NameError from None
+```
+Kết quả
+```py
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 4, in <module>
+    raise NameError from None
+NameError
+```
+Python sử dụng một cách xây dựng `traceback` rất đặc biệt. Thay vì xây dựng toàn bộ dấu vết ngăn xếp (`stack`) trong việc tạo ngoại lệ( như Java) hoặc khi một ngoại lệ được tạo ra, Python đã xây dựng một khung `traceback từng phần` tại từng thời điểm khi ngoại lệ bật lên.
+Mỗi khi một ngoại lệ mới phát sinh thì một khung ngăn xếp mới được tạo ra với lệnh `raise` có đối số , vòng lặp trình thông dịch bytecode Python thực hiện [PyTraceback_Here](https://github.com/python/cpython/blob/v3.7.0/Python/traceback.c#L229) để thêm mới đến danh sách liên kết của các đối tượng `traceback` đại diện cho `stack`. 
+Python duy trì một chồng các ngoại lệ (và `traceback`) cho mỗi luồng và bị treo khi các khối `except` và `finally` chưa được thực hiện xong. Câu lệnh `raise` không có đối số sẽ khôi phục ngoại lệ (và `traceback`) được đại diện bởi mục nhập đầu tiên trên `stack` này, ngay cả khi `except` hoặc `finally` đang ở trong một hàm khác.
+
+Khi thực hiện lệnh ở ví dụ 1:
+```py
+raise ValueError
+```
+Python xây dựng một `traceback` tương ứng với dòng đó:
+```py
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 2, in <module>
+    raise ValueError
+ValueError
+```
+Khi thực hiện `raise` không có đối số ở ví dụ, `traceback` này được khôi phục, nhưng không có đối số nào đi với lệnh `raise`. Cho nên, khi ngoại lệ tạo ra, sẽ không có `trackback` được thêm vào theo dõi ngăn xếp, dẫn đến dấu vết ngăn xếp cuối cùng được hiển thị:
+```py
+Traceback (most recent call last):
+  File "C:\Users\Finn\Desktop\python.py", line 2, in <module>
+    raise ValueError
+ValueError
+```
+Còn `raise expression from expression` là một cách xây dựng python mới từ [PEP 3134](https://www.python.org/dev/peps/pep-3134/) nó như là một kiểu mở rộng của `raise expression`.
+khi bạn sử dụng `from`, thuộc tính `__cause__` được thiết lập và thông báo cho biết lí do trực tiếp gây ra ngoại lệ. Nếu bạn bỏ qua `from` thì thuộc tính  `__cause__` cũng sẽ không được thiết lập, nhưng thuộc tính `__context__`  vẫn thể được thiết lập, và `traceback` sau đó in ra màn hình `The above exception was the direct cause of the following exception:` (chính là cú pháp `raise expression`) .
+
+Khi tạo một trình xử lý ngoại lệ mà bạn không muốn hiển thị ngữ cảnh (không muốn trong quá trình xử lý một ngoại lệ khác tạo ra thông báo), thì hãy sử dụng `raise ... from None` để đặt cờ hiệu `__suppress_context__` thành `True` khi đó `__context__` sẽ bị bỏ qua khi in ra màn hình một lần `traceback`.
+
+Nói cách khác, Python đặt một`context` về các ngoại lệ để bạn có thể quan sát một ngoại lệ được tạo ra ở đâu, cho phép bạn xem liệu một ngoại lệ khác có đang được diễn ra hay không. Bạn cũng có thể thêm `cause` vào một ngoại lệ, làm cho `traceback` rõ ràng về những ngoại lệ có thể đang xảy ra đồng thời, và ngữ cảnh bị bỏ qua (nhưng vẫn có thể quan sát khi ở chế độ gỡ lỗi-`debugging`). Sử dụng `raise ... from None` để bỏ qua ngữ cảnh khi xử lí mọt ngoại lệ khác diễn ra đồng thời .
+
 
 Câu lệnh assert
 ```py
@@ -105,7 +207,7 @@ AssertionError: Sai
 
 Khối lệnh `try...except`
 
-Để sử dụng `exception handling` trong Python, đầu tiên bạn cần phải làm sao phát hiện được các ngoại lệ có thể phát sinh trong đoạn `code` của bạn. Trong python bạn có thể sử dụng từ khoá `try` và `except` để bắt toàn bộ ngoại lệ có thể xảy ra trong một khối code của bạn.
+Câu hỏi được đặt ra ở đây là làm sao phát hiện được các ngoại lệ có thể phát sinh trong đoạn `code` của bạn. Đừng lo, trong python bạn có thể sử dụng từ khoá `try` và `except` để bắt toàn bộ ngoại lệ có thể xảy ra trong một khối code của bạn.
 Các câu lệnh nằm trong khối lệnh `try` nếu xảy ra lỗi nó sẽ gọi ra `exception handling` trong khối lệnh nằm sau `except` và xử lí chúng. Cú pháp ta sử dụng ở đây là:
 ```py
 try:
@@ -310,5 +412,5 @@ Các exception có sẵn trong Python
 | `NotImplementedError` | Xuất hiện khi một phương thức trừu tượng cần được thực hiện trong lớp kế thừa chứ không phải là lớp thực thi |
 | `UnboundLocalError` | Xuất hiện khi chúng ta cố tình truy cập vào một biến trong hàm hoặc phương thức, nhưng không thiết lập giá trị cho nó. |
 
-Phân cấp ngoại lệ trong Python
-Bạn có thểm tham khảo [Exception hierarchy](https://docs.python.org/3/library/exceptions.html#exception-hierarchy)
+
+Ngoài ra bạn có thể tham khảo thêm các exceptions được xây dựng sẵn ở [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) và phân cấp của nó [Exception hierarchy](https://docs.python.org/3/library/exceptions.html#exception-hierarchy)

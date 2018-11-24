@@ -47,16 +47,16 @@ Nói một cách giá giá trị `hash` của đối tượng `mutable` có th�
 Ngược lại với đối tượng `imutable`, giá trị của nó là không thể thay đổi. Khi ta cố thực hiện thay đổi ở code thì một bản sao giá trị của nó được tạo ra thực hiện tính toán và trả về một đối tượng mới và được gán cho biến ban đầu.
 Nói một cách giá trị `hash` và `id` của đối tượng là không đổi, tuy nhiên biến gán giá trị sẽ được gán cho một đối tượng khác. 
 Một số loại đối tượng `immutable` phổ biến:
-int
-float
-decimal
-complex
-bool
-string
-tuple
-range
-frozenset
-bytes
++ int
++ float
++ decimal
++ complex
++ bool
++ string
++ tuple
++ range
++ frozenset
++ bytes
 ```py
 >>> a = 5.0
 >>> id(a)
@@ -67,11 +67,11 @@ bytes
 ```
 Một số loại `mutable` phổ biến (hầu hết là những đối tượng khác ngoài những đối tượng trên):
 
-list
-Dictionary
-Set
-bytearray
-Lớp được định nghĩa bởi người dùng
++ list
++ Dictionary
++ Set
++ bytearray
++ Lớp được định nghĩa bởi người dùng
 ```py
 >>> a = [1, 2, 3, 4]
 >>> id(a)

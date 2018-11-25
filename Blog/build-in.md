@@ -163,9 +163,9 @@ True
 Trả về chuỗi `string` có thể in ra màn hình (`printable`) của object. Nó bỏ qua các ký tự không phải `ASCII` trong chuỗi bằng cách sử dụng kí tự thoát `\x`, `\u` hoặc `\U`. Hàm chỉ nhận một tham số là đối tượng (như `string`, `list`,...).
 Ví dụ, kí tự `ö` sẽ được chuyển thành `\xf6`, `√` sẽ thành `\u221a`, `Š` sẽ thành `\u0152`.
 ```py
->>> s = "Hello \n World"
+>>> s = "Xin chào"
 >>> ascii(s)
-'Hello \\n World'
+"'xin ch\\xe0o'"
 >>> randomList = ['Python','PŸTHON','√', 'ö','Pythön', 'Š', '©']
 >>> print(ascii(randomList))
 ['Python', 'P\u0178THON', '\u221a', '\xf6', 'Pyth\xf6n', '\u0160', '\xa9']

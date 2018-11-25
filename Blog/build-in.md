@@ -160,8 +160,8 @@ False
 True
 ```
 #### ascii(object)
-Trả về chuỗi `string` có thể in ra màn hình (`printable`) của object. Nó bỏ qua các ký tự không phải ASCII trong chuỗi bằng cách sử dụng kí tự thoát `\x`, `\u` hoặc `\U`. Hàm chỉ nhận một tham số là đối tượng (như `string`, `list`,...).
-Ví dụ, ö sẽ được chuyển thành \xf6, √ sẽ thành \u221a, Šsẽ thành \u0152.
+Trả về chuỗi `string` có thể in ra màn hình (`printable`) của object. Nó bỏ qua các ký tự không phải `ASCII` trong chuỗi bằng cách sử dụng kí tự thoát `\x`, `\u` hoặc `\U`. Hàm chỉ nhận một tham số là đối tượng (như `string`, `list`,...).
+Ví dụ, kí tự `ö` sẽ được chuyển thành `\xf6`, `√` sẽ thành `\u221a`, `Š` sẽ thành `\u0152`.
 ```py
 >>> s = "Hello \n World"
 >>> ascii(s)

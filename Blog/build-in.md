@@ -166,9 +166,9 @@ Ví dụ, kí tự `ö` sẽ được chuyển thành `\xf6`, `√` sẽ thành 
 >>> s = "Hello \n World"
 >>> ascii(s)
 'Hello \\n World'
->>> randomList = ['Python','PŸTHON','√', 'ö','Pythön', 'Š', 'Œ','Ž',10, '©']
+>>> randomList = ['Python','PŸTHON','√', 'ö','Pythön', 'Š', '©']
 >>> print(ascii(randomList))
-['Python', 'P\u0178THON', '\u221a', '\xf6', 'Pyth\xf6n', '\u0160', '\u0152', '\u017d', 10, '\xa9']
+['Python', 'P\u0178THON', '\u221a', '\xf6', 'Pyth\xf6n', '\u0160', '\xa9']
 ```
 #### bin(num)
 Hàm chuyển đổi và trả về một chuỗi nhị phân bắt đầu bằng `0b` của một số nguyên. Hàm `bin()` chỉ có 1 tham số là `num`, nếu `num` không phải là số nguyên, nó phải thực thi một phương thức `__index__()` để trả về một số nguyên. Nếu `num` không được hiểu là số nguyên thì việc chạy hàm sẽ tạo ra một ngoại lệ `TypeError`.

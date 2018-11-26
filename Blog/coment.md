@@ -1,1 +1,1 @@
-Tuy nhiên, có một vấn đề khác. Trong bất kỳ ngôn ngữ nào, kẻ thù tồi tệ nhất của trình thu gom rác là `finalizers` - các phương thức do người dùng định nghĩa được gọi khi `GC` muốn thu thập một đối tượng (trong Python một `finalizer` được tạo ra bằng cách định nghĩa phương thức `__del__`). 
+g `GC` g

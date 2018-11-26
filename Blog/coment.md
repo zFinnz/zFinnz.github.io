@@ -1,26 +1,5 @@
-```py
-import gc
-# Chúng ta dung ctypes để truy cập các đối tượng không thể 
-#truy cập của chúng ta theo địa chỉ bộ nhớ.
-class PyObject(ctypes.Structure):
-    _fields_ = [("refcnt", ctypes.c_long)]
-gc.disable()  # Vô hiệu hóa gc
-lst = []
-lst.append(lst)
-# Lưu địa chỉ của list
-lst_address = id(lst)
-# Phá hủy tham chiếu lst
-del lst
-object_1 = {}
-object_2 = {}
-object_1['obj2'] = object_2
-object_2['obj1'] = object_1
-obj_address = id(object_1)
-# Phá hủy các tham chiếu
-del object_1, object_2
-# Bỏ ghi chú nếu bạn muốn chạy trình gom rác thủ công 
-# gc.collect()
-# Kiểm tra bộ đếm tham chiếu
-print(PyObject.from_address(obj_address).refcnt)
-print(PyObject.from_address(lst_address).refcnt)
-```
+Để giải quyết vấn đề này, Python đã tích hợp `module gc` có chức năng phát hiện các tham chiếu và giải quyết nó. 
+
+Tham chiếu xoay vòng chỉ xảy ra với các đối tượng `container` (ví dụ, trong các đối tượng có thể chứa các đối tượng khác), chẳng hạn như `list`, `dict`, `class`, `tuple`. 
+
+Bộ gom rác phát sinh không theo dõi tất cả các loại `immutable` ngoại trừ `tuple`. Các `tuple` và `dict` cho dù chỉ chứa các đối tượng `immutable` nhưng cũng có thể không được theo dõi tùy thuộc vào các điều kiện nhất định.

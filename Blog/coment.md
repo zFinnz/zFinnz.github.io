@@ -1,9 +1,5 @@
 ```py
-test = object()
-print(type(test))
-#<class 'object'>
-print(dir(test))
-['__class__', '__delattr__', '__doc__', '__format__', '__getattribute__', 
-'__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', 
-'__setattr__', '__sizeof__', '__str__', '__subclasshook__']
+r[n] = start + step * n (cho cả step dương và âm)
+trong đó: n >= 0 và r [n] < stop (đối với step dương)
+trong đó: n> = 0 và r [n]> stop ( cho step âm
 ```

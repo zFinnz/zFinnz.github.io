@@ -25,5 +25,5 @@ def Binary(n):
     d = binary[::-1] 
   return d 
 print(Binary(100))
-001
+0
 ```

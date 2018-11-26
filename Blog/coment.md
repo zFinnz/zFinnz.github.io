@@ -11,6 +11,6 @@
 'insert', 'pop', 'remove', 'reverse', 'sort']
 # Trả về giá trị của dir() rỗng
 >>> dir()
-['__annotations__', '__builtins__', '__doc__', '__loader__', '__name__', '__package__', 
-'__spec__', 'a', 'number', 'numbers']
+['__annotations__', '__builtins__', '__doc__', '__loader__', '__name__', 
+'__package__', '__spec__', 'a', 'number', 'numbers']
 ```

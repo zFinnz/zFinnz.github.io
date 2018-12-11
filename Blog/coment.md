@@ -1,6 +1,1 @@
-```py
->>> # Một chú thích đơn giản, bạn có thể dùng để chú thích đoạn code của mình.
->>> print("I love Python!") # Bạn cũng có thể chú thích như thế này.
->>> # Sử dụng chú thích để loại bỏ đoạn code tạm thời:
->>> # print("Hello World!")
-```
+`GC` bỏ qua các bộ chứa chỉ các loại bất biến ([immutable](http://www.0xpan.me/2018/11/mutable-va-immutable-trong-python.html)) như (`int` , `string`,… hoặc `tuples` chỉ chứa các loại `immutable`)

@@ -25,7 +25,8 @@ def foo():
 	pass 
  
 >>> a = [1, 2, 3, 4]
->>> a = [1, '5', (1, 2, 3), [1, 2, 3], foo] # list a chứ integer, string, tuple, list, function
+>>> a = [1, '5', (1, 2, 3), [1, 2, 3], foo] 
+# list a chứa integer, string, tuple, list, function
 >>> type(a)
 #<class 'list'>
 ```

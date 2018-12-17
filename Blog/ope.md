@@ -120,6 +120,53 @@ Và ta có thể xóa mục trong danh sách bằng lệnh `del`.
 >>> a
 ['b', 'c', 'd', 'e', 'f']
 ```
+
+Toán tử trong list
++ Toán tử `in`
+Trả về `True` nếu một phần tử tồn tại trong `list`. Ngược lại, trả về `False`
+```py
+>>> a = [1, 2, 3, 4]
+>>> 1 in a
+True
+>>> 5 in a
+False
+```
++ Toán tử `not in`
+Trả về `True` nếu một phần tử không tồn tại trong `list`. Ngược lại, trả về `False`
+```py
+>>> a = [1, 2, 3, 4]
+>>> 1 not in a
+False
+>>> 5 not in a
+True
+```
++ Toán tử `+`
+Cho phép nối hai hoặc nhiều chuối với nhau.
+```py
+>>> a = [1, 2, 3, 4]
+>>> b = [5, 6, 7]
+>>> a + b
+[1, 2, 3, 4, 5, 6, 7]
+```
++ Toán tử `*` 
+Cho phép tạo ra một list mới có số lượng phần tử được nhân lên.
+```py
+>>> a = [1, 2, 3]
+>>> a * 2
+[1, 2, 3, 1, 2, 3]
+```
+Toán tử `==` và `!=`
+So sánh hai hay nhiều `list` với nhau
+```py
+>>> a = [1, 2, 3]
+>>> b = [i for i in range(1,3)]
+>>> a == b
+True
+>>> a != b
+False
+```
+
+
 Các hàm dựng sẵn trong `list`
 
 | Hàm | Chú thích |

@@ -1,5 +1,5 @@
 <h1> set trong python</h1>
-
+Set là một `container`, tuy nhiên không được sử dụng nhiều bằng `list` hay `tuple` trong Python.
 Các đặc điểm của set
 
 + Được giới hạn bởi cặp ngoặc (`{}`), các phần tử trong `set` được ngăn cách bằng dấu phẩy (`,`).

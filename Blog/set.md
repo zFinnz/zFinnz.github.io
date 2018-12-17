@@ -168,7 +168,7 @@ Bạn cũng có thể sao chép `set` bằng cách sử dụng toán tử `=`.Tu
 Set1.difference(set2[, set3...])
 
 Tương đương với:
-```
+```py
 set - set2 [-set3....]
 ```
 Phương thức này trả về tập hợp các phần tử có trong `set1` nhưng không tồn tại trong 2 hay nhiều `set` khác.

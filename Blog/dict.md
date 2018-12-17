@@ -130,6 +130,16 @@ True
 >>> 4 in d
 False
 ```
++ Toán tử `==` và `!=` 
+So sánh hai hay nhiều list với nhau
+```py
+>>> a = {'a': 1, 'b': 2}
+>>> b = {'a': 1, 'b': 2}
+>>> a == b
+True
+>>> a != b
+False
+```
 
 Các phương thức tính hợp sẵn của kiểu dữ liệu dictionary
 

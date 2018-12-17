@@ -97,6 +97,16 @@ Trả về một `set` chứa tất cả các phần tử chỉ tồn tại ở 
 >>> set_1 ^ set_2 
 {4, 5}
 ```
++ Toán tử `==` và `!=` 
+So sánh hai hay nhiều `set` với nhau
+```py
+>>> a = {1,2,3}
+>>> b = set({i for i in range(1,4)})
+>>> a == b
+True
+>>> a != b
+False
+```
 
 Các phương thức dựng sẵn trong set
 

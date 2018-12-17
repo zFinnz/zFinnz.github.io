@@ -90,6 +90,18 @@ True
 >>> 5 not in a
 False
 ```
++ Toán tử == và != 
+So sánh hai hay nhiều `tuple` với nhau
+```
+>>> a = (1, 2, 3)
+>>> b = tuple(i for i in range(1,4))
+>>> a == b
+True
+>>> a != b
+False
+```
+
+
 Các ưu điểm của `tuple` so với kiểu `list`:
 + `Tuple` được sử dụng cho các kiểu dữ liệu khác nhau còn `lisst` cho các kiểu giống nhau.
 + Vì `tuple` và đối tượng `immuatble` nên việc lặp qua `tuple` nhanh hơn so với danh sách, nên có thể tăng hiệu suất.

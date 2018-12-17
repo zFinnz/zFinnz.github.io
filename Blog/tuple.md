@@ -92,7 +92,7 @@ False
 ```
 + Toán tử == và != 
 So sánh hai hay nhiều `tuple` với nhau
-```
+```py
 >>> a = (1, 2, 3)
 >>> b = tuple(i for i in range(1,4))
 >>> a == b

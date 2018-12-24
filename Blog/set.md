@@ -4,15 +4,17 @@ Set là một `container`, tuy nhiên không được sử dụng nhiều bằng
 Các đặc điểm của set
 
 + Được giới hạn bởi cặp ngoặc (`{}`), các phần tử trong `set` được ngăn cách bằng dấu phẩy (`,`).
-+ `Set` không có thứ tự vì vậu các phươn thức `indexing` và `slice` sẽ không được hỗ trợ trong `set`
++ `Set` không có thứ tự vì vậy các phương thức `indexing` và `slice` sẽ không được hỗ trợ trong `set`.
 + Các phần tử của `set` là duy nhất, không được phép trùng lặp.
 + `Set` có thể sửa đổi (`mutable`) nhưng các phần tử trong `set` phải thuộc loại không thể thay đổi (`immutable`), vì vậy `set` không thể chứa 1 `set` khác.
 
 ```py
->>> set_a = {1, 'a', (1, 2, 3)}
+>>> a = {1, 'a', (1, 2, 3)}
+# set có thể chứa nhiều kiểu dữ liệu khác nhau
 >>> type(a)
 # <class 'set'>
->>> set_b = {[1, 2], [3, 4]}
+>>> b = {[1, 2], [3, 4]}
+# sset không thể chứa list vì list và đối tượng `mutable`
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 TypeError: unhashable type: 'list'
@@ -30,24 +32,26 @@ Cú pháp:
 set(iterable)
 ```
 ```py
->>> set_a = set((1, 2, 3, 4))
->>> set_a
+>>> a = set((1, 2, 3, 4))
+# khởi tạo set từ đối tượng tuple
+>>> a
 {1, 2, 3}
->>> set_b = set('aaaaaaaa')
->>> set_b
+>>> b = set('aaaaaaaa')
+# khởi tạo set từ đối tượng string
+>>> b
 {'a'}
 ```
 + Sử dụng set comprehension
 ```py
->>> set_a = { value for value in range(3)}
->>> set_a
+>>> a = { value for value in range(3)}
+>>> a
 {0, 1, 2}
 ```
 
 Toán tử trong set
 
 + Toán tử `in`
-Trả về `True` nếu `value` xuất hiện trong `set`. Ngược lại trả về `False`.
+Trả về `True` nếu `value` tồn tại trong `set`. Ngược lại trả về `False`.
 ```py
 >>> 1 in {1, 2, 3, 4}
 True
@@ -55,7 +59,7 @@ True
 False
 ```
 + Toán tử `not in`
-Ngược với toán tử `in`. Trả về `True` nếu `value` không tồn tại trong `set`, ngượi lại sẽ trả về `False`
+Ngược với toán tử `in`. Trả về `True` nếu `value` không tồn tại trong `set`, ngược lại sẽ trả về `False`.
 ```py
 >>> 1 not in {1, 2, 3, 4}
 False
@@ -63,30 +67,43 @@ False
 True
 ```
 + Toán tử `-`
-Trả về một `set` gồm các phần tử chỉ tồn tại trong `set_1` mà không tồn tại trong `set_2`
+Cú pháp:
 ```py
->>> set_1 = {1, 2, 3, 4, 5}
->>> set_2 = {1, 2, 3}
->>> set_1 - set_2
+set1 - set2 - ..... - setn
+```
+Trả về một `set` gồm các phần tử chỉ tồn tại trong `set1` mà không tồn tại trong `set2`...`setn`.
+```py
+>>> set1 = {1, 2, 3, 4, 5}
+>>> set2 = {1, 2, 3}
+>>> set1 - set2
 {4, 5}
 ```
 + Toán tử `&`
-Trả về một `set` chứa các phần tử tồn tại trong cả `set_1` và `set_2`
+Cú pháp:
 ```py
->>> set_1 = {1, 2, 3, 4, 5}
->>> set_2 = {1, 2, 3}
->>> set_1 & set_2
+set1 & set2 & ..... & setn
+```
+Trả về một `set` chứa các phần tử cùng tồn tại trong cả tất cả các `set`.
+```py
+>>> set1 = {1, 2, 3, 4, 5}
+>>> set2 = {1, 2, 3}
+>>> set1 & set2
 {1, 2, 3}
 ```
 + Toán tử `|`
-Trả về một `set` chứa tất cả các phần tử trong cả 2 `set`( `set_1` và `set_2`)
+Cú pháp:
 ```py
->>> set_1 = {1, 2, 3, 4, 5}
->>> set_2 = {1, 2, 3}
->>> set_1 | set_2
+set1 | set2 | ... | setn
+```
+Trả về một `set` chứa tất cả các phần tử tồn tại trong các `set` sau khi lọai các phần tử trùng.
+```py
+>>> set1 = {1, 2, 3, 4, 5}
+>>> set2 = {1, 2, 3}
+>>> set1 | set2
 {1, 2, 3, 4, 5}
 ```
 + Toán tử `^`
+Cú pháp:
 ```
 set1 ^ set2 ..... ^ setn
 ```

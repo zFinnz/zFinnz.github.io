@@ -1,6 +1,7 @@
 <h1> set trong python</h1>
 
-Set là một `container`, tuy nhiên không được sử dụng nhiều bằng `list` hay `tuple` trong Python.
+Set cũng là một `container`, tuy nhiên không được sử dụng nhiều bằng `list` hay `tuple` trong Python.
+
 Các đặc điểm của set
 
 + Được giới hạn bởi cặp ngoặc (`{}`), các phần tử trong `set` được ngăn cách bằng dấu phẩy (`,`).
@@ -14,7 +15,7 @@ Các đặc điểm của set
 >>> type(a)
 # <class 'set'>
 >>> b = {[1, 2], [3, 4]}
-# sset không thể chứa list vì list và đối tượng `mutable`
+# set không thể chứa list vì list và đối tượng `mutable`
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 TypeError: unhashable type: 'list'
@@ -95,7 +96,7 @@ Cú pháp:
 ```py
 set1 | set2 | ... | setn
 ```
-Trả về một `set` chứa tất cả các phần tử tồn tại trong các `set` sau khi lọai các phần tử trùng.
+Trả về một `set` chứa tất cả các phần tử tồn tại trong các `set` và chỉ giữ lại 1 giá trị duy nhất của các phần tử trùng.
 ```py
 >>> set1 = {1, 2, 3, 4, 5}
 >>> set2 = {1, 2, 3}
@@ -107,15 +108,19 @@ Cú pháp:
 ```
 set1 ^ set2 ..... ^ setn
 ```
-Trả về một `set` chứa tất cả các phần tử chỉ tồn tại ở một trong 2 `set`, có nghĩa là các phần tử giống nhau giữa 2 `set` sẽ bị loại bỏ.
+Trả về một `set` chứa tất cả các phần tử chỉ tồn tại ở một `set` mà không tồn tại trong các `set` khác, nghĩa là các phần tử trùng lặp sẽ bị loại bỏ.
 ```py
->>> set_1 = {1, 2, 3, 4, 5}
->>> set_2 = {1, 2, 3}
->>> set_1 ^ set_2 
+>>> set1 = {1, 2, 3, 4, 5}
+>>> set2 = {1, 2, 3}
+>>> set1 ^ set_2 
 {4, 5}
 ```
 + Toán tử `==` và `!=` 
-So sánh hai hay nhiều `set` với nhau
+Cú pháp:
+```py
+set1 [==, !=] set2 ...... [==, !=] setn
+```
+So sánh hai hay nhiều `set` với nhau. Các phép toán thực hiện từ trái qua phải.
 ```py
 >>> a = {1,2,3}
 >>> b = set({i for i in range(1,4)})
@@ -125,7 +130,7 @@ True
 False
 ```
 
-Các phương thức dựng sẵn trong set
+Các phương thức được dựng sẵn trong set
 
 | Phương thức | Miêu tả |
 |------------|---------|
@@ -154,13 +159,6 @@ Thêm một đối tượng `element` vào `set`, `element` phải là đối t�
 >>> a.add(4)
 >>> a
 {1, 2, 3, 4}
-```
-Ngoài ra, nếu bạn sử dụng phương thức này khi bạn khởi tạo một đối tượng `set` , `element` sẽ không được thêm vào, bạn sẽ nhận được giá trị `None`
-```py
->>> a = set()
->>> a.add(5)
->>> a
-None
 ```
 
 Set.clear()
@@ -196,7 +194,7 @@ Set1.difference(set2[, set3...])
 
 Tương đương với:
 ```py
-set - set2 [-set3....]
+set1 - set2 [-set3....]
 ```
 Phương thức này trả về tập hợp các phần tử có trong `set1` nhưng không tồn tại trong 2 hay nhiều `set` khác.
 ```py
@@ -244,6 +242,10 @@ Phuwong thức loại bỏ phần tử `element` từ `set`. Nếu `element` kh�
 ```
 
 Set1.intersection(set2[, set3....])
+Tương đương với:
+```py
+set & set2 [&set3....]
+```
 Phương thức tính giao điểm của hai hay nhiều `set`. hay nói cách khác, phương thức sẽ trả về tập hợp các phần tử đều tồn tại trong 2 hay nhiều `set`. Nếu không có phần tử nào trả về một `set` rỗng.
 ```py
 >>> a = {1, 2, 3, 4}
@@ -255,7 +257,7 @@ Phương thức tính giao điểm của hai hay nhiều `set`. hay nói cách k
 Set1.intersection_update(set2[, set3...])
 Hay còn có thể biểu diễn theo các khác
 ```py
-set &= set2[&set3.....]
+set1 &= set2[&set3.....]
 ```
 Phương thức cập nhật `set1`, chỉ giữ lại các phần tử được tìm thấy trong cả hai `set`.
 
@@ -289,6 +291,10 @@ set()
 ```
 
 Set1.issubset(set2)
+Tương đương với:
+```py
+set1 < set2 ... < setn
+```
 Phương thức trả về `True` nếu `set1` là tập hợp con của `set2`.
 ```py
 >>> a = {1, 2, 3, 4}
@@ -304,6 +310,10 @@ True
 ```
 
 Set1.issuperset(set2)
+Tương đương với:
+```py
+set1 > set2  > ..... > setn
+```
 Phương thức trả về `True` nếu `set2` là tập hợp con của `set1`. Ngược lại trả về `False`
 ```py
 >>> a = {1, 2, 3, 4, 5 ,6}
@@ -340,7 +350,10 @@ KeyError: 7
 ```
 
 Set1.symmetric_difference(set2)
-
+Tương đương với:
+```py
+set1 ^ set2 ..... ^ setn
+```
 Phương thức trả về tập hợp loại bỏ các phần tử chung giữa `set1` và `set2`.
 ```py
 >>> a = {1, 2, 3, 4, 5 ,6}
@@ -413,3 +426,32 @@ Các hàm dựng sẵn trong Python với set
 | [min()](https://0xpan.blogspot.com/2018/11/ham-built-in-trong-python.html#load-h4-43) | Trả về phần tử nhỏ nhất của `set` |
 | [sorted()](https://0xpan.blogspot.com/2018/11/ham-built-in-trong-python.html#load-h4-59) | Trả về một `set` được sắp xếp |
 | [sum()](https://0xpan.blogspot.com/2018/11/ham-built-in-trong-python.html#load-h4-62) | Trả về tổng của các phần tử trong `set` |
+
+
+Tại sao lại là set
+
+`Set` trong python được triển khai như một kiểu chứa dữ liệu nhưng có thể sử dụng các phương thức tính toán như trong toán học, thuận tiện cho việc lọc dữ liệu.
+Ví dụ như:
++ Lọc các phần tử trùng lặp trong `list`
+```py
+>>> a  = [1, 2, 3, 4, 2, 3, 6]
+>>> list(set(a))
+[1, 2, 3, 4, 6]
+```
++ Hay các phép loại bỏ khác 
+```py
+>>> set([1, 3, 5, 7]) - set([1, 2, 4, 5, 6]) 
+# Tìm các phần tử khác nhau trong 2 list
+{3, 7}
+>>> set('abcdefg') - set('abdghij') 
+# Tìm các phần tử khác nhau trong 2 tring
+{'c', 'e', 'f'}
+>>> set('spam') - set(['h', 'a', 'm'])
+{'p', 's'}
+>>> set(dir(bytes)) - set(dir(bytearray))
+{'__getnewargs__'}
+>>> set(dir(bytearray)) - set(dir(bytes))
+{'append', 'copy', '__alloc__', '__imul__', 
+'remove', 'pop', 'insert',....}
+```
+
